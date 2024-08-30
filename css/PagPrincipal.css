@@ -7,7 +7,8 @@ body {
   background-color: #0F4F42;
   display: flex;
   align-items: center;
-  padding: 0px;
+  padding: 3px 0px;
+  justify-content: space-around;
 }
 
 .logo {
@@ -15,6 +16,7 @@ body {
   width: auto;
   margin-right: 20px;
   padding: 0px;
+  justify-content: left;
 }
 
 .barraBuscar {
@@ -37,8 +39,26 @@ body {
   top: 50%;
   right: -42px;
   transform: translateY(-50%);
-  font-size: 16px;
+  font-size: 22px;
   color: rgb(75, 75, 75);
+}
+
+.opciSuperiores {
+  list-style: none;
+  display: flex;
+}
+
+.opciSuperiores li {
+  margin: 0px 30px;
+  color: white;
+}
+
+.opciSuperiores:hover {
+  color: green;
+}
+
+.material-symbols-outlined {
+  font-size: 22px;
 }
 
 .nav_menu {
