@@ -16,16 +16,24 @@
 </head>
 <body>
     <nav class="barraSuperior">
-        <img class="logo" src="Recursos/Logo.png" alt="Logo SECOM">
+        <img class="logoSuperior" src="Recursos/Logo.png" alt="Logo SECOM">
+        <ul class="opciSuperiores">
+            <li class="lista_opci ubicacion1"><a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a></li>
+        </ul>
         <div class="barraBuscar">
             <input class="inputBuscar" type="text" placeholder="Buscar artículo">
             <span id="i" class="material-symbols-outlined">search</span>
         </div>
         <ul class="opciSuperiores">
-            <li class="lista_opci"><a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a></li>
-            <li class="lista_opci"><a href="#"><span class="material-symbols-outlined">forum</span></a></li>
-            <li class="lista_opci"><a href="#"><span class="material-symbols-outlined">notifications</span></a></li>
+            <div id="mensajYNotif">
+            <li class="lista_opci mensaje1"><a href="#"><span class="material-symbols-outlined">forum</span></a></li>
+            <li class="lista_opci notificacion1"><a href="#"><span class="material-symbols-outlined">notifications</span></a></li>
+        </div>
         </ul>
+        <a href="verPerfil"><span id="idPerfil" class="material-symbols-outlined">
+            account_circle
+            </span>
+        </a>
     </nav>
     <nav class="barraCategorias">
         <ul class="nav_menu">
@@ -53,5 +61,26 @@
             <li><a class="lista_opci" href="ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></a></li>
         </ul>
     </nav>
+    <div class="pagina">
+        <div class="container left">
+            <img class="logo" src="Recursos/logo secom.png" alt="Logo Alternativo Secom Png">
+            <p>Aquí, tus objetos usados encuentran un nuevo propósito. 
+            Compra, vende y dona sin complicaciones en un espacio diseñado para conectar a personas que 
+            buscan darle una segunda vida a sus cosas. ¡Únete a nuestra comunidad y haz la diferencia hoy!
+            </p>
+        </div>
+
+        <div class="container right">
+            <H1>INICIA SESIÓN</H1>
+            <input type="text" placeholder="Teléfono, usuario o correo electrónico">
+            <input type="password" placeholder="Contraseña">
+            <div class="contenedorRecordarContra">
+              <input type="checkbox" name="recordarContra" id="rContra">
+              <label for="recordarContra">Recordar contraseña</label>
+            </div>
+            <button class="iniciarsesion">Continuar</button>
+            <a class="linkRecuperarContra" href="recuperarContra">¿Has olvidado la contraseña?</a>
+            <p>¿No tienes una cuenta? <a href="register.html" class="linkRegister">Registrate</a></p>
+        </div>
 </body>
 </html>
