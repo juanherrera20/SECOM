@@ -1,0 +1,81 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: whitesmoke;
+  font-family: 'Aldrich', sans-serif;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+
+.pagina {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+.logo {
+  width: 250px;
+  height: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 535px;
+  height: 570px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.container.left{
+  text-align: center;
+  padding: 20px;
+  color: white;
+  font-size: 22px;
+  background-color: #0B3C32;
+}
+
+.container.right{
+  color: white;
+  background-color: #a59a57;
+}
+
+/*elementos*/
+
+.iniciarsesion {
+  background-color: #0F4F42;
+  border: 0;
+  padding: 0 ;
+  font-family: 'Aldrich', sans-serif;
+  color: white;
+  width: 270px;
+  height: 40px;
+}
+
+.iniciarsesion:hover {
+  background-color: #145649;
+  border: 1px solid white;
+}
+
+.linkRegister {
+  text-decoration: none;
+  color: #0F4F42;
+}
+
+.linkRegister:hover {
+  color: #0D7643;
+}
+
+.linkRecuperarContra {
+  text-decoration: none;
+  color: white;
+}

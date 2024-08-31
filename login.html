@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/register.css">
-    <link rel="stylesheet" href="css/navbar.css">
+    <title>Página de inicio</title>
+
+    <!-- Link para fuentes de letra --> 
     <link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet">
+
+    <!-- Link para íconos -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
     <script src="Js/register.js"></script>
-    <title>Registro</title>
+
+    <!-- Estilos de la página -->
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/navbar.css"> <!--Este es el Css de la barra de navegación-->
 </head>
 <body>
-    <header id="navbar"></header> <!-- Aquí ira la barra de navegación-->
+    <header id="navbar"></header> <!--Aquí es donde se va a poner la barra de navegación-->
     <div class="pagina">
         <div class="container left">
             <img class="logo" src="Recursos/logo secom.png" alt="Logo Alternativo Secom Png">
@@ -22,21 +29,16 @@
         </div>
 
         <div class="container right">
-            <H1>REGISTRATE</H1>
-            <input type="text" placeholder="Nombres">
-            <input type="text" placeholder="Apellidos">
-            <input type="email" placeholder="Email">
+            <H1>INICIA SESIÓN</H1>
+            <input type="text" placeholder="Teléfono, usuario o correo electrónico">
             <input type="password" placeholder="Contraseña">
-            <button class="registro">Continuar</button>
-
-            <div>
-                <p>Ó Registrate con:</p>
-                <button class="google"><img class="google" src="Recursos/google.png">Google</button>
+            <div class="contenedorRecordarContra">
+              <input type="checkbox" name="recordarContra" id="rContra">
+              <label for="recordarContra">Recordar contraseña</label>
             </div>
-
+            <button class="iniciarsesion">Continuar</button>
+            <a class="linkRecuperarContra" href="recuperarContra">¿Has olvidado la contraseña?</a>
+            <p>¿No tienes una cuenta? <a href="register.html" class="linkRegister">Registrate</a></p>
         </div>
-
-    </div>
-    
 </body>
 </html>
