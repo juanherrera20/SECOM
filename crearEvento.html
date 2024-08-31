@@ -6,15 +6,56 @@
     <title>Crear evento</title>
     <link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+
+    <script src="Js/crearEvento.js"></script>
+    <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/crearEvento.css">
 </head>
 <body>
+    <header id="navbar"></header>
+    <a href="#"><span id="back" class="material-symbols-outlined">
+        arrow_circle_left
+        </span></a>
     <h1>Crea tu evento</h1>
     <h3>INFORMACIÓN DEL EVENTO</h3>
-    <div class="nombreEvento">
+<div class="contenedorInputs">
+    <div class="inputsInfo">
         <p><strong>Nombre del evento</strong></p>
         <input type="text" placeholder="Ejemplo: Ayuda para María">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">circle</span>
+        <p><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+        <p><strong>Descripción del evento</strong></p>
+        <input type="text" placeholder="Ejemplo: Hola, buenos días...">
     </div>
+    <div class="inputsInfo">
+        <p><strong>Causa por la que se crea el evento</strong></p>
+        <input type="text" placeholder="Ejemplo: Incendio de vivienda">
+        <p><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+        <p><strong>Ubicación del evento (País, Ciudad, Barrio)</strong></p>
+        <input type="text" placeholder="Ejemplo: Colombia, Cali, Aguablanca">
+        <p><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+    </div>
+    <div class="inputsInfo">
+        <form action="">
+            <p><strong>Categoría de donaciones aceptadas</strong></p>
+        <label for="categoria">Elige una categoría:</label>
+        <select name="categoriasAceptadas" id="categoriasAceptadas" >
+            <option value="opciion1">Dinero</option>
+            <option value="opciion2">Ropa y calzado</option>
+            <option value="opciion3">Alimentos</option>
+            <option value="opciion4">Artículos de higiene personal</option>
+            <option value="opciion5">Agua y bebidas</option>
+            <option value="opciion6">Todas</option>
+        </select>
+        <p><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+    </form>
+        <p><strong>Fecha de lo ocurrido</strong></p>
+        <input type="text" placeholder="Día/Mes/Año">
+    </div>
+    <div class="inputsInfo">
+        <p><strong>Contacto del organizador</strong></p>
+        <input type="text" placeholder="Número de teléfono o correo electrónico">
+        <p><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+    </div>
+</div>
 </body>
 </html>
