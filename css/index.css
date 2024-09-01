@@ -16,13 +16,66 @@ body {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 80% 1fr;
-    grid-template-rows: repeat(5,370px);
+    grid-template-rows: repeat(5,400px);
     row-gap: 2rem;
 }
 
 .eventos {
-    background-color: brown;
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-rows: 60% 40%;
+    background-image: linear-gradient(to left, #15323F 37%, rgba(255, 126, 95, 0) 72%), url(../Recursos/eventos.jpg);
+    background-size: 100% 500px;
     grid-column: 2 / 3;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /*Esta es la sombra a aplicar en todos los elementos*/
+}
+
+.eventos p {
+    width: 380px;
+    color: whitesmoke;
+    font-size: 28px;
+    grid-area: 2 / 2 / 3 / 3;
+    justify-self: end;
+    margin: 0;
+}
+
+/*Botones para cambiar de información*/
+.boton {
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 100%;
+    justify-self: center;
+    align-self: end;
+}
+
+.eventos-right{
+    grid-area: 1 / 1 / 2/ 2;
+}
+
+.eventos-left{
+    grid-area: 1 / 3 / 2/ 4;
+}
+
+.destructive{
+    grid-area: 2 / 3 / 3 / 4;
+    align-self: center;
+    width: 99px;
+    height: 25px;
+    background-color: #2DD7B5;
+    font-family: 'Aldrich', sans-serif;
+    color: whitesmoke;
+    border-radius: 10px;
+    padding: 0;
+    border: 0;
+
+}
+
+.destructive:hover {
+    background-color: #1C957C;
+}
+
+.boton:hover{
+    background-color: rgba(255, 255, 255, 0.35);
 }
 
 .tendencias {
