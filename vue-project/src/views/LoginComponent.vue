@@ -1,11 +1,12 @@
-<script>
-
-
+<script setup>
+import NavbarComponent from '../components/NavbarComponent.vue'
 </script>
 
 
 
 <template>
+
+<header><NavbarComponent /></header>
 
 <div class="pagina">
         <div class="container left">
@@ -34,7 +35,7 @@
 
 
 
-<style>
+<style scoped>
 
 .pagina {
   margin: 20px 0px;
