@@ -1,4 +1,11 @@
+<script setup>
+import NavbarComponent from '../components/NavbarComponent.vue'
+</script>
+
+
 <template>
+<NavbarComponent />
+
 <div class="pagina">
     <div class="container left">
         <img class="logo"  alt="Logo Alternativo Secom Png">
@@ -26,22 +33,9 @@
 </div>
 </template>
 
-<script setup>
-</script>
-
 
 <style scoped>
-* {
-    box-sizing: border-box;
-}
 
-body {
-    background-color: whitesmoke;
-    font-family: 'Aldrich', sans-serif;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-}
 
 .pagina {
     width: 100%;
@@ -50,7 +44,7 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: whitesmoke;
+    background-color: white;
 }
 
 .logo {

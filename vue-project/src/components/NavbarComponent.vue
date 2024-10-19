@@ -13,57 +13,47 @@ export default {
 
 
 <template>
-  
-<nav class="barraSuperior">
-        <img class="logoSuperior" src="../Recursos/Logo.png" alt="Logo SECOM">
-        <ul class="opciSuperiores">
-            <li class="lista_opci ubicacion1"><a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a></li>
-        </ul>
-        <div class="barraBuscar">
-            <input class="inputBuscar" type="text" placeholder="Buscar artículo">
-            <span id="i" class="material-symbols-outlined">search</span>
-        </div>
-        <ul class="opciSuperiores">
-            <div id="mensajYNotif">
-            <li class="lista_opci mensaje1"><a href="#"><span class="material-symbols-outlined">forum</span></a></li>
-            <li class="lista_opci notificacion1"><a href="#"><span class="material-symbols-outlined">notifications</span></a></li>
-        </div>
-        </ul>
-        <a href="verPerfil"><span id="idPerfil" class="material-symbols-outlined">
-            account_circle
-            </span>
-        </a>
-    </nav>
-    <nav class="barraCategorias">
-        <ul class="nav_menu">
-            <li><a class="lista_opci" href="sostenibles">SOSTENIBLES</a></li>
-            <li><a class="lista_opci" href="vender">VENDER</a></li>
-            <li class="menu_despl">
-                <a class="lista_opci" href="categorias">CATEGORÍAS <span class="material-symbols-outlined">arrow_drop_down</span></a>
-                <MenuDespl />
-            </li>
-            <li><a class="lista_opci" href="gratuitos">GRATUITOS</a></li>
-            <li><a class="lista_opci" href="eventos">EVENTOS</a></li>
-            <li><a class="lista_opci" href="ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></a></li>
-        </ul>
-    </nav>
+<header>
+  <nav class="barraSuperior">
+    <img class="logoSuperior" src="../Recursos/Logo.png" alt="Logo SECOM">
+    <ul class="opciSuperiores">
+        <li class="lista_opci ubicacion1"><a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a></li>
+    </ul>
+    <div class="barraBuscar">
+        <input class="inputBuscar" type="text" placeholder="Buscar artículo">
+        <span id="i" class="material-symbols-outlined">search</span>
+    </div>
+    <ul class="opciSuperiores">
+        <div id="mensajYNotif">
+        <li class="lista_opci mensaje1"><a href="#"><span class="material-symbols-outlined">forum</span></a></li>
+        <li class="lista_opci notificacion1"><a href="#"><span class="material-symbols-outlined">notifications</span></a></li>
+    </div>
+    </ul>
+    <a href="verPerfil"><span id="idPerfil" class="material-symbols-outlined">
+        account_circle
+        </span>
+    </a>
+  </nav>
+  <nav class="barraCategorias">
+    <ul class="nav_menu">
+        <li><a class="lista_opci" href="sostenibles">SOSTENIBLES</a></li>
+        <li><a class="lista_opci" href="vender">VENDER</a></li>
+        <li class="menu_despl">
+            <a class="lista_opci" href="categorias">CATEGORÍAS <span class="material-symbols-outlined">arrow_drop_down</span></a>
+            <MenuDespl />
+        </li>
+        <li><a class="lista_opci" href="gratuitos">GRATUITOS</a></li>
+        <li><a class="lista_opci" href="eventos">EVENTOS</a></li>
+        <li><a class="lista_opci" href="ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></a></li>
+    </ul>
+  </nav>
+</header>
 
 </template>
 
 
 
-<style>
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background-color: whitesmoke;
-    font-family: 'Aldrich', sans-serif;
-}
+<style scoped>
 
   /*Estilos y estetica para la barra de navegación*/
   .barraSuperior {

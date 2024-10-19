@@ -6,7 +6,7 @@ import NavbarComponent from '../components/NavbarComponent.vue'
 
 <template>
 
-<header><NavbarComponent /></header>
+<NavbarComponent />
 
 <div class="pagina">
         <div class="container left">
@@ -27,7 +27,7 @@ import NavbarComponent from '../components/NavbarComponent.vue'
             </div>
             <button class="iniciarsesion">Continuar</button>
             <a class="linkRecuperarContra" href="recuperarContra">¿Has olvidado la contraseña?</a>
-            <p>¿No tienes una cuenta? <a href="register.html" class="linkRegister">Registrate</a></p>
+            <p>¿No tienes una cuenta? <RouterLink to="/register">Register</RouterLink></p>
         </div>
     </div>
 
@@ -40,7 +40,7 @@ import NavbarComponent from '../components/NavbarComponent.vue'
 .pagina {
   margin: 20px 0px;
   width: 100%;
-  height: 100%;
+  height: 80%;
   display: flex;
   flex-direction: row;
   justify-content: center;
