@@ -1,3 +1,50 @@
+<template>
+  <div id="app">
+    <NavbarComponent />
+    <LoginComponent />
+  </div>
+</template>
+
+<script>
+import NavbarComponent from './components/NavbarComponent.vue'
+import LoginComponent from './components/LoginComponent.vue'
+
+export default {
+  name: 'App',
+  components: {
+    NavbarComponent,
+    LoginComponent
+  }
+}
+</script>
+
+<style>
+/*
+#app {
+  background-color: whitesmoke;
+  font-family: 'Aldrich', sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  margin-top: 60px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+*/
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
@@ -51,3 +98,4 @@ header {
   }
 }
 </style>
+-->
