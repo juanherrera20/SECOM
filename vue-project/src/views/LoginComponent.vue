@@ -1,12 +1,9 @@
 <script setup>
-import NavbarComponent from '../components/NavbarComponent.vue'
+import { RouterLink } from 'vue-router';
 </script>
 
 
-
 <template>
-
-<NavbarComponent />
 
 <div class="pagina">
         <div class="container left">
@@ -27,7 +24,7 @@ import NavbarComponent from '../components/NavbarComponent.vue'
             </div>
             <button class="iniciarsesion">Continuar</button>
             <a class="linkRecuperarContra" href="recuperarContra">¿Has olvidado la contraseña?</a>
-            <p>¿No tienes una cuenta? <RouterLink to="/register">Register</RouterLink></p>
+            <p>¿No tienes una cuenta? <RouterLink to="/Register">Register</RouterLink></p>
         </div>
     </div>
 

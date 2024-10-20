@@ -1,14 +1,14 @@
 <script setup>
-import NavbarComponent from '../components/NavbarComponent.vue'
+import { RouterLink } from 'vue-router';
+
+
 </script>
 
 
 <template>
-<NavbarComponent />
-
 <div class="pagina">
     <div class="container left">
-        <img class="logo"  alt="Logo Alternativo Secom Png">
+        <img class="logo"  src="../assets/Images/logo secom.png"  alt="Logo Alternativo Secom Png">
         <p>Aquí, tus objetos usados encuentran un nuevo propósito. 
         Compra, vende y dona sin complicaciones en un espacio diseñado para conectar a personas que 
         buscan darle una segunda vida a sus cosas. ¡Únete a nuestra comunidad y haz la diferencia hoy!
@@ -21,11 +21,11 @@ import NavbarComponent from '../components/NavbarComponent.vue'
         <input type="text" placeholder="Apellidos" class="campos">
         <input type="email" placeholder="Email" class="campos">
         <input type="password" placeholder="Contraseña" class="campos">
-        <button class="registro">Continuar</button>
+        <RouterLink to="/"><button class="registro">Continuar</button></RouterLink>
 
         <div>
             <p>Ó Registrate con:</p>
-            <button class="google"><img class="google" >Google</button>
+            <button class="google"><img class="google" src="../assets/Images/google.png">Google</button>
         </div>
 
     </div>
@@ -35,7 +35,6 @@ import NavbarComponent from '../components/NavbarComponent.vue'
 
 
 <style scoped>
-
 
 .pagina {
     width: 100%;
@@ -78,6 +77,7 @@ import NavbarComponent from '../components/NavbarComponent.vue'
 .container.right div {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 10px;
 }
 
