@@ -1,5 +1,11 @@
 <script setup>
+import { ref } from 'vue';
+import ProductTarget from '@/components/ProductTarget.vue';
 
+let products = ref ([
+    {id:1, img:"../assets/Images/televisor.webp", descuento: false, precio: 730000, descrip: 'Televisor Smart 75 Neo Qled 4k Qn85d', tags: 'TVs'},
+    {id:2, img:"../assets/Images/applePC.webp", descuento: true, precio: 250000, descrip: 'iMac Retina 4k , Pantalla 21.5 Año 2019 Excelente Estado', tags: 'Computadora'}
+])
 </script>
 
 
@@ -20,25 +26,9 @@
     <div class="novedades">
         <h2>NOVEDADES</h2>
         <button class="boton novedades-left"><span class="material-symbols-outlined">arrow_left</span></button>
-        <div class="producto">
-            <div class="imagen n1"></div>
-            <div class="precios">
-                <span class="material-symbols-outlined">favorite</span>
-                <span class="descuento" hidden>$500.000</span>
-                <span>$730.000</span>
-            </div>
-            <p class="descripcion">Televisor Smart 75 Neo Qled 4k Qn85d</p>
-            <div class="etiquetas">
-                <p>TVs</p>
-            </div>
-            <div class="stars">
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-            </div>
-        </div>
+        <!--Así se insertan los valores para repetir el componente-->
+        <ProductTarget v-for = "product in products" :key="product.id" :product="product"></ProductTarget>
+
         <div class="producto">
             <div class="imagen n2"><p>Oferta 50%</p></div>
             <div class="precios">
@@ -58,6 +48,8 @@
                 <span class="material-symbols-outlined">star</span>
             </div>
         </div>
+
+
         <div class="producto">
             <div class="imagen n3"></div>
             <div class="precios">
@@ -239,6 +231,8 @@
     align-self: center;
 }
 
+
+/* Aquí comienza el estilo para las tarjetas de productos */
 .producto {
     display: grid;
     background-color: #F3F2F2;
