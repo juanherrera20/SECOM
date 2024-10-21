@@ -15,7 +15,7 @@ export default {
 <template>
 <header>
   <nav class="barraSuperior">
-    <img class="logoSuperior" src="../Recursos/Logo.png" alt="Logo SECOM">
+    <img class="logoSuperior" src="../assets/Images/Logo.png" alt="Logo SECOM">
     <ul class="opciSuperiores">
         <li class="lista_opci ubicacion1"><a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a></li>
     </ul>
