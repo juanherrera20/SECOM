@@ -3,6 +3,7 @@ import LoginComponent from '../views/LoginComponent.vue'
 import RegisterComponent from '@/views/RegisterComponent.vue'
 import HomeComponent from '@/views/HomeComponent.vue'
 import VistaCategorias from '@/views/VistaCategorias.vue'
+import EditPerfil from '@/views/EditPerfil.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,12 @@ const router = createRouter({
       name: 'categorias',
       component: VistaCategorias,
     },
+
+    {
+      path: '/EditPerfil',
+      name: 'editperfil',
+      component: EditPerfil,
+    },
     // {
     //   path: '/about',
     //   name: 'about',
@@ -42,3 +49,10 @@ const router = createRouter({
 })
 
 export default router
+
+import { createRouter, createWebHistory } from 'vue-router'
+import LoginComponent from '../views/LoginComponent.vue'
+import RegisterComponent from '@/views/RegisterComponent.vue'
+import HomeComponent from '@/views/HomeComponent.vue'
+import EditPerfil from '@/views/EditPerfil.vue'
+

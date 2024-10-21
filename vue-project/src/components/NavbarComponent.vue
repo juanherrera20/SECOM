@@ -1,10 +1,12 @@
 <script>
 
 import MenuDespl from '../components/MenuDespl.vue'
+import MenuProfile from '../components/MenuProfile.vue'
 
 export default {
   components: {
-    MenuDespl
+    MenuDespl,
+    MenuProfile
   }
 };
 
@@ -13,47 +15,66 @@ export default {
 
 
 <template>
-<header>
-  <nav class="barraSuperior">
-    <img class="logoSuperior" src="../assets/Images/Logo.png" alt="Logo SECOM">
-    <ul class="opciSuperiores">
-        <li class="lista_opci ubicacion1"><a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a></li>
-    </ul>
-    <div class="barraBuscar">
-        <input class="inputBuscar" type="text" placeholder="Buscar artículo">
-        <span id="i" class="material-symbols-outlined">search</span>
-    </div>
-    <ul class="opciSuperiores">
-        <div id="mensajYNotif">
-        <li class="lista_opci mensaje1"><a href="#"><span class="material-symbols-outlined">forum</span></a></li>
-        <li class="lista_opci notificacion1"><a href="#"><span class="material-symbols-outlined">notifications</span></a></li>
-    </div>
-    </ul>
-    <a href="verPerfil"><span id="idPerfil" class="material-symbols-outlined">
-        account_circle
-        </span>
-    </a>
-  </nav>
-  <nav class="barraCategorias">
-    <ul class="nav_menu">
-        <li><a class="lista_opci" href="sostenibles">SOSTENIBLES</a></li>
-        <li><a class="lista_opci" href="vender">VENDER</a></li>
+  
+<nav class="barraSuperior">
+        <img class="logoSuperior" src="../Recursos/Logo.png" alt="Logo SECOM">
+        <ul class="opciSuperiores">
+            <li class="lista_opci ubicacion1"><a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a></li>
+        </ul>
+        <div class="barraBuscar">
+            <input class="inputBuscar" type="text" placeholder="Buscar artículo">
+            <span id="i" class="material-symbols-outlined">search</span>
+        </div>
+        <ul class="opciSuperiores">
+            <div id="mensajYNotif">
+            <li class="lista_opci mensaje1"><a href="#"><span class="material-symbols-outlined">forum</span></a></li>
+            <li class="lista_opci notificacion1"><a href="#"><span class="material-symbols-outlined">notifications</span></a></li>
+        </div>
+        </ul>
         <li class="menu_despl">
-            <a class="lista_opci" href="categorias">CATEGORÍAS <span class="material-symbols-outlined">arrow_drop_down</span></a>
-            <MenuDespl />
-        </li>
-        <li><a class="lista_opci" href="gratuitos">GRATUITOS</a></li>
-        <li><a class="lista_opci" href="eventos">EVENTOS</a></li>
-        <li><a class="lista_opci" href="ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></a></li>
-    </ul>
-  </nav>
-</header>
+                <a class="lista_opci" href="categorias"><span class="material-symbols-outlined" id="idPerfil">
+                  account_circle </span></a>
+                <MenuProfile />
+            </li>
+        <!--
+        <li class="aaa">
+        <a href="verPerfil" class="desplegar"><span class="material-symbols-outlined" id="idPerfil">
+            account_circle </span>
+            <MenuProfile />
+        </a>
+      </li>
+      -->
+    </nav>
+    <nav class="barraCategorias">
+        <ul class="nav_menu">
+            <li><a class="lista_opci" href="sostenibles">SOSTENIBLES</a></li>
+            <li><a class="lista_opci" href="vender">VENDER</a></li>
+            <li class="menu_despl">
+                <a class="lista_opci" href="categorias">CATEGORÍAS <span class="material-symbols-outlined">arrow_drop_down</span></a>
+                <MenuDespl />
+            </li>
+            <li><a class="lista_opci" href="gratuitos">GRATUITOS</a></li>
+            <li><a class="lista_opci" href="eventos">EVENTOS</a></li>
+            <li><a class="lista_opci" href="ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></a></li>
+        </ul>
+    </nav>
+    
 
 </template>
 
 
+<style>
 
-<style scoped>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: whitesmoke;
+    font-family: 'Aldrich', sans-serif;
+}
 
   /*Estilos y estetica para la barra de navegación*/
   .barraSuperior {
@@ -174,6 +195,11 @@ export default {
 
   /* Para usar el componente del menú desplegable (de las categorías) se debe cambiar la clase según donde se quiera poner (la que tiene el :hover) */
   .menu_despl:hover .menu_categ {
+    display: block;
+  }
+
+
+  .desplegar:hover .menuProfile {
     display: block;
   }
 
