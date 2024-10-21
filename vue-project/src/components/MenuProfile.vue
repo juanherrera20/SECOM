@@ -6,9 +6,9 @@
     <li class="li"><a href="#" class="link">Seguimiento <span class="material-symbols-outlined">
         sticky_note_2
         </span></a></li>
-        <li class="li"><a href="#" class="link">Configuración <span class="material-symbols-outlined">
+        <li class="li"><router-link to="/EditPerfil" class="link">Configuración <span class="material-symbols-outlined">
         manufacturing
-        </span></a></li>
+        </span></router-link></li>
         <li class="li"><a href="#" class="link">Perfil <span class="material-symbols-outlined">
         account_circle
         </span></a></li>
