@@ -3,6 +3,8 @@ import LoginComponent from '../views/LoginComponent.vue'
 import RegisterComponent from '@/views/RegisterComponent.vue'
 import HomeComponent from '@/views/HomeComponent.vue'
 import EditPerfil from '@/views/EditPerfil.vue'
+import CrearEventoView from '@/views/CrearEventoView.vue'
+
 
 
 const router = createRouter({
@@ -30,6 +32,12 @@ const router = createRouter({
       path: '/EditPerfil',
       name: 'editperfil',
       component: EditPerfil,
+    },
+
+    {
+      path: '/CrearEvento',
+      name: 'crearevento',
+      component: CrearEventoView,
     },
     
     // {

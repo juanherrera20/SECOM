@@ -1,7 +1,18 @@
 <script>
+import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue'
+
+export default {
+  components: {
+    BotonPaginaAnterior
+  }
+};
+
 </script>
 
 <template>
+
+    <BotonPaginaAnterior />
+
     <div class="contenedorTitulo"><p class="nombreContenedor">INFORMACIÓN BÁSICA</p></div>
     <div class="fondo">
         <div class="containerInfoBasica">
