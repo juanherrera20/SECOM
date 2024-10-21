@@ -17,7 +17,9 @@ let products = ref ([
         <button class="boton eventos-right"><span class="material-symbols-outlined">arrow_left</span></button>
         <p>Participa en eventos de donación en tu zona y apoya a los que lo necesitan</p>
         <button class="boton eventos-left"><span class="material-symbols-outlined">arrow_right</span></button>
-        <button class="destructive">Ver mas...</button>
+        
+        <Router-link to='/CrearEvento' class="destructive">Ver mas...</Router-link>
+        
     </div>
     <div class="tendencias">
         <h2>TENDENCIAS</h2>
