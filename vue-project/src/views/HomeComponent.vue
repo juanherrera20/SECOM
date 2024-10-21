@@ -3,9 +3,11 @@ import { ref } from 'vue';
 import ProductTarget from '@/components/ProductTarget.vue';
 
 let products = ref ([
-    {id:1, img:"../assets/Images/televisor.webp", descuento: false, precio: 730000, descrip: 'Televisor Smart 75 Neo Qled 4k Qn85d', tags: 'TVs'},
-    {id:2, img:"../assets/Images/applePC.webp", descuento: true, precio: 250000, descrip: 'iMac Retina 4k , Pantalla 21.5 Año 2019 Excelente Estado', tags: 'Computadora'}
-])
+    {id:1, img: "src/assets/Images/televisor.webp", descuento: false, precio: 730000, descrip: 'Televisor Smart 75 Neo Qled 4k Qn85d', tags: 'TVs'},
+    {id:2, img:"src/assets/Images/applePC.webp", descuento: true, precio: 250000, descrip: 'iMac Retina 4k , Pantalla 21.5 Año 2019 Excelente Estado', tags: 'Computadora'},
+    {id:3, img:"src/assets/Images/playstation.webp", descuento: false, precio: 690000, descrip: 'Sony Playstation 4 - 500gb +7 Juegos Digitales+precio:630000', tags: 'Juegos'},
+    {id:4, img:"src/assets/Images/pantalon.webp", descuento: false, precio: 30000, descrip: 'PANTALON STYLE TALLA 8', tags: 'Pantalones'}
+])  
 </script>
 
 
@@ -26,68 +28,10 @@ let products = ref ([
     <div class="novedades">
         <h2>NOVEDADES</h2>
         <button class="boton novedades-left"><span class="material-symbols-outlined">arrow_left</span></button>
+
         <!--Así se insertan los valores para repetir el componente-->
         <ProductTarget v-for = "product in products" :key="product.id" :product="product"></ProductTarget>
 
-        <div class="producto">
-            <div class="imagen n2"><p>Oferta 50%</p></div>
-            <div class="precios">
-                <span class="material-symbols-outlined">favorite</span>
-                <span class="descuento">$250.000</span>
-                <span>$125.000</span>
-            </div>
-            <p class="descripcion">iMac Retina 4k , Pantalla 21.5 Año 2019 Excelente Estado</p>
-            <div class="etiquetas">
-                <p class="pc">Computadora</p>
-            </div>
-            <div class="stars">
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-            </div>
-        </div>
-
-
-        <div class="producto">
-            <div class="imagen n3"></div>
-            <div class="precios">
-                <span class="material-symbols-outlined">favorite</span>
-                <span class="descuento" hidden>$250.000</span>
-                <span>$690.000</span>
-            </div>
-            <p class="descripcion">Sony Playstation 4 - 500gb +7 Juegos Digitales+precio:630000</p>
-            <div class="etiquetas">
-                <p class="pc">Juegos</p>
-            </div>
-            <div class="stars">
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-            </div>
-        </div>
-        <div class="producto">
-            <div class="imagen n4"></div>
-            <div class="precios">
-                <span class="material-symbols-outlined">favorite</span>
-                <span class="descuento" hidden>$250.000</span>
-                <span>$30.000</span>
-            </div>
-            <p class="descripcion">PANTALON STYLE TALLA 8</p>
-            <div class="etiquetas">
-                <p class="pc">Pantalones</p>
-            </div>
-            <div class="stars">
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-                <span class="material-symbols-outlined">star</span>
-            </div>
-        </div>
         <button class="boton novedades-right"><span class="material-symbols-outlined">arrow_right</span></button>
     </div>
     <div class="vender">
@@ -116,7 +60,7 @@ let products = ref ([
     display: grid;
     grid-template-columns: 10% 80% 10%;
     grid-template-rows: 60% 40%;
-    background-image: linear-gradient(to left, #15323F 37%, rgba(255, 126, 95, 0) 72%), url(../assets/Images/eventos.jpg);
+    background-image: linear-gradient(to left, #15323F 37%, rgba(255, 126, 95, 0) 72%), url(@/assets/Images/eventos.jpg);
     background-size: 100% 500px;
     grid-column: 2 / 3;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /*Esta es la sombra a aplicar en todos los elementos*/
@@ -189,7 +133,7 @@ let products = ref ([
 }
 
 .anuncio1{
-    background-image: url(../assets/Images/ofertas.png);
+    background-image: url(@/assets/Images/ofertas.png);
     background-size: cover;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /*Esta es la sombra a aplicar en todos los elementos*/
 }
@@ -229,82 +173,6 @@ let products = ref ([
 .novedades-right {
     order: 1;
     align-self: center;
-}
-
-
-/* Aquí comienza el estilo para las tarjetas de productos */
-.producto {
-    display: grid;
-    background-color: #F3F2F2;
-    grid-template-rows: 55% 1fr 2fr 1fr 1fr;
-    border-radius: 3px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.imagen {
-    background-size: cover; /* Hace que la imagen cubra todo el contenedor */
-    background-position: center; /* Centra la imagen en el contenedor */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    border-radius: 3px;
-}
-
-.imagen p {
-    background-color: yellow;
-    display: inline-block; 
-}
-
-.n1 {
-    background-image: url(../assets/Images/televisor.webp);
-}
-.n2 {
-    background-image: url(../assets/Images/applePC.webp);
-}
-.n3 {
-    background-image: url(../assets/Images/playstation.webp);
-}
-.n4 {
-    background-image: url(../assets/Images/pantalon.webp);
-}
-
-.precios {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: #0B3C32;
-    padding: 5px;
-}
-
-.descripcion {
-    padding: 5px;
-}
-
-.descuento {
-    color: gray;
-    text-decoration: line-through;
-}
-
-.etiquetas {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    padding: 5px;
-}
-.etiquetas p {
-    background-color: rgb(170, 53, 156);
-    display: inline-block; 
-    border-radius: 6px;
-}
-
-.pc {
-    background-color: #8E7C3C;
-}
-
-.stars {
-    padding: 5px;
-}
-
-.stars span{
-    color: #779553;
 }
 
 /*Aquí empieza la parte de Vender*/

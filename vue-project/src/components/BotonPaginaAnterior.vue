@@ -2,9 +2,7 @@
 </script>
 
 <template>
-    <button class="back"><span class="material-symbols-outlined">
-arrow_back_ios_new
-</span></button>
+    <button class="back"><span class="material-symbols-outlined"> arrow_back_ios_new </span></button>
 </template>
 
 <style scoped>

@@ -1,17 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 
-defineProps(['product'])
-
-//paso la ruta de la imagen para pasar la imagen
-let img = ref(props.product.img)
+const props = defineProps(['product'])
 
 </script>
 
 
 <template>
 <div class="producto">
-    <div class="imagen" :style="{'background-image': `url(${img.value})`}"><p v-show="product.descuento">Oferta 50%</p></div>
+    <div class="imagen" :style="{'background-image':'url(' + product.img + ')'}"><p v-show="product.descuento">Oferta 50%</p></div>
     <div class="precios">
         <span class="material-symbols-outlined">favorite</span>
         <span class="descuento" v-show="product.descuento">${{ product.precio }}</span>
