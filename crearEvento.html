@@ -6,15 +6,125 @@
     <title>Crear evento</title>
     <link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+
+    <script src="Js/crearEvento.js"></script>
+    <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/crearEvento.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
+    <header id="navbar"></header>
+    <div class="botonYTitulo">
+    <a href="#"><span id="back" class="material-symbols-outlined">
+        arrow_circle_left
+        </span></a>
     <h1>Crea tu evento</h1>
-    <h3>INFORMACIÓN DEL EVENTO</h3>
-    <div class="nombreEvento">
-        <p><strong>Nombre del evento</strong></p>
-        <input type="text" placeholder="Ejemplo: Ayuda para María">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">circle</span>
     </div>
+    <div class="infoEvento">
+    <div class="infoEventoEInputs">
+    <h3 id="subtitulo">INFORMACIÓN DEL EVENTO</h3>
+    </div>
+<div class="contenedorInputs">
+    <div class="inputsInfo">
+        <div class="campo">
+        <p class="tituloDeInput"><strong>Nombre del evento</strong></p>
+        <input class="inputInfoEvento" type="text" placeholder="Ejemplo: Ayuda para María">
+        <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+        </div>
+        <div class="campo">
+        <p class="tituloDeInput"><strong>Descripción del evento</strong></p>
+        <input class="inputInfoEvento" type="text" placeholder="Ejemplo: Hola, buenos días...">
+        </div>
+    </div>
+    <div class="inputsInfo">
+        <div class="campo">
+        <p class="tituloDeInput"><strong>Causa por la que se crea el evento</strong></p>
+        <input class="inputInfoEvento" type="text" placeholder="Ejemplo: Incendio de vivienda">
+        <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+        </div>
+        <div class="campo">
+        <p class="tituloDeInput"><strong>Ubicación del evento (País, Ciudad, Barrio)</strong></p>
+        <input class="inputInfoEvento" type="text" placeholder="Ejemplo: Colombia, Cali...">
+        <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+        </div>
+    </div>
+    <div class="inputsInfo">
+        <div class="campo">
+        <form action="">
+            <p class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></p>
+        <select name="categoriasAceptadas" id="categoriasAceptadas" >
+            <option value="opciion1">Dinero</option>
+            <option value="opciion2">Ropa y calzado</option>
+            <option value="opciion3">Alimentos</option>
+            <option value="opciion4">Artículos de higiene personal</option>
+            <option value="opciion5">Agua y bebidas</option>
+            <option value="opciion6">Todas</option>
+        </select>
+        <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+        </form>
+        </div>
+        <div class="campo">
+        <p class="tituloDeInput"><strong>Fecha de lo ocurrido</strong></p>
+        <input class="inputInfoEvento" type="text" placeholder="Día/Mes/Año">
+        </div>
+    </div>
+    <div class="inputsInfo">
+        <div class="campo">
+        <p class="tituloDeInput"><strong>Contacto del organizador</strong></p>
+        <input class="inputInfoEvento" type="text" placeholder="Número de teléfono o correo electrónico">
+        <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+        </div>
+    </div>
+    <div class="inputsInfo">
+        <div class="campo">
+        <p class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></p>
+        <div class="contenedorDeSubirFotos">
+        <div class="subirFotos">
+            <a href="#">
+            <span id="iconoSubirFotos" class="material-symbols-outlined">
+            photo_library
+            </span>
+            </a>
+        </div>
+        <div class="contenedorDeSubirFotos2">
+        <div class="subirFotos2">
+            <a href="#">
+            <span id="iconoSubirFotos2" class="material-symbols-outlined">
+            photo_library
+            </span>
+            </a>
+        </div>
+        <div class="subirFotos2">
+            <a href="#">
+            <span id="iconoSubirFotos2" class="material-symbols-outlined">
+            photo_library
+            </span>
+            </a>
+        </div>
+        <div class="subirFotos2">
+            <a href="#">
+            <span id="iconoSubirFotos2" class="material-symbols-outlined">
+            photo_library
+            </span>
+            </a>
+        </div>
+        <div class="subirFotos2">
+            <a href="#">
+            <span id="iconoSubirFotos2" class="material-symbols-outlined">
+            photo_library
+            </span>
+            </a>
+        </div>
+        </div>
+        </div>
+        <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
+        </div>
+    </div>
+</div>
+</div>
+<div class="boton">
+<button class="publicarProducto"><strong>Publicar</strong></button>
+</div>
+<footer id="footer"></footer>
 </body>
 </html>

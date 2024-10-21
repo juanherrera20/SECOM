@@ -79,3 +79,13 @@ body {
   text-decoration: none;
   color: white;
 }
+
+.campos {
+  width: 310px;
+  height: 35px;
+}
+
+.campos:hover, .campos:focus{
+  border: 2px solid #0F4F42;
+  outline: none;
+}
