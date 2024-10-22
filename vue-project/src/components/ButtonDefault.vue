@@ -37,7 +37,8 @@ const buttonSizeClass = computed(() => {
 </script>
 
 <template>
-  <button :class="['button', buttonSizeClass, props.color]"> {{ text }} <span class="material-symbols-outlined">{{ props.icono }}</span></button>
+  <button :class="['button', buttonSizeClass, props.color]">{{ props.text }}<span v-if="props.icono" class="material-symbols-outlined" style="margin-left: 8px;">{{ props.icono }}</span>
+  </button>
 </template>
 
 <style scoped>
@@ -48,24 +49,27 @@ const buttonSizeClass = computed(() => {
   border-radius: 10px;
   border: 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Color azul */
 .azul {
-    background-color: #2B6682;
+  background-color: #2B6682;
 } 
 .azul:hover {
-    background-color: #4197C0;
-    color: whitesmoke;
+  background-color: #4197C0;
+  color: whitesmoke;
 }
 
 /* Color verde */
 .verde {
-    background-color: #0D7643;
+  background-color: #0D7643;
 } 
 .verde:hover {
-    background-color: #1C957C;
-    color: whitesmoke;
+  background-color: #1C957C;
+  color: whitesmoke;
 }
 
 /* Tamaño por defecto */
