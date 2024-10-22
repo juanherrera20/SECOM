@@ -1,9 +1,11 @@
 <script>
 import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue'
+import ButtonDefault from '@/components/ButtonDefault.vue';
 
 export default {
   components: {
-    BotonPaginaAnterior
+    BotonPaginaAnterior,
+    ButtonDefault
   }
 };
 
@@ -130,6 +132,7 @@ export default {
         <p><strong>Sobre ustedes</strong></p>
         <input type="text">
         </div>
+        <ButtonDefault size="default" color="azul" text="Enviar solicitud" icono="send" class="Enviar"></ButtonDefault>
         </div>
     </div>
     <div class="contenedorTitulo" id="separarContenedores"><p class="nombreContenedor">CAMBIAR CONTRASEÑA</p></div>
@@ -149,8 +152,12 @@ export default {
         <p><strong>Confirmar contraseña</strong></p>
         <input type="text">
         </div>
+        <ButtonDefault size="default" color="azul" text="Cambiar contraseña" class="Enviar"></ButtonDefault>
         </div>
     </div>
+    <div class="contenedorActualizar">
+    <ButtonDefault size="default" color="azul" text="Actualizar" icono="archive" class="Enviar"></ButtonDefault>
+</div>
 </template>
 
 <style scoped>
@@ -211,8 +218,6 @@ a:hover, .editarFoto:hover {
     justify-items: left;
     margin-top: 3px;
 }
-
-/*-------------------*/
 
 .Inputs {
     display: flex;
@@ -291,6 +296,22 @@ input {
 
 #botonconfirmarUbicacion:hover {
     background-color: rgb(0, 146, 146);
+}
+
+.Enviar {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0px;
+    width: 200px;
+    margin-left: 40px;
+    margin-top: 10px;
+    border-radius: 2px;
+}
+
+.contenedorActualizar {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px;
 }
 
 </style>

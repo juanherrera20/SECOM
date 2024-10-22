@@ -5,6 +5,7 @@ import HomeComponent from '@/views/HomeComponent.vue'
 import VistaCategorias from '@/views/VistaCategorias.vue'
 import EditPerfil from '@/views/EditPerfil.vue'
 import CrearEventoView from '@/views/CrearEventoView.vue'
+import VerPerfilView from '@/views/VerPerfilView.vue'
 
 
 
@@ -45,6 +46,12 @@ const router = createRouter({
       path: '/CrearEvento',
       name: 'crearevento',
       component: CrearEventoView,
+    },
+
+    {
+      path: '/VerPerfil',
+      name: 'verperfil',
+      component: VerPerfilView,
     },
     
     // {
