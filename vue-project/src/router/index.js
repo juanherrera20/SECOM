@@ -2,6 +2,15 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginComponent from '../views/LoginComponent.vue'
 import RegisterComponent from '@/views/RegisterComponent.vue'
 import HomeComponent from '@/views/HomeComponent.vue'
+import VistaCategorias from '@/views/VistaCategorias.vue'
+import GratuitosView from '@/views/GratuitosView.vue'
+import EditPerfil from '@/views/EditPerfil.vue'
+import CrearEventoView from '@/views/CrearEventoView.vue'
+import VerPerfilView from '@/views/VerPerfilView.vue'
+import TerminosYCondicionesView from '@/views/TerminosYCondicionesView.vue'
+import QuienesSomosView from '@/views/QuienesSomosView.vue'
+import AvisoDeActividadView from '@/views/AvisoDeActividadView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +33,60 @@ const router = createRouter({
       component: RegisterComponent,
     },
     
+    {
+      path: '/CategoriasTecnologia',
+      name: 'categoriasTecnologia',
+      component: VistaCategorias,
+    },
+
+    {
+      path: '/Gratuitos',
+      name: 'categorias',
+      component: GratuitosView,
+    },
+
+    {
+      path: '/Gratuitos',
+      name: 'gratuitos',
+      component: GratuitosView,
+    },
+
+    {
+      path: '/EditPerfil',
+      name: 'editperfil',
+      component: EditPerfil,
+    },
+
+    {
+      path: '/CrearEvento',
+      name: 'crearevento',
+      component: CrearEventoView,
+    },
+
+    {
+      path: '/VerPerfil',
+      name: 'verperfil',
+      component: VerPerfilView,
+    },
+
+    {
+      path: '/TerminosYCondiciones',
+      name: 'terminosycondiciones',
+      component: TerminosYCondicionesView,
+    },
+
+    {
+      path: '/QuienesSomosView',
+      name: 'quienessomosview',
+      component: QuienesSomosView,
+    },
+
+    {
+      path: '/AvisoDeActividadView',
+      name: 'avisodeactividadview',
+      component: AvisoDeActividadView,
+    },
+    
     // {
     //   path: '/about',
     //   name: 'about',
@@ -36,3 +99,5 @@ const router = createRouter({
 })
 
 export default router
+
+

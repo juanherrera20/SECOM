@@ -1,23 +1,22 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear evento</title>
-    <link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+<script>
+import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue'
+import FooterComponent from '@/components/FooterComponent.vue';
 
-    <script src="Js/crearEvento.js"></script>
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/crearEvento.css">
-    <link rel="stylesheet" href="css/footer.css">
-</head>
-<body>
-    <header id="navbar"></header>
-    <div class="botonYTitulo">
-    <a href="#"><span id="back" class="material-symbols-outlined">
-        arrow_circle_left
-        </span></a>
+export default {
+  components: {
+    BotonPaginaAnterior,
+    FooterComponent
+  }
+};
+
+</script>
+
+<template>
+
+<div class="botonYTitulo">
+
+    <BotonPaginaAnterior />
+
     <h1>Crea tu evento</h1>
     </div>
     <div class="infoEvento">
@@ -125,6 +124,162 @@
 <div class="boton">
 <button class="publicarProducto"><strong>Publicar</strong></button>
 </div>
-<footer id="footer"></footer>
-</body>
-</html>
+<FooterComponent />
+
+</template>
+
+<style scoped>
+
+  .botonYTitulo {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+  }
+
+   h1 {
+    display: flex;
+    font-size: 70px;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
+
+  #subtitulo, .inputsInfo {
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+
+  .infoEventoEInputs {
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    background-color: #0F4F42;
+    color: white;
+    padding: 7px 0px;
+  }
+
+  .infoEvento {
+    margin: 0px 150px;
+    display: block;
+  }
+
+  .contenedorInputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 0px;
+    border-style: solid;
+    border-color: #dadada;
+    border-width: 1px;
+    background-color: #FAFAFA;
+  }
+
+  .inputsInfo {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .spanYCampoRequer, .campoRequerido {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .campoRequerido {
+    color: #B81C2C;
+  }
+
+  #iconoSubirFotos {
+    color: #898384;
+    font-size: 60px;
+  }
+
+  #iconoSubirFotos:hover {
+    color: #5a5a5a;
+  }
+
+  .subirFotos {
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+    display: flex;
+    justify-content: center;
+    padding: 30px 120px;
+  }
+
+  .subirFotos2 {
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+    justify-content: center;
+    padding: 0px 10px;
+  }
+  #iconoSubirFotos2 {
+    color: #898384;
+    font-size: 50px;
+  }
+
+  #iconoSubirFotos2:hover {
+    color: #5a5a5a;
+  }
+
+  .contenedorDeSubirFotos2 {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding-top: 5px;
+  }
+
+  .contenedorDeSubirFotos {
+    display: block;
+    justify-content: center;
+  }
+
+  .publicarProducto {
+    background-color: #2B6682;
+    width: 129px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Aldrich', sans-serif;
+  }
+
+  .boton {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px;
+  }
+
+  .publicarProducto:hover {
+    background-color: #3c92b9;
+  }
+
+  .tituloDeInput {
+    margin-bottom: 2px;
+  }
+
+  .inputInfoEvento {
+    padding-right: 180px;
+    padding-top: 3px;
+    display: flex;
+    justify-content: left;
+  }
+
+  .inputInfoEvento:hover {
+    border: 2px solid black;
+    outline: none;
+  }
+
+  #categoriasAceptadas {
+    padding: 2px 0px;
+    padding-right: 160px;
+  }
+
+  .campo {
+    margin: 0px 20px;
+  }
+
+</style>
