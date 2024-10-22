@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import ProductTarget from '@/components/ProductTarget.vue';
+import { RouterLink } from 'vue-router';
 
 let products = ref ([
     {id:1, img: "src/assets/Images/televisor.webp", descuento: false, precio: 730000, descrip: 'Televisor Smart 75 Neo Qled 4k Qn85d', tags: 'TVs'},
@@ -18,7 +19,7 @@ let products = ref ([
         <p>Participa en eventos de donación en tu zona y apoya a los que lo necesitan</p>
         <button class="boton eventos-left"><span class="material-symbols-outlined">arrow_right</span></button>
         
-        <Router-link to='/CrearEvento' class="destructive">Ver mas...</Router-link>
+        <RouterLink to="/CrearEvento" class="destructive"><button class="destructive">Ver mas...</button></RouterLink>
         
     </div>
     <div class="tendencias">

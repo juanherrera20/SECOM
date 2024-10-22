@@ -1,6 +1,6 @@
 <!--Dejo esto como esta para que vea como es la estructura por defecto del App.Vue cuando se instala router-->
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView } from 'vue-router';
 import NavbarComponent from './components/NavbarComponent.vue';
 import BotonPaginaAnterior from './components/BotonPaginaAnterior.vue'
 import TerminosYCondicionesView from '../src/views/TerminosYCondicionesView.vue'
