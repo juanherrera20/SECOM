@@ -4,7 +4,7 @@
 <template>
     <ul class="menu_categ">
                     <li><a class="lista_categ" href="transporte">Transporte</a></li>
-                    <li><a class="lista_categ" href="tecnologia">Tecnología</a></li>
+                    <li><RouterLink to="/CategoriasTecnologia"><a class="lista_categ">Tecnología</a></RouterLink></li>
                     <li><a class="lista_categ" href="hogar-y-muebles">Hogar y muebles</a></li>
                     <li><a class="lista_categ" href="electrodomesticos">Electrodomésticos</a></li>
                     <li><a class="lista_categ" href="ropa">Ropa</a></li>

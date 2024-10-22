@@ -3,19 +3,18 @@
 
 <template>
   <ul class="menu_categ">
-    <li class="li"><a href="#" class="link">Seguimiento <span class="material-symbols-outlined">
-        sticky_note_2
-        </span></a></li>
-        <li class="li"><router-link to="/EditPerfil" class="link">Configuración <span class="material-symbols-outlined">
-        manufacturing
-        </span></router-link></li>
-        <li class="li"><a href="#" class="link">Perfil <span class="material-symbols-outlined">
-        account_circle
-        </span></a></li>
-        <li class="li"><a href="#" class="link">Salir <span class="material-symbols-outlined">
-        logout
-        </span></a></li>
-                </ul>
+    <li class="li"><a href="#" class="link">Seguimiento <span class="material-symbols-outlined">sticky_note_2</span></a></li>
+    <li class="li"><router-link to="/EditPerfil" class="link">Configuración <span class="material-symbols-outlined">manufacturing</span></router-link></li>
+    <li class="li">
+      <RouterLink to="/Profile">
+      <a class="link">Perfil <span class="material-symbols-outlined">account_circle</span></a>
+      </RouterLink>
+    </li>
+    <li class="li">
+      <RouterLink to="/Login"><a href="#" class="link">Salir <span class="material-symbols-outlined">logout</span></a>
+      </RouterLink>
+    </li>
+  </ul>
 
 
   <!--

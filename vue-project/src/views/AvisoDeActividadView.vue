@@ -1,4 +1,5 @@
-<script>
+<script setup>
+    import FooterComponent from '@/components/FooterComponent.vue';
 </script>
 
 <template>
@@ -17,6 +18,7 @@
         <p><strong>Propiedad Intelectual</strong></p>
         <p>Todo el contenido y software de SECOM, incluidos textos, gráficos, logotipos e imágenes, son propiedad de SECOM o de sus licenciantes y están protegidos por las leyes de propiedad intelectual. No se permite copiar, modificar o distribuir contenido sin nuestra autorización previa.</p>
 </div>
+<FooterComponent></FooterComponent>
 </template>
 
 <style scoped>

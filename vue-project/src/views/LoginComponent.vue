@@ -22,7 +22,7 @@ import { RouterLink } from 'vue-router';
               <input type="checkbox" name="recordarContra" id="rContra">
               <label for="recordarContra">Recordar contraseña</label>
             </div>
-            <button class="iniciarsesion">Continuar</button>
+            <RouterLink to="/"><button class="iniciarsesion">Continuar</button></RouterLink>
             <a class="linkRecuperarContra" href="recuperarContra">¿Has olvidado la contraseña?</a>
             <p>¿No tienes una cuenta? <RouterLink to="/Register">Register</RouterLink></p>
         </div>

@@ -1,4 +1,5 @@
-<script>
+<script setup> 
+    import FooterComponent from '@/components/FooterComponent.vue';
 </script>
 
 <template>
@@ -26,6 +27,8 @@
         <p><strong>Desarrolladores</strong></p>
         <p>SECOM ha sido creada por Juan Felipe Ramos y Juan Andrés Herrera, estudiantes de tecnología en análisis y desarrollo de software. Nuestra motivación principal es utilizar nuestras habilidades para crear una plataforma que no solo facilite el intercambio de productos usados, sino que también fomente el sentido de comunidad y la ayuda mutua.</p>
 </div>
+
+<FooterComponent></FooterComponent>
 </template>
 
 <style scoped>

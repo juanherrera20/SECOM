@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import ButtonDefault from '../components/ButtonDefault.vue';
 import ProductTarget from '@/components/ProductTarget.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
 
 let products = ref ([
     {id:100, img:"src/assets/Images/pantalon.webp", descuento: false, precio: 0, descrip: 'PANTALON STYLE TALLA 8', tags: 'Pantalones'},
@@ -129,6 +130,7 @@ let products = ref ([
     </section>
 </section>
 
+<FooterComponent></FooterComponent>
 </template>
 
 
@@ -376,7 +378,7 @@ input[type="checkbox"]:checked + label:before {
 .products {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(6, 380px); /* Filas con altura fija de 330px */
+    grid-template-rows: repeat(5, 380px); /* Filas con altura fija de 330px */
     gap: 10px;
 }
 

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import ButtonDefault from '../components/ButtonDefault.vue';
 import ProductTarget from '@/components/ProductTarget.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
 
 let products = ref ([
     // {id:100, img:"src/assets/Images/pantalon.webp", descuento: false, precio: 30000, descrip: 'PANTALON STYLE TALLA 8', tags: 'Pantalones'},
@@ -17,17 +18,17 @@ let products = ref ([
     {id:10, img:"src/assets/Tecnologia/Image-7.png", descuento: false, precio: 35600, descrip: 'JBL Tune 520BT | Auriculares inalámbricos supraaurales', tags: 'Auriculares'},
     {id:11, img:"src/assets/Tecnologia/Image-8.png", descuento: false, precio: 56000, descrip: 'Delux K9600, Teclado Gamer Rgb Programable Macros Multimedia', tags: 'Accesorios'},
     {id:12, img:"src/assets/Tecnologia/Image-9.png", descuento: false, precio: 250000, descrip: 'Tv Samsung Series 4 Un32j4000efxza Led Hd 32 110v - 120v', tags: 'TVs'},
-    {id:13, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
-    {id:14, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
-    {id:15, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
-    {id:16, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
-    {id:17, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
-    {id:18, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
-    {id:19, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
-    {id:20, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
+    {id:13, img:"src/assets/Tecnologia/Image-10.png", descuento: false, precio: 56000, descrip: 'Camara Web Webcam Cam 1080p Full Hd Microfono X Mayor Color Gris oscuro', tags: 'Accesorios'},
+    {id:14, img:"src/assets/Tecnologia/Image-11.png", descuento: false, precio: 263000, descrip: 'Lenovo V510 Intel i5 6200u RAM 8GB SSD 256GB Layar Full HD', tags: 'Portatiles'},
+    {id:15, img:"src/assets/Tecnologia/Image-12.png", descuento: false, precio: 152000, descrip: 'Celular Motorola G04 128gb 4gb Verde', tags: 'Celulares'},
+    {id:16, img:"src/assets/Tecnologia/Image-13.png", descuento: false, precio: 32300, descrip: 'Smart Watch T900 Promax L, Serie 8 2.0 Big Color De La Caja Negro', tags: 'Relojes'},
+    {id:17, img:"src/assets/Tecnologia/Image-14.png", descuento: true, precio: 618000, descrip: 'Cpu Torre Intel Core I5 2 Generacion 6gb Ram Pc Corporativo', tags: 'Computadores'},
+    {id:18, img:"src/assets/Tecnologia/Image-15.png", descuento: false, precio: 74400, descrip: 'Reloj inteligente marca Samsumg UltraPlus 2k', tags: 'Relojes'},
+    {id:19, img:"src/assets/Tecnologia/Image-16.png", descuento: false, precio: 730500, descrip: 'Amazon Basics High-Speed HDMI Cable (18 Gbps, 4K/6...', tags: 'TVs'},
+    {id:20, img:"src/assets/Tecnologia/Image-17.png", descuento: false, precio: 176000, descrip: 'Impresora Fotográfica Inalámbrica EcoTank L8050', tags: 'Accesorios'},
     {id:21, img:"src/assets/Images/playstation.webp", descuento: false, precio: 690000, descrip: 'Sony Playstation 4 - 500gb +7 Juegos Digitales+precio:630000', tags: 'Juegos'},
-    {id:22, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
-    {id:23, img:"src/assets/Tecnologia/Image-1.png", descuento: false, precio: 200500, descrip: '', tags: 'TVs'},
+    {id:22, img:"src/assets/Tecnologia/Image-18.png", descuento: false, precio: 200000, descrip: 'Samsung Electronics Samsung Galexy S21 5G', tags: 'Celulares'},
+    {id:23, img:"src/assets/Tecnologia/Image-19.png", descuento: true, precio: 600000, descrip: 'iphone XS Dorado con Acabados redondeados pantalla 16pl', tags: 'Celulares'},
     {id:24, img: "src/assets/Images/televisor.webp", descuento: true, precio: 730000, descrip: 'Televisor Smart 75 Neo Qled 4k Qn85d', tags: 'TVs'}
 ])
 </script>
@@ -144,6 +145,7 @@ let products = ref ([
     </section>
 </section>
 
+<FooterComponent></FooterComponent>
 </template>
 
 

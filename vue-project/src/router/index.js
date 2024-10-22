@@ -34,9 +34,15 @@ const router = createRouter({
     },
     
     {
-      path: '/Categorias',
-      name: 'categorias',
+      path: '/CategoriasTecnologia',
+      name: 'categoriasTecnologia',
       component: VistaCategorias,
+    },
+
+    {
+      path: '/Gratuitos',
+      name: 'categorias',
+      component: GratuitosView,
     },
 
     {

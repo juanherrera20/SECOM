@@ -1,4 +1,5 @@
-<script>
+<script setup>
+    import FooterComponent from '@/components/FooterComponent.vue';
 </script>
 
 <template>
@@ -49,6 +50,7 @@
         <p><strong>Ley Aplicable y Jurisdicción</strong></p>
         <p>Estos Términos y Condiciones se rigen por las leyes de Colombia y cualquier disputa relacionada con ellos será resuelta en los tribunales de [Ciudad o Región].</p>
 </div>
+<FooterComponent></FooterComponent>
 </template>
 
 <style scoped>
