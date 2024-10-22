@@ -3,12 +3,14 @@
 import { RouterView } from 'vue-router';
 import NavbarComponent from './components/NavbarComponent.vue';
 import BotonPaginaAnterior from './components/BotonPaginaAnterior.vue'
+import TerminosYCondicionesView from '../src/views/TerminosYCondicionesView.vue'
 
 </script>
 
 <template>
 <NavbarComponent />
 <BotonPaginaAnterior />
+<TerminosYCondicionesView />
 <!--Limpie todo lo que venia por defecto, si mira el video aparecia la información basica de Vue--> 
 <!--Aquí se van poniento las rutas para ir manejando el direccionamiento-->
 <!-- <nav> 
