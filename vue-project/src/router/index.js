@@ -3,6 +3,7 @@ import LoginComponent from '../views/LoginComponent.vue'
 import RegisterComponent from '@/views/RegisterComponent.vue'
 import HomeComponent from '@/views/HomeComponent.vue'
 import VistaCategorias from '@/views/VistaCategorias.vue'
+import GratuitosView from '@/views/GratuitosView.vue'
 import EditPerfil from '@/views/EditPerfil.vue'
 import CrearEventoView from '@/views/CrearEventoView.vue'
 import VerPerfilView from '@/views/VerPerfilView.vue'
@@ -36,6 +37,12 @@ const router = createRouter({
       path: '/Categorias',
       name: 'categorias',
       component: VistaCategorias,
+    },
+
+    {
+      path: '/Gratuitos',
+      name: 'gratuitos',
+      component: GratuitosView,
     },
 
     {

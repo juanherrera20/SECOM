@@ -44,7 +44,7 @@ export default {
                 <a class="lista_opci" href="categorias">CATEGORÍAS <span class="material-symbols-outlined">arrow_drop_down</span></a>
                 <MenuDespl />
             </li>
-            <li><a class="lista_opci" href="gratuitos">GRATUITOS</a></li>
+            <li><router-link to="/Gratuitos"><a class="lista_opci">GRATUITOS</a></router-link></li>
             <li><a class="lista_opci" href="eventos">EVENTOS</a></li>
             <li><a class="lista_opci" href="ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></a></li>
         </ul>
