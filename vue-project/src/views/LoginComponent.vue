@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router';
 
 <div class="pagina">
         <div class="container left">
-            <img class="logo" src="../Recursos/logo secom.png" alt="Logo Alternativo Secom Png">
+            <img class="logo" src="../assets/Images/logo secom.png" alt="Logo Alternativo Secom Png">
             <p>Aquí, tus objetos usados encuentran un nuevo propósito. 
             Compra, vende y dona sin complicaciones en un espacio diseñado para conectar a personas que 
             buscan darle una segunda vida a sus cosas. ¡Únete a nuestra comunidad y haz la diferencia hoy!

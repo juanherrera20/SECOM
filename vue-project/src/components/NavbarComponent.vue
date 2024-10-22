@@ -13,7 +13,6 @@ export default {
 </script>
 
 
-
 <template>
   
 <nav class="barraSuperior">
@@ -28,7 +27,7 @@ export default {
         <ul class="opciSuperiores">
             <div id="mensajYNotif">
             <li class="lista_opci mensaje1"><a href="#"><span class="material-symbols-outlined">forum</span></a></li>
-            <li class="lista_opci notificacion1"><a href="#"><span class="material-symbols-outlined">notifications</span></a></li>
+            <li class="lista_opci notificacion1"><a href="#"><span class="material-symbols-outlined" id="iconNotif">notifications</span></a></li>
         </div>
         </ul>
         <li class="menu_despl">
@@ -36,14 +35,6 @@ export default {
                   account_circle </span></a>
                 <MenuProfile />
             </li>
-        <!--
-        <li class="aaa">
-        <a href="verPerfil" class="desplegar"><span class="material-symbols-outlined" id="idPerfil">
-            account_circle </span>
-            <MenuProfile />
-        </a>
-      </li>
-      -->
     </nav>
     <nav class="barraCategorias">
         <ul class="nav_menu">
@@ -150,6 +141,7 @@ body {
   #idPerfil {
     color: white;
     font-size: 40px;
+    margin-right: 50px;
   }
   
   #idPerfil:hover, .opciSuperiores a:hover {
@@ -170,9 +162,9 @@ body {
   
   .nav_menu a {
     color: white;
-    text-decoration: none; /* Elimina la línea debajo del texto */
+    text-decoration: none;
     display: flex;
-    align-items: center; /* Centra verticalmente el texto y el icono */
+    align-items: center;
   }
   
   .barraCategorias {
@@ -192,8 +184,6 @@ body {
     color: green;
   }
   
-
-  /* Para usar el componente del menú desplegable (de las categorías) se debe cambiar la clase según donde se quiera poner (la que tiene el :hover) */
   .menu_despl:hover .menu_categ {
     display: block;
   }
@@ -205,6 +195,14 @@ body {
 
   .menu_despl {
     list-style-type: none;
+  }
+
+  #mensajYNotif {
+    margin-left: 15px;
+  }
+
+  #iconNotif {
+    margin-left: 35px;
   }
 
 </style>

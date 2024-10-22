@@ -1,11 +1,14 @@
 <script>
 import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue'
 import ButtonDefault from '@/components/ButtonDefault.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
+
 
 export default {
   components: {
     BotonPaginaAnterior,
-    ButtonDefault
+    ButtonDefault,
+    FooterComponent
   }
 };
 
@@ -158,6 +161,7 @@ export default {
     <div class="contenedorActualizar">
     <ButtonDefault size="default" color="azul" text="Actualizar" icono="archive" class="Enviar"></ButtonDefault>
 </div>
+<FooterComponent />
 </template>
 
 <style scoped>

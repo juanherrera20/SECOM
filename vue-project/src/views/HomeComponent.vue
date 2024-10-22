@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import ProductTarget from '@/components/ProductTarget.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
 import { RouterLink } from 'vue-router';
 
 let products = ref ([
@@ -9,10 +10,12 @@ let products = ref ([
     {id:3, img:"src/assets/Images/playstation.webp", descuento: false, precio: 690000, descrip: 'Sony Playstation 4 - 500gb +7 Juegos Digitales+precio:630000', tags: 'Juegos'},
     {id:4, img:"src/assets/Images/pantalon.webp", descuento: false, precio: 30000, descrip: 'PANTALON STYLE TALLA 8', tags: 'Pantalones'}
 ])  
+
 </script>
 
 
 <template>
+    <div id="contenedorMayor">
 <div class="pagina">
     <div class="eventos">
         <button class="boton eventos-right"><span class="material-symbols-outlined">arrow_left</span></button>
@@ -41,8 +44,12 @@ let products = ref ([
         <button class="destructive">Empezar a Vender..</button>
     </div>
     <div class="unete">
-        <button class="destructive">Registrate</button>
+        <router-link to="/Login" id="linkBotonRegister"><button class="destructive">Registrate</button></router-link>
     </div>
+</div>
+<div class="contenedorFooter">
+    <FooterComponent />
+</div>
 </div>
 </template>
 
@@ -209,6 +216,10 @@ let products = ref ([
 
 .unete button {
     align-self: flex-end;
+}
+
+#linkBotonRegister {
+    display: flex;
 }
 
 </style>

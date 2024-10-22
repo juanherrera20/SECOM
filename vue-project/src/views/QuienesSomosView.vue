@@ -5,7 +5,7 @@
 <div class="imgDeFondo">
     <div class="logoYTitulo">
         <div class="contenedorLogo">
-    <img src="../Recursos/logo secom.png" alt="Logo secom" class="logoSECOM">
+    <img src="../assets/Images/logo secom.png" alt="Logo secom" class="logoSECOM">
         </div>
     <h1>¿Quiénes somos?</h1>
     </div>
@@ -31,7 +31,7 @@
 <style scoped>
 
 .imgDeFondo {
-    background-image: url('../Recursos/Reciclaje-03\ 1.png');
+    background-image: url('../assets/Images/Reciclaje-031.png');
     background-size: cover;
     background-position: center;
     height: 310px;

@@ -54,7 +54,7 @@
 <style scoped>
 
 .imgDeFondo {
-    background-image: url('../Recursos/Reciclaje-03\ 1.png');
+    background-image: url('../assets/Images/Reciclaje-031.png');
     background-size: cover;
     background-position: center;
     height: 310px;

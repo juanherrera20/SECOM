@@ -1,9 +1,11 @@
 <script>
 import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue'
+import FooterComponent from '@/components/FooterComponent.vue';
 
 export default {
   components: {
-    BotonPaginaAnterior
+    BotonPaginaAnterior,
+    FooterComponent
   }
 };
 
@@ -122,6 +124,7 @@ export default {
 <div class="boton">
 <button class="publicarProducto"><strong>Publicar</strong></button>
 </div>
+<FooterComponent />
 
 </template>
 

@@ -50,7 +50,7 @@
     display: none;
     position: absolute;
     background-color: #15323f;
-    padding: 3px;
+    padding: 0px 10px;
   }
   
   .menu_categ li {
@@ -64,11 +64,13 @@
 
   .li {
     list-style: none;
+    margin: 15px 0px;
   }
 
   .li:hover a {
     color: green;
   }
+  
 
 /*
 .menuProfile {
