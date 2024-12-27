@@ -1,0 +1,22 @@
+# General
+*.pyc
+__pycache__/
+*.log
+.env
+
+# Django
+
+
+# Entorno virtual
+Backend/env/
+
+# Node.js
+Frontend/node_modules/
+Frontend/dist/
+
+
+# IDEs y editores
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
