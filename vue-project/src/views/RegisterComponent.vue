@@ -37,8 +37,9 @@ import { RouterLink } from 'vue-router';
 <style scoped>
 
 .pagina {
+    margin: 50px 0px;
     width: 100%;
-    height: 85%;
+    height: 80%;
     display: flex;
     flex-direction: row;
     justify-content: center;

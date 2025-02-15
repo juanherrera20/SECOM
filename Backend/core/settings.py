@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "secom",
+        "NAME": "secom_db",
         "USER": "root",  #Quizas haya que cambiar
-        "PASSWORD": "1004528186",  #Cambiar 
+        "PASSWORD": "juan25sql",  #Cambiar 
         "HOST": "localhost",
-        "PORT": "3307",  #3306
+        "PORT": "3306",  #3306 o 3307
     }
 }
 

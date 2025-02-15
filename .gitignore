@@ -9,6 +9,7 @@ __pycache__/
 
 # Entorno virtual
 Backend/env/
+Backend/EntornoV
 
 # Node.js
 Frontend/node_modules/
