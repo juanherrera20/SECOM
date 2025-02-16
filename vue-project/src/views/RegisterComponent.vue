@@ -1,7 +1,45 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import axios from 'axios';
+import { reactive, ref } from "vue";
 
+const usuario = reactive({
+    username: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: ''
+});
 
+const mensajeExito = ref("");
+const mensajeError = ref("");
+
+async function crearUsuario() {
+    mensajeExito.value = "";
+    mensajeError.value = "";
+
+    try {
+        const response = await axios.post("http://127.0.0.1:8000/api/usuarios/", usuario);
+        if (response.status === 201) {
+            mensajeExito.value = "Usuario creado exitosamente.";
+            console.log("Usuario creado con éxito.");
+
+            Object.assign(usuario, {
+                username: "",
+                first_name: "",
+                last_name: "",
+                email: "",
+                password: "",
+            });
+        }
+    } catch (error) {
+        if (error.response) {
+            mensajeError.value = error.response.data.detail || "Error al crear usuario.";
+        } else {
+            mensajeError.value = "No se pudo conectar al servidor.";
+        }
+        console.error("Error al crear usuario:", error);
+    }
+}
 </script>
 
 
@@ -16,20 +54,21 @@ import { RouterLink } from 'vue-router';
     </div>
 
     <div class="container right">
-        <H1>REGISTRATE</H1>
-        <input type="text" placeholder="Nombres" class="campos">
-        <input type="text" placeholder="Apellidos" class="campos">
-        <input type="email" placeholder="Email" class="campos">
-        <input type="password" placeholder="Contraseña" class="campos">
-        <RouterLink to="/"><button class="registro">Continuar</button></RouterLink>
+        <form @submit.prevent="crearUsuario" class="container">
+        <h1>REGISTRATE</h1>
+        <input v-model="usuario.username" type="text" required placeholder="Elije un nombre único" class="campos">
+        <input v-model="usuario.first_name" type="text" placeholder="Nombres" class="campos">
+        <input v-model="usuario.last_name" type="text" placeholder="Apellidos" class="campos">
+        <input v-model="usuario.email" type="email" placeholder="Email" class="campos">
+        <input v-model="usuario.password" type="password" placeholder="Contraseña" class="campos">
+        <button class="registro">Continuar</button>
 
         <div>
             <p>Ó Registrate con:</p>
             <button class="google"><img class="google" src="../assets/Images/google.png">Google</button>
         </div>
-
+    </form>
     </div>
-
 </div>
 </template>
 
