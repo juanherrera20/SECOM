@@ -1,18 +1,13 @@
-<script>
+<script setup>
 import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue'
+import ButtonDefault from '@/components/ButtonDefault.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
-
-export default {
-  components: {
-    BotonPaginaAnterior,
-    FooterComponent
-  }
-};
+import AddImgsComponent from '@/components/AddImgsComponent.vue'
 
 </script>
 
 <template>
-
+<div>
 <div class="botonYTitulo">
 
     <BotonPaginaAnterior />
@@ -27,7 +22,7 @@ export default {
     <div class="inputsInfo">
         <div class="campo">
         <p class="tituloDeInput"><strong>Nombre del evento</strong></p>
-        <input class="inputInfoEvento" type="text" placeholder="Ejemplo: Ayuda para María">
+        <input class="inputInfoEvento" type="text" required placeholder="Ejemplo: Ayuda para María">
         <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
         </div>
         <div class="campo">
@@ -38,12 +33,12 @@ export default {
     <div class="inputsInfo">
         <div class="campo">
         <p class="tituloDeInput"><strong>Causa por la que se crea el evento</strong></p>
-        <input class="inputInfoEvento" type="text" placeholder="Ejemplo: Incendio de vivienda">
+        <input class="inputInfoEvento" type="text" required placeholder="Ejemplo: Incendio de vivienda">
         <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
         </div>
         <div class="campo">
         <p class="tituloDeInput"><strong>Ubicación del evento (País, Ciudad, Barrio)</strong></p>
-        <input class="inputInfoEvento" type="text" placeholder="Ejemplo: Colombia, Cali...">
+        <input class="inputInfoEvento" type="text" required placeholder="Ejemplo: Colombia, Cali...">
         <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
         </div>
     </div>
@@ -51,81 +46,43 @@ export default {
         <div class="campo">
         <form action="">
             <p class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></p>
-        <select name="categoriasAceptadas" id="categoriasAceptadas" >
-            <option value="opciion1">Dinero</option>
-            <option value="opciion2">Ropa y calzado</option>
-            <option value="opciion3">Alimentos</option>
-            <option value="opciion4">Artículos de higiene personal</option>
-            <option value="opciion5">Agua y bebidas</option>
-            <option value="opciion6">Todas</option>
+        <select name="categoriasAceptadas" id="categoriasAceptadas">
+            <option value="opciion1">Todas</option>
+            <option value="opciion2">Dinero</option>
+            <option value="opciion3">Ropa y calzado</option>
+            <option value="opciion4">Alimentos</option>
+            <option value="opciion5">Artículos de higiene personal</option>
+            <option value="opciion6">Agua y bebidas</option>
         </select>
-        <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
         </form>
         </div>
         <div class="campo">
         <p class="tituloDeInput"><strong>Fecha de lo ocurrido</strong></p>
-        <input class="inputInfoEvento" type="text" placeholder="Día/Mes/Año">
+        <input class="inputInfoEvento" id="date" type="date">
         </div>
     </div>
     <div class="inputsInfo">
         <div class="campo">
         <p class="tituloDeInput"><strong>Contacto del organizador</strong></p>
-        <input class="inputInfoEvento" type="text" placeholder="Número de teléfono o correo electrónico">
+        <input class="inputInfoEvento" type="email" required placeholder="Correo electrónico">
         <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
         </div>
     </div>
     <div class="inputsInfo">
-        <div class="campo">
+      <div class="addIMGS">
+        <div>
         <p class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></p>
-        <div class="contenedorDeSubirFotos">
-        <div class="subirFotos">
-            <a href="#">
-            <span id="iconoSubirFotos" class="material-symbols-outlined">
-            photo_library
-            </span>
-            </a>
-        </div>
-        <div class="contenedorDeSubirFotos2">
-        <div class="subirFotos2">
-            <a href="#">
-            <span id="iconoSubirFotos2" class="material-symbols-outlined">
-            photo_library
-            </span>
-            </a>
-        </div>
-        <div class="subirFotos2">
-            <a href="#">
-            <span id="iconoSubirFotos2" class="material-symbols-outlined">
-            photo_library
-            </span>
-            </a>
-        </div>
-        <div class="subirFotos2">
-            <a href="#">
-            <span id="iconoSubirFotos2" class="material-symbols-outlined">
-            photo_library
-            </span>
-            </a>
-        </div>
-        <div class="subirFotos2">
-            <a href="#">
-            <span id="iconoSubirFotos2" class="material-symbols-outlined">
-            photo_library
-            </span>
-            </a>
-        </div>
-        </div>
-        </div>
-        <p class="spanYCampoRequer"><span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">circle</span><strong>Campo requerido</strong></p>
-        </div>
+      </div>
+      <AddImgsComponent />
+      </div>
     </div>
 </div>
 </div>
 <div class="boton">
-<button class="publicarProducto"><strong>Publicar</strong></button>
+  <ButtonDefault size="default" color="azul" text="Publicar" icono="archive" class="Publicar" />
 </div>
 <FooterComponent />
-
+</div>
 </template>
 
 <style scoped>
@@ -159,8 +116,9 @@ export default {
   }
 
   .infoEvento {
-    margin: 0px 150px;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    margin: 0px 200px;
   }
 
   .contenedorInputs {
@@ -183,6 +141,12 @@ export default {
     margin-bottom: 20px;
   }
 
+  #date{
+    text-transform: uppercase;
+    padding-right: 235px;
+    padding-block: 1px;
+  }
+
   .spanYCampoRequer, .campoRequerido {
     font-size: 12px;
     margin-top: 2px;
@@ -192,78 +156,16 @@ export default {
     color: #B81C2C;
   }
 
-  #iconoSubirFotos {
-    color: #898384;
-    font-size: 60px;
-  }
-
-  #iconoSubirFotos:hover {
-    color: #5a5a5a;
-  }
-
-  .subirFotos {
-    border-style: solid;
-    border-width: 1px;
-    border-color: gray;
-    display: flex;
-    justify-content: center;
-    padding: 30px 120px;
-  }
-
-  .subirFotos2 {
-    border-style: solid;
-    border-width: 1px;
-    border-color: gray;
-    justify-content: center;
-    padding: 0px 10px;
-  }
-  #iconoSubirFotos2 {
-    color: #898384;
-    font-size: 50px;
-  }
-
-  #iconoSubirFotos2:hover {
-    color: #5a5a5a;
-  }
-
-  .contenedorDeSubirFotos2 {
-    display: flex;
-    justify-content: space-between;
-    margin: 0;
-    padding-top: 5px;
-  }
-
-  .contenedorDeSubirFotos {
-    display: block;
-    justify-content: center;
-  }
-
-  .publicarProducto {
-    background-color: #2B6682;
-    width: 129px;
-    height: 30px;
-    border-radius: 5px;
-    border: none;
-    font-family: 'Aldrich', sans-serif;
-  }
-
   .boton {
     display: flex;
     justify-content: center;
     margin: 20px 0px;
   }
 
-  .publicarProducto:hover {
-    background-color: #3c92b9;
-  }
-
-  .tituloDeInput {
-    margin-bottom: 2px;
-  }
-
   .inputInfoEvento {
     padding-right: 180px;
     padding-top: 3px;
+    padding-block: 3px;
     display: flex;
     justify-content: left;
   }
@@ -273,6 +175,11 @@ export default {
     outline: none;
   }
 
+  #categoriasAceptadas:hover {
+    border: 1.9px solid black;
+    outline: none; 
+  }
+
   #categoriasAceptadas {
     padding: 2px 0px;
     padding-right: 160px;
@@ -280,6 +187,10 @@ export default {
 
   .campo {
     margin: 0px 20px;
+  }
+
+  .addIMGS {
+    flex-direction: column;
   }
 
 </style>

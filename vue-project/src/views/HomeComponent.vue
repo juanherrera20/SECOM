@@ -41,7 +41,9 @@ let products = ref ([
         <button class="boton novedades-right"><span class="material-symbols-outlined">arrow_right</span></button>
     </div>
     <div class="vender">
-        <button class="destructive">Empezar a Vender..</button>
+        <router-link to="/VenderComponent">
+            <button class="destructive" id="btnVender">Empezar a Vender..</button>
+        </router-link>
     </div>
     <div class="unete">
         <router-link to="/Login" id="linkBotonRegister"><button class="destructive">Registrate</button></router-link>
@@ -116,7 +118,10 @@ let products = ref ([
     border-radius: 10px;
     padding: 0;
     border: 0;
+}
 
+#btnVender {
+    margin-top: 200%;
 }
 
 .destructive:hover {

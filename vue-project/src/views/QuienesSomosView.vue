@@ -1,8 +1,13 @@
 <script setup> 
-    import FooterComponent from '@/components/FooterComponent.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
+import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
+
 </script>
 
 <template>
+    <div>
+        <BotonPaginaAnterior />
+    
 <div class="imgDeFondo">
     <div class="logoYTitulo">
         <div class="contenedorLogo">
@@ -28,7 +33,8 @@
         <p>SECOM ha sido creada por Juan Felipe Ramos y Juan Andrés Herrera, estudiantes de tecnología en análisis y desarrollo de software. Nuestra motivación principal es utilizar nuestras habilidades para crear una plataforma que no solo facilite el intercambio de productos usados, sino que también fomente el sentido de comunidad y la ayuda mutua.</p>
 </div>
 
-<FooterComponent></FooterComponent>
+<FooterComponent />
+</div>
 </template>
 
 <style scoped>

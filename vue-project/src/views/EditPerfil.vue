@@ -1,168 +1,175 @@
-<script>
-import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue'
+<script setup>
+import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
 import ButtonDefault from '@/components/ButtonDefault.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
+/*
+import axios from 'axios';
+import { reactive, onMounted } from "vue";
 
+const usuario = reactive({
+    id: '',
+    username: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+});
 
-export default {
-  components: {
-    BotonPaginaAnterior,
-    ButtonDefault,
-    FooterComponent
+const usuarioID = route.params.id;
+
+const obtenerUsuario = async () => {
+    console.log("Usuario ID:", usuarioID);
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/api/usuarios/${usuarioID}`);
+    Object.assign(usuario, response.data);
+  } catch (error) {
+    console.error('Error obteniendo datos:', error);
   }
 };
 
+onMounted(obtenerUsuario);
+*/
 </script>
 
 <template>
-
-    <BotonPaginaAnterior />
-
-    <div class="contenedorTitulo"><p class="nombreContenedor">INFORMACIÓN BÁSICA</p></div>
-    <div class="fondo">
-        <div class="containerInfoBasica">
-<div class="container">
-    <div class="fotoYLinkEditar">
-    <div class="fotoPerfil">
-        <span class="material-symbols-outlined" id="fotoPerfil">
-        account_circle
-        </span>
+    <div>
+  <BotonPaginaAnterior />
+  
+  <div class="contenedorTitulo"><p class="nombreContenedor">INFORMACIÓN BÁSICA</p></div>
+  <div class="fondo">
+    <div class="containerInfoBasica">
+      <div class="container">
+        <div class="fotoYLinkEditar">
+          <div class="fotoPerfil">
+            <span class="material-symbols-outlined" id="fotoPerfil">account_circle</span>
+          </div>
+          <div class="editarFoto">
+            <a href="#">Editar foto</a> 
+            <span class="material-symbols-outlined" id="lapiz">edit</span>
+          </div>
+        </div>
+        <div class="inputsInfo">
+          <div class="Inputs">
+            <div class="inputInterior">
+              <p><strong>Nombre/s</strong></p>
+              <input type="text" placeholder="Escriba su nombre aquí" />
+              <div class="mensajeRequerido">
+                <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                <p class="requerido"><strong>Campo requerido</strong></p>
+              </div>
+            </div>
+            <div class="inputInterior">
+              <p><strong>Apellido/s</strong></p>
+              <input type="text" placeholder="Sus apellidos aquí" />
+            </div>
+          </div>
+          <div class="Inputs">
+            <div class="inputInterior">
+              <p><strong>Correo electrónico</strong></p>
+              <input type="email" placeholder="Su correo electrónico aquí" />
+              <div class="mensajeRequerido">
+                <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                <p class="requerido"><strong>Campo requerido</strong></p>
+              </div>
+            </div>
+            <div class="inputInterior">
+              <p><strong>Teléfono</strong></p>
+              <input type="text" placeholder="Su teléfono aquí" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="editarFoto">
-        <a href="#">Editar foto</a> <span class="material-symbols-outlined" id="lapiz">
-        edit
-        </span>
+  </div>
+  
+  <div class="contenedorTitulo" id="separarContenedores"><p class="nombreContenedor">DIRECCIÓN DEL USUARIO</p></div>
+  <div class="fondoUbicacion">
+    <div class="mensajeDeAyuda">
+      <div>
+        <span class="material-symbols-outlined" id="help">help</span>
+      </div>
+      <div>
+        <p>Dirección del perfil para facilitar el comercio e intercambio.</p>
+      </div>
     </div>
-    </div>
-    <div class="inputsInfo">
-        <div class="Inputs">
-        <div class="inputInterior">
-        <p><strong>Nombres/s</strong></p>
-        <input type="text" placeholder="Escriba su nombre aquí">
-        <div class="mensajeRequerido">
-        <span class="material-symbols-outlined puntoRojo">
-        radio_button_unchecked
-        </span> <p class="requerido"><strong>Campo requerido</strong></p>
-        </div>
-        </div>
-        <div class="inputInterior">
-        <p><strong>Apellidos/s</strong></p>
-        <input type="text" placeholder="Sus apellidos aquí">
-        </div>
-        </div>
-        <div class="Inputs">
-        <div class="inputInterior">
-        <p><strong>Correo electrónico</strong></p>
-        <input type="text" placeholder="Su correo electrónico aquí">
-        <div class="mensajeRequerido">
-        <span class="material-symbols-outlined puntoRojo">
-        radio_button_unchecked
-        </span> <p class="requerido"><strong>Campo requerido</strong></p>
-        </div>
-        </div>
-        <div class="inputInterior">
-        <p><strong>Cédula</strong></p>
-        <input type="text" placeholder="Su número de cédula aquí">
-        <div class="mensajeRequerido">
-        <span class="material-symbols-outlined puntoRojo">
-        radio_button_unchecked
-        </span> <p class="requerido"><strong>Campo requerido</strong></p>
-        </div>
-        </div>
-        </div>
-        <div class="Inputs" id="ultimoInput">
-        <div>
-        <p><strong>Teléfono</strong></p>
-        <input type="text" placeholder="Su teléfono aquí">
-        </div>
-        </div>
-    </div>
-</div>
-</div>
-    </div>
-    <div class="contenedorTitulo" id="separarContenedores"><p class="nombreContenedor">DIRECCIÓN DEL PRODUCTO</p></div>
-    <div class="fondoUbicacion">
-        <div class="mensajeDeAyuda">
-        <span class="material-symbols-outlined" id="help">
-        help
-        </span> 
-        <p>Dirección del perfil, de esta manera se filtrarán los productos en relación a tu ubicación, facilitando el comercio e intercambio. De igual manera tu ubicación es usada al momento de publicar productos.</p>
-        </div>
-        <div class="Inputs">
-        <div class="inputInterior">
+    <div class="Inputs">
+      <div class="inputInterior">
         <p><strong>País</strong></p>
-        <input type="text" placeholder="País de ubicación">
-        </div>
-        <div class="inputInterior">
+        <input type="text" placeholder="País de ubicación" />
+      </div>
+      <div class="inputInterior">
         <p><strong>Ciudad</strong></p>
-        <input type="text" placeholder="Ciudad de ubicación">
-        </div>
-        </div>
-        <div class="confirmarUbicacion">
-            <button id="botonconfirmarUbicacion">Confirmar ubicación</button>
-        </div>
+        <input type="text" placeholder="Ciudad de ubicación" />
+      </div>
     </div>
-    <div class="contenedorTitulo" id="separarContenedores"><p class="nombreContenedor">INFORMACIÓN EXTRA</p></div>
-    <div class="fondoInfoExtra">
-        <div class="mensajeDeAyuda">
-        <span class="material-symbols-outlined" id="help">
-        help
-        </span> 
-        <p>Regístrate como una empresa para tener algunas funcionalidades especiales como publicar eventos. Llena tus datos y envía tu solicitud, nuestro equipo la revisará y te dará una respuesta.</p>
-        </div>
-        <div class="Inputs">
-        <div class="inputInterior">
+    <div class="confirmarUbicacion">
+      <button id="botonconfirmarUbicacion">Confirmar ubicación</button>
+    </div>
+  </div>
+  
+  <div class="contenedorTitulo" id="separarContenedores"><p class="nombreContenedor">INFORMACIÓN EXTRA</p></div>
+  <div class="fondoInfoExtra">
+    <div class="mensajeDeAyuda">
+      <div>
+        <span class="material-symbols-outlined" id="help">help</span>
+      </div>
+      <div>
+        <p>Dirección del perfil para facilitar el comercio e intercambio.</p>
+      </div>
+    </div>
+    <div class="Inputs">
+      <div class="inputInterior">
         <p><strong>Nombre de la empresa</strong></p>
-        <input type="text">
-        </div>
-        <div class="inputInterior">
+        <input type="text" />
+      </div>
+      <div class="inputInterior">
         <p><strong>NIT</strong></p>
-        <input type="text">
-        </div>
-        </div>
-        <div class="Inputs">
-        <div class="inputInterior">
+        <input type="text" />
+      </div>
+    </div>
+    <div class="Inputs">
+      <div class="inputInterior">
         <p><strong>Razón social</strong></p>
-        <input type="text">
-        </div>
-        <div class="inputInterior">
+        <input type="text" />
+      </div>
+      <div class="inputInterior">
         <p><strong>Correo electrónico</strong></p>
-        <input type="text">
-        </div>
-        </div>
-        <div class="Inputs">
-        <div class="inputInterior">
-        <p><strong>Sobre ustedes</strong></p>
-        <input type="text">
-        </div>
-        <ButtonDefault size="default" color="azul" text="Enviar solicitud" icono="send" class="Enviar"></ButtonDefault>
-        </div>
+        <input type="text" />
+      </div>
     </div>
-    <div class="contenedorTitulo" id="separarContenedores"><p class="nombreContenedor">CAMBIAR CONTRASEÑA</p></div>
-    <div class="fondoCambiarContra">
-        <div class="Inputs">
-        <div class="inputInterior">
+    <div class="btndefault">
+    <ButtonDefault size="default" color="azul" text="Enviar solicitud" icono="send" class="Enviar" />
+  </div>
+  </div>
+  
+  <div class="contenedorTitulo" id="separarContenedores"><p class="nombreContenedor">CAMBIAR CONTRASEÑA</p></div>
+  <div class="fondoCambiarContra">
+    <div class="Inputs">
+      <div class="inputInterior">
         <p><strong>Contraseña actual</strong></p>
-        <input type="text">
-        </div>
-        <div class="inputInterior">
+        <input type="password" />
+      </div>
+      <div class="inputInterior">
         <p><strong>Nueva contraseña</strong></p>
-        <input type="text">
-        </div>
-        </div>
-        <div class="Inputs">
-        <div class="inputInterior">
+        <input type="password" />
+      </div>
+      <div class="inputInterior">
         <p><strong>Confirmar contraseña</strong></p>
-        <input type="text">
-        </div>
-        <ButtonDefault size="default" color="azul" text="Cambiar contraseña" class="Enviar"></ButtonDefault>
-        </div>
+        <input type="password" />
+      </div>
     </div>
-    <div class="contenedorActualizar">
-    <ButtonDefault size="default" color="azul" text="Actualizar" icono="archive" class="Enviar"></ButtonDefault>
-</div>
-<FooterComponent />
+    <div class="btndefault">
+    <ButtonDefault size="default" color="azul" text="Cambiar contraseña" class="Enviar" />
+  </div>
+  </div>
+  
+  <div class="contenedorActualizar">
+    <ButtonDefault size="default" color="azul" text="Actualizar" icono="archive" class="Enviar" />
+  </div>
+  
+  <FooterComponent />
+  </div>
 </template>
+
 
 <style scoped>
 
@@ -275,6 +282,7 @@ input {
 .mensajeDeAyuda {
     display: flex;
     justify-content: left;
+    align-items: center;
     margin-bottom: 40px;
 }
 
@@ -310,6 +318,15 @@ input {
     margin-left: 40px;
     margin-top: 10px;
     border-radius: 2px;
+}
+
+.btndefault .Enviar {
+  margin-block: 5px;
+}
+
+.btndefault {
+  display: flex;
+  justify-content: center;
 }
 
 .contenedorActualizar {

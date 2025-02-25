@@ -1,21 +1,16 @@
-<script>
+<script setup>
 
 import MenuDespl from '../components/MenuDespl.vue'
 import MenuProfile from '../components/MenuProfile.vue'
-
-export default {
-  components: {
-    MenuDespl,
-    MenuProfile
-  }
-};
+import { RouterLink } from 'vue-router';
 
 </script>
 
 
 <template>
-  
-<nav class="barraSuperior">
+
+<div> 
+  <nav class="barraSuperior">
         <RouterLink to="/"><img class="logoSuperior" src="../assets/Images/Logo.png" alt="Logo SECOM"></RouterLink>
         <ul class="opciSuperiores">
             <li class="lista_opci ubicacion1"><a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a></li>
@@ -39,7 +34,7 @@ export default {
     <nav class="barraCategorias">
         <ul class="nav_menu">
             <li><a class="lista_opci" href="sostenibles">SOSTENIBLES</a></li>
-            <li><a class="lista_opci" href="vender">VENDER</a></li>
+            <li><router-link to="/VenderComponent"><a class="lista_opci">VENDER</a></router-link></li>
             <li class="menu_despl">
                 <a class="lista_opci" href="categorias">CATEGORÍAS <span class="material-symbols-outlined">arrow_drop_down</span></a>
                 <MenuDespl />
@@ -49,7 +44,7 @@ export default {
             <li><a class="lista_opci" href="ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></a></li>
         </ul>
     </nav>
-    
+</div>
 
 </template>
 
@@ -81,6 +76,7 @@ body {
   .logoSuperior {
     height: 55px;
     width: auto;
+    margin-top: 8px;
   }
   
   .ubicacion1 {

@@ -10,7 +10,8 @@ import VerPerfilView from '@/views/VerPerfilView.vue'
 import TerminosYCondicionesView from '@/views/TerminosYCondicionesView.vue'
 import QuienesSomosView from '@/views/QuienesSomosView.vue'
 import AvisoDeActividadView from '@/views/AvisoDeActividadView.vue'
-
+import VenderComponent from '@/views/VenderComponent.vue'
+import AddImgsComponent from '@/components/AddImgsComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -85,6 +86,18 @@ const router = createRouter({
       path: '/AvisoDeActividadView',
       name: 'avisodeactividadview',
       component: AvisoDeActividadView,
+    },
+
+    {
+      path: '/VenderComponent',
+      name: 'vendercomponent',
+      component: VenderComponent,
+    },
+
+    {
+      path: '/AddImgsComponent',
+      name: 'addimgscomponent',
+      component: AddImgsComponent,
     },
     
     // {

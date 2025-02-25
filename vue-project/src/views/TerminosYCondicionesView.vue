@@ -3,6 +3,7 @@
 </script>
 
 <template>
+<div>
 <div class="imgDeFondo">
     <div class="logoYTitulo">
         <div class="contenedorLogo">
@@ -50,7 +51,8 @@
         <p><strong>Ley Aplicable y Jurisdicción</strong></p>
         <p>Estos Términos y Condiciones se rigen por las leyes de Colombia y cualquier disputa relacionada con ellos será resuelta en los tribunales de [Ciudad o Región].</p>
 </div>
-<FooterComponent></FooterComponent>
+<FooterComponent />
+</div>
 </template>
 
 <style scoped>

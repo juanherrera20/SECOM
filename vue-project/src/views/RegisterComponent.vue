@@ -1,6 +1,9 @@
 <script setup>
 import axios from 'axios';
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const usuario = reactive({
     username: '',
@@ -30,6 +33,9 @@ async function crearUsuario() {
                 email: "",
                 password: "",
             });
+
+            router.push({ name: "home" });
+            alert("Usuario creado exitosamente.")
         }
     } catch (error) {
         if (error.response) {
@@ -37,7 +43,17 @@ async function crearUsuario() {
         } else {
             mensajeError.value = "No se pudo conectar al servidor.";
         }
+
+        Object.assign(usuario, {
+                username: "",
+                first_name: "",
+                last_name: "",
+                email: "",
+                password: "",
+            });
+        
         console.error("Error al crear usuario:", error);
+        alert("Error al crear usuario.")
     }
 }
 </script>
@@ -60,7 +76,7 @@ async function crearUsuario() {
         <input v-model="usuario.first_name" type="text" placeholder="Nombres" class="campos">
         <input v-model="usuario.last_name" type="text" placeholder="Apellidos" class="campos">
         <input v-model="usuario.email" type="email" placeholder="Email" class="campos">
-        <input v-model="usuario.password" type="password" placeholder="Contraseña" class="campos">
+        <input v-model="usuario.password" type="password" required placeholder="Contraseña" class="campos">
         <button class="registro">Continuar</button>
 
         <div>
