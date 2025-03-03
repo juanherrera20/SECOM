@@ -13,5 +13,17 @@ export const getCurrentUser = async () => {
     }
 }
 
+//Obtener el usuario actual autenticado
+export const getUserDetail = async (id) => {
+    try {
+        const response = await api.get(base_url + 'user/' + id + "/");
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener el usuario con ID:', error.response?.data || error.message);
+        throw new Error('Error al obtener el usuario con ID');
+    }
+}
+
 //Exportamos `getCurrentUser` como default
-export default getCurrentUser;
+export default {
+    getCurrentUser, getUserDetail};

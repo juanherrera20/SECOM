@@ -10,6 +10,7 @@ BASE_API = 'api/v1/'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(BASE_API + 'usuarios/', include('apps.usuarios.urls')),
+    path(BASE_API + 'eventos/', include('apps.eventos.urls')),
 ]
 
 # 🔥 IMPORTANTE: Esto permite acceder a archivos en /media/ en desarrollo
