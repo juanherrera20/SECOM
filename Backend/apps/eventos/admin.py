@@ -1,6 +1,6 @@
 # admin.py
 from django.contrib import admin
-from .models import Evento, Imagen
+from .models import Evento, Imagen, Donacion
 from django.utils.html import format_html
 
 class ImagenInline(admin.TabularInline):
@@ -30,6 +30,14 @@ class EventoAdmin(admin.ModelAdmin):
     
     imagen_preview.short_description = 'Imagen Principal'
 
+
+class DonacionAdmin(admin.ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+    
+    
+    
 # Registrar los modelos
 admin.site.register(Evento, EventoAdmin)
 admin.site.register(Imagen)
+admin.site.register(Donacion, DonacionAdmin)

@@ -17,12 +17,12 @@ class MunicipioAdmin(admin.ModelAdmin):
     search_fields = ('nombre', 'departamento__nombre')
 
 class UbicacionAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'municipio_id', 'direccion', 'latitud', 'longitud')
-    list_filter = ('municipio_id__departamento', 'municipio_id')
-    search_fields = ('nombre', 'direccion', 'municipio_id__nombre', 'municipio_id__departamento__nombre')
+    list_display = ('nombre', 'municipio', 'direccion', 'latitud', 'longitud')
+    list_filter = ('municipio__departamento', 'municipio')
+    search_fields = ('nombre', 'direccion', 'municipio__nombre', 'municipio__departamento__nombre')
     fieldsets = [
         ('Información Básica', {
-            'fields': ('nombre', 'municipio_id', 'direccion')
+            'fields': ('nombre', 'municipio', 'direccion')
         }),
         ('Geolocalización', {
             'fields': ('latitud', 'longitud')

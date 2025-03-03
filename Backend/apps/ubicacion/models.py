@@ -30,9 +30,9 @@ class Municipio(models.Model):
 
 # Modelo para definir la ubicación de los elementos (Eventos, Articulos, etc), aquí se guardara la información de la api google maps
 class Ubicacion(models.Model):
-    nombre = models.CharField(max_length=50, blank=True)
-    municipio_id = models.ForeignKey(Municipio, related_name="ubicacion", on_delete=models.PROTECT)
-    direccion = models.CharField(max_length=100, unique=True)
+    nombre = models.CharField(max_length=50, blank=True, null=True)
+    municipio = models.ForeignKey(Municipio, related_name="ubicacion", on_delete=models.PROTECT)
+    direccion = models.CharField(max_length=100)
     #Campos para la API de goodle maps o cualquier otra API de geolocalización
     latitud = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True) 
     longitud = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
