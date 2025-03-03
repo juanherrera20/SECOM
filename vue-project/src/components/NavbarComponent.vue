@@ -62,7 +62,7 @@ onMounted(async () => {
           <MenuDespl />
         </li>
         <li><router-link class="lista_opci" to="/sostenibles">SOSTENIBLES</router-link></li>
-        <li><router-link class="lista_opci" to="/eventos">EVENTOS</router-link></li>
+        <li><router-link class="lista_opci" to="/VerEvento">EVENTOS</router-link></li>
         <li><router-link class="lista_opci" to="/ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></router-link></li>
       </ul>
     </nav>

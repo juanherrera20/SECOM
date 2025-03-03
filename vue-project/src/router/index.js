@@ -12,6 +12,7 @@ import QuienesSomosView from '@/views/QuienesSomosView.vue'
 import AvisoDeActividadView from '@/views/AvisoDeActividadView.vue'
 import VenderComponent from '@/views/VenderComponent.vue'
 import AddImgsComponent from '@/components/AddImgsComponent.vue'
+import VerEvento from '@/views/VerEvento.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -98,6 +99,12 @@ const router = createRouter({
       path: '/AddImgsComponent',
       name: 'addimgscomponent',
       component: AddImgsComponent,
+    },
+
+    {
+      path: '/VerEvento',
+      name: 'verevento',
+      component: VerEvento,
     },
     
     // {
