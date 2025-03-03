@@ -42,6 +42,8 @@ const buttonSizeClass = computed(() => {
 </template>
 
 <style scoped>
+
+
 /* Estilos base para el botón */
 .button {
   font-family: 'Aldrich', sans-serif;

@@ -1,8 +1,7 @@
-<!-- src/components/SeleccionarMunicipio.vue -->
 <template>
     <div class="seleccionar-municipio">
       <label for="municipio">Selecciona un municipio:</label>
-      <select id="municipio" v-model="municipioSeleccionado">
+      <select id="municipio" v-model="municipioSeleccionado" required>
         <option v-for="municipio in municipios" :key="municipio.id" :value="municipio.id">
           {{ municipio.nombre }} ({{ municipio.departamento.nombre }})
         </option>
@@ -11,12 +10,20 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
-  import { getMunicipios } from '../services/ubicacion';
+  import { ref, onMounted, watch } from 'vue';
+  import { getMunicipios } from '../services/ubicacion.js';
   
-  // Estado reactivo
+  const props = defineProps({
+    modelValue: {
+      type: Number,
+      default: null,
+    },
+  });
+  
+  const emit = defineEmits(['update:modelValue']);
+  
   const municipios = ref([]);
-  const municipioSeleccionado = ref(null);
+  const municipioSeleccionado = ref(props.modelValue);
   
   // Cargar municipios al montar el componente
   onMounted(async () => {
@@ -25,6 +32,11 @@
     } catch (error) {
       console.error('Error al cargar los municipios:', error);
     }
+  });
+  
+  // Actualizar el valor seleccionado cuando cambie
+  watch(municipioSeleccionado, (newValue) => {
+    emit('update:modelValue', newValue);
   });
   </script>
   

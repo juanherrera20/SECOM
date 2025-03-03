@@ -29,13 +29,6 @@ class DonacionView(generics.ListAPIView):
     permission_classes = [AllowAny] #Cualquier usuario puede acceder
     
     
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-from .models import Imagen, Evento
-from .serializers import ImagenSerializer
-
 class ImagenView(APIView):
     permission_classes = [AllowAny]  # permissions.IsAdminUser
 
@@ -58,7 +51,7 @@ class ImagenView(APIView):
         Agregar Imagenes y eliminar se manejan en una misma vista, de esta manera se envian 
         dos arrays: uno con las nuevas imagenes y otro con las imagenes a eliminar.
         """
-        new_images = request.data.getlist("new_images", None)
+        new_images = request.FILES.getlist("new_images", None)
         print(f"new: {new_images}")
         deleted_images = request.data.getlist("deleted_images", None)
         print(f"deleted: {deleted_images}")

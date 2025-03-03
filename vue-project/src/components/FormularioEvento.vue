@@ -56,7 +56,7 @@
             </div>
             <div class="campo">
               <p class="tituloDeInput"><strong>Ubicación del evento</strong></p>
-              <SeleccionarMunicipio v-model="evento.ubicacion.municipio_id" />
+              <SelectMunicipios v-model="evento.ubicacion.municipio_id" />
               <input
                 class="inputInfoEvento"
                 type="text"
@@ -88,23 +88,20 @@
             <div class="campo">
               <p class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></p>
               <select v-model="evento.donacion_id" required>
-                <option value="1">Todas</option>
-                <option value="2">Dinero</option>
-                <option value="3">Ropa y calzado</option>
-                <option value="4">Alimentos</option>
-                <option value="5">Artículos de higiene personal</option>
-                <option value="6">Agua y bebidas</option>
+                <option v-for="donacion in donaciones" :key="donacion.id" :value="donacion.id">
+                  {{ donacion.nombre }}
+                </option>
               </select>
             </div>
             <div class="campo">
-              <p class="tituloDeInput"><strong>Fecha de lo ocurrido</strong></p>
+              <p class="tituloDeInput"><strong>Fecha Evento</strong></p>
               <input class="inputInfoEvento" id="date" type="date" v-model="evento.fecha" />
             </div>
           </div>
           <div class="inputsInfo">
             <div class="addIMGS">
               <p class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></p>
-              <CargarImagenes ref="cargarImagenes" />
+              <CargarImagenes ref="cargarImagenes" :imagenes-existente="evento.imagenes" />
             </div>
           </div>
         </div>
@@ -119,6 +116,7 @@
           @click="guardarEvento"
         />
       </div>
+      <ButtonDefault v-if="modoEdicion" size="default"  color="rojo" text="Eliminar Evento" @click="eliminarEvento" />
       <FooterComponent />
     </div>
   </template>
@@ -126,12 +124,12 @@
   <script setup>
   import { ref, onMounted } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { createEvento, updateEvento, getEventoById } from '../services/eventos';
+  import { createEvento, updateEvento, getEventoById, getDonaciones, deleteEvento } from '../services/eventos';
   import { getCurrentUser } from '../services/users';
   import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
   import ButtonDefault from '@/components/ButtonDefault.vue';
   import FooterComponent from '@/components/FooterComponent.vue';
-  import SeleccionarMunicipio from '@/components/SelectMunicipios.vue';
+  import SelectMunicipios from '@/components/SelectMunicipios.vue';
   import CargarImagenes from '@/components/CargarImagenes.vue';
   
   const route = useRoute();
@@ -150,22 +148,40 @@
       latitud: '',
       longitud: '',
     },
-    donacion_id: 1,
+    donacion_id: null,
     fecha: '',
+    imagenes: [],
   });
   
   const cargarImagenes = ref(null);
   const currentUser = ref(null);
+  const donaciones = ref([]);
   
   onMounted(async () => {
     // Obtener usuario autenticado
     const userResponse = await getCurrentUser();
     currentUser.value = userResponse;
   
+    // Obtener donaciones
+    try {
+      donaciones.value = await getDonaciones();
+    } catch (error) {
+      console.error('Error al cargar las donaciones:', error);
+    }
+  
+    // Cargar datos del evento si estamos en modo edición
     if (modoEdicion) {
       try {
         const eventoResponse = await getEventoById(eventoId);
         evento.value = { ...eventoResponse };
+  
+        // Asignar valores a los desplegables
+        if (eventoResponse.ubicacion) {
+          evento.value.ubicacion.municipio_id = eventoResponse.ubicacion.municipio_id;
+        }
+        if (eventoResponse.donacion_id) {
+          evento.value.donacion_id = eventoResponse.donacion_id;
+        }
       } catch (error) {
         console.error('Error al cargar el evento:', error);
       }
@@ -174,6 +190,20 @@
   
   const guardarEvento = async () => {
     try {
+      // Validar campos requeridos
+      if (
+        !evento.value.nombre ||
+        !evento.value.descripcion ||
+        !evento.value.causa ||
+        !evento.value.fecha ||
+        !evento.value.ubicacion.municipio_id ||
+        !evento.value.ubicacion.direccion ||
+        !evento.value.donacion_id
+      ) {
+        alert('Todos los campos requeridos deben estar completos');
+        return;
+      }
+  
       const eventoData = {
         ...evento.value,
         organizador: currentUser.value.id, // Usar el ID del usuario autenticado
@@ -187,15 +217,32 @@
         await createEvento(eventoData);
         alert('Evento creado correctamente');
       }
-      router.push({ name: 'Eventos' });
+      router.push({ name: 'EventosList' });
     } catch (error) {
       console.error('Error al guardar el evento:', error);
       alert('Hubo un error al guardar el evento');
     }
   };
+
+  //Eliminar Evento
+    const eliminarEvento = async () => {
+        if (confirm('¿Seguro que deseas eliminar este evento?')) {
+            try {
+            await deleteEvento(eventoId);
+            alert('Evento eliminado correctamente');
+            router.push({ name: 'EventosList' });
+            } catch (error) {
+            console.error('Error al eliminar el evento:', error);
+            alert('Hubo un error al eliminar el evento');
+            }
+        }
+    };
+
   </script>
-  
+
+
   <style scoped>
+    
   .botonYTitulo {
     display: flex;
     justify-content: space-between;

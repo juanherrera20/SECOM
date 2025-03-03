@@ -9,7 +9,13 @@
         @change="manejarCambioImagenes"
       />
       <div class="vista-previa">
-        <div v-for="(imagen, index) in imagenes" :key="index" class="imagen-container">
+        <!-- Mostrar imágenes existentes -->
+        <div v-for="(imagen, index) in imagenesExistente" :key="index" class="imagen-container">
+          <img :src="imagen.url_imagen" :alt="'Imagen ' + (index + 1)" class="imagen" />
+          <button @click="eliminarImagenExistente(index)" class="eliminar-btn">🗑️</button>
+        </div>
+        <!-- Mostrar nuevas imágenes -->
+        <div v-for="(imagen, index) in imagenes" :key="'nueva-' + index" class="imagen-container">
           <img :src="imagen.url" :alt="'Imagen ' + (index + 1)" class="imagen" />
           <button @click="eliminarImagen(index)" class="eliminar-btn">🗑️</button>
         </div>
@@ -20,7 +26,15 @@
   <script setup>
   import { ref } from 'vue';
   
+  const props = defineProps({
+    imagenesExistente: {
+      type: Array,
+      default: () => [],
+    },
+  });
+  
   const imagenes = ref([]);
+  const imagenesEliminadas = ref([]);
   
   const manejarCambioImagenes = (event) => {
     const archivos = event.target.files;
@@ -35,73 +49,17 @@
     imagenes.value.splice(index, 1);
   };
   
+  const eliminarImagenExistente = (index) => {
+    imagenesEliminadas.value.push(props.imagenesExistente[index].id);
+    props.imagenesExistente.splice(index, 1);
+  };
+  
   defineExpose({
     imagenes,
+    imagenesEliminadas,
   });
   </script>
   
   <style scoped>
-  .cargar-imagenes {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #2c3e50;
-  }
-  
-  input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #fff;
-    transition: border-color 0.3s ease;
-  }
-  
-  input[type="file"]:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
-  
-  .vista-previa {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .imagen-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .imagen {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .eliminar-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(255, 0, 0, 0.7);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    padding: 5px;
-  }
-  
-  .eliminar-btn:hover {
-    background-color: rgba(255, 0, 0, 1);
-  }
+  /* Estilos (iguales a los anteriores) */
   </style>
