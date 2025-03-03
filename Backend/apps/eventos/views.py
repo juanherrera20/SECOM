@@ -29,68 +29,66 @@ class DonacionView(generics.ListAPIView):
     permission_classes = [AllowAny] #Cualquier usuario puede acceder
     
     
-#Vista para subir las imagenes, APIView es lo mas parecido a vistas de Django
 class ImagenView(APIView):
-    permission_classes = [AllowAny] #permissions.IsAdminUser
-    
-    def get(self, request, pk, format = None):
-        evento_id = pk # si se envia el id del propietario mediante al url
-        
+    permission_classes = [AllowAny]  # permissions.IsAdminUser
+
+    def get(self, request, pk, format=None):
+        evento_id = pk  # Si se envía el id del evento mediante la URL
+
         if not evento_id:
             return Response({"error": "El parámetro 'id' es obligatorio."}, status=400)
-            
+
         print(f"ID evento {evento_id}")
-        imagenes = Imagen.objects.filter(evento = evento_id).order_by("orden")
-        serializer = ImagenSerializer(imagenes, many=True)
+        imagenes = Imagen.objects.filter(evento=evento_id).order_by("orden")
+        
+        # Pasar el contexto de la solicitud al serializador
+        serializer = ImagenSerializer(imagenes, many=True, context={'request': request})
+        
         return Response(serializer.data)
-    
+
     def post(self, request, pk, format=None):
         """
         Agregar Imagenes y eliminar se manejan en una misma vista, de esta manera se envian 
-        dos arrays uno con las nuevas imagenes y otro con las imagenes a eliminar
+        dos arrays: uno con las nuevas imagenes y otro con las imagenes a eliminar.
         """
-        
-        new_images = request.data.getlist("new_images", None)
+        new_images = request.FILES.getlist("new_images", None)
         print(f"new: {new_images}")
         deleted_images = request.data.getlist("deleted_images", None)
         print(f"deleted: {deleted_images}")
 
         print(f"ID evento: {pk}")
-      
+
         try:
             evento = Evento.objects.prefetch_related('imagenes').get(id=pk)
-        except evento.DoesNotExist:
+        except Evento.DoesNotExist:
             return Response({"error": "Evento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
-        
-        imagenes = evento.imagenes.all() # Obtener todas las imágenes del evento mediante relación inversa
-        print(f"Imagenes obj antes: {imagenes}")
-        
-        # Eliminar Imagenes
-        for images_id in deleted_images:
-            try:
-                obj = imagenes.get(id=images_id)
-                obj.delete()  # Eliminamos el archivo
-                imagenes = imagenes.exclude(id=images_id)
-            except Imagen.DoesNotExist:
-                print(f"Imagen con ID {images_id} no encontrado")
 
-        print(f"Imagenes obj despues: {imagenes}")
-        
-        
-        #Modificar logica para manejar prioridades -----------------
-        
+        imagenes = evento.imagenes.all()  # Obtener todas las imágenes del evento mediante relación inversa
+        print(f"Imagenes obj antes: {imagenes}")
+
+        # Eliminar Imagenes
+        for image_id in deleted_images:
+            try:
+                obj = imagenes.get(id=image_id)
+                obj.delete()  # Eliminamos el archivo
+                imagenes = imagenes.exclude(id=image_id)
+            except Imagen.DoesNotExist:
+                print(f"Imagen con ID {image_id} no encontrado")
+
+        print(f"Imagenes obj después: {imagenes}")
+
         # Reordenar imágenes después de eliminación
         for index, image in enumerate(imagenes.order_by("orden"), start=1):
             image.orden = index
-            image.save(update_fields=["orden"]) 
+            image.save(update_fields=["orden"])
 
-        # btener último orden actual
+        # Obtener último orden actual
         orden = imagenes.count() + 1
         print(f"Orden: {orden}")
 
         # Agregar nuevas imágenes con orden ascendente
         for image in new_images:
-            Imagen.objects.create(url_imagen=image, evento = evento, orden=orden)
+            Imagen.objects.create(url_imagen=image, evento=evento, orden=orden)
             orden += 1
-        
-        return Response(status=status.HTTP_204_NO_CONTENT) #Mejor manejo de errores
+
+        return Response(status=status.HTTP_204_NO_CONTENT)  # Mejor manejo de errores

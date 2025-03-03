@@ -56,41 +56,42 @@ class EventoSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         ubicacion_data = validated_data.pop("ubicacion", None)
         donacion_id = validated_data.pop('donacion_id', None)
-        
+
         print(f"Donación {donacion_id}")
-    
+
         try:
-            with transaction.atomic(): #Transaction Permite revertir cualquier proceso que se haya hecho en BD si algo sale mal, util para crear varias tablas con relaciones
+            with transaction.atomic():  # Transaction permite revertir cualquier proceso que se haya hecho en BD si algo sale mal
+                # Actualizar la ubicación si se proporciona
                 if ubicacion_data:
-                    municipio_id = ubicacion_data.pop("municipio_id")
-                    
-                    if municipio_id != instance.ubicacion.municipio: #Verificamos si cambio
+                    municipio_id = ubicacion_data.pop("municipio_id", None)
+
+                    # Verificar si el municipio ha cambiado
+                    if municipio_id and municipio_id != instance.ubicacion.municipio.id:
                         print("Es Diferente el Municipio")
                         municipio = Municipio.objects.get(id=municipio_id)
-                        
+                        instance.ubicacion.municipio = municipio
+
+                    # Actualizar otros campos de la ubicación
                     for attr, value in ubicacion_data.items():
-                        #Solo Actualiza si el valor cambio
-                        current_value = getattr(instance.ubicacion, attr)
-                        print(f"current_value: {current_value}")
-                        print(f"value: {value}")
-                        
-                        if current_value != value:  # Verifica si realmente cambió
-                            print("Paso")
-                            setattr(instance.ubicacion, attr, value)
-                            
-                    instance.ubicacion.save() #guardamos
-                   
-                #Donaciones
-                if donacion_id != instance.donacion:
+                        setattr(instance.ubicacion, attr, value)
+
+                    # Guardar la ubicación
+                    instance.ubicacion.save()
+
+                # Actualizar la donación si se proporciona
+                if donacion_id and donacion_id != instance.donacion.id:
                     donacion = Donacion.objects.get(id=donacion_id)
-                    #Asignamos nuevo valor
                     instance.donacion = donacion
-               
-                super().update(instance, validated_data)
- 
+
+                # Actualizar otros campos del evento
+                for attr, value in validated_data.items():
+                    setattr(instance, attr, value)
+
+                # Guardar el evento
+                instance.save()
 
             return instance
-        
+
         except Exception as e:
             print(f"Error durante la Actualización del Evento: {str(e)}")
             raise serializers.ValidationError(f"Ocurrió un error al actualizar el evento: {str(e)}")
@@ -120,18 +121,23 @@ class EventoListSerializer(serializers.ModelSerializer):
 
     
     
-#Serializador para las imagenes
 class ImagenSerializer(serializers.ModelSerializer):
     url_imagen = serializers.SerializerMethodField()
 
     class Meta:
         model = Imagen
-        fields = ['url_imagen', 'orden', 'id']  # Incluye los campos que necesitas
+        fields = ['url_imagen', 'orden', 'id']
 
     def get_url_imagen(self, obj):
-        # Aquí devolvemos la URL completa de la imagen usando el atributo `url`
-        return obj.url_imagen.url if obj.url_imagen else None
-    
+        request = self.context.get('request')  # Obtener el request del contexto
+        if obj.url_imagen:  # Verificar si la imagen existe
+            if request:  # Si hay un request, construir la URL absoluta
+                return request.build_absolute_uri(obj.url_imagen.url)
+            else:  # Si no hay request, usar la URL relativa (MEDIA_URL)
+                return f"{settings.MEDIA_URL}{obj.url_imagen}"
+        return None  # Si no hay imagen, devolver None
+
+   
 
 #Serializador para las donaciones Util para los desplegables de opciones
 class DonacionSerializer(serializers.ModelSerializer):

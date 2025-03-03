@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path(BASE_API + 'usuarios/', include('apps.usuarios.urls')),
     path(BASE_API + 'eventos/', include('apps.eventos.urls')),
+    path(BASE_API + 'ubicacion/', include('apps.ubicacion.urls'))
 ]
 
 # 🔥 IMPORTANTE: Esto permite acceder a archivos en /media/ en desarrollo

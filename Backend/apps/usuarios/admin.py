@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
     # Campos que se mostrarán en el formulario de edición
     fieldsets = (
         (None, {'fields': ('email', 'username', 'password')}),
-        ('Información Personal', {'fields': ('telefono', 'img_profile')}),
+        ('Información Personal', {'fields': ('telefono', 'img_profile', 'first_name', 'last_name')}),
         ('Puntos y Reputación', {'fields': ('puntos', 'reputacion')}),
         ('Permisos', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Fechas importantes', {'fields': ('last_login', 'date_joined')}),

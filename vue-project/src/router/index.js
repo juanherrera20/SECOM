@@ -14,7 +14,7 @@ import VenderComponent from '@/views/VenderComponent.vue'
 import AddImgsComponent from '@/components/AddImgsComponent.vue'
 import EventosList from '@/views/EventosList.vue'
 import VerEvento from '@/views/VerEvento.vue'
-
+import EditEventoView from '@/views/EditEventoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -108,9 +108,15 @@ const router = createRouter({
       component: EventosList,
     },
     {
-      path: '/VerEvento',
+      path: '/eventos/:id', // Usamos un parámetro dinámico para el ID del evento
       name: 'verevento',
       component: VerEvento,
+      props: true, // Pasamos el parámetro como prop al componente
+    },
+    {
+      path: '/eventos/edit/:id/',
+      name: 'EditarEvento',
+      component: EditEventoView,
     },
     // {
     //   path: '/about',

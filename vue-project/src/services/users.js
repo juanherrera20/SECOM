@@ -11,7 +11,7 @@ export const getCurrentUser = async () => {
         console.error('Error al obtener el usuario actual:', error.response?.data || error.message);
         throw new Error('Error al obtener el usuario actual');
     }
-}
+};
 
 //Obtener el usuario actual autenticado
 export const getUserDetail = async (id) => {
@@ -22,8 +22,5 @@ export const getUserDetail = async (id) => {
         console.error('Error al obtener el usuario con ID:', error.response?.data || error.message);
         throw new Error('Error al obtener el usuario con ID');
     }
-}
+};
 
-//Exportamos `getCurrentUser` como default
-export default {
-    getCurrentUser, getUserDetail};
