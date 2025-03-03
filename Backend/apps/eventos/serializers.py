@@ -57,6 +57,7 @@ class EventoSerializer(serializers.ModelSerializer):
         ubicacion_data = validated_data.pop("ubicacion", None)
         donacion_id = validated_data.pop('donacion_id', None)
         
+        
         print(f"Donación {donacion_id}")
     
         try:
@@ -120,18 +121,23 @@ class EventoListSerializer(serializers.ModelSerializer):
 
     
     
-#Serializador para las imagenes
 class ImagenSerializer(serializers.ModelSerializer):
     url_imagen = serializers.SerializerMethodField()
 
     class Meta:
         model = Imagen
-        fields = ['url_imagen', 'orden', 'id']  # Incluye los campos que necesitas
+        fields = ['url_imagen', 'orden', 'id']
 
     def get_url_imagen(self, obj):
-        # Aquí devolvemos la URL completa de la imagen usando el atributo `url`
-        return obj.url_imagen.url if obj.url_imagen else None
-    
+        request = self.context.get('request')  # Obtener el request del contexto
+        if obj.url_imagen:  # Verificar si la imagen existe
+            if request:  # Si hay un request, construir la URL absoluta
+                return request.build_absolute_uri(obj.url_imagen.url)
+            else:  # Si no hay request, usar la URL relativa (MEDIA_URL)
+                return f"{settings.MEDIA_URL}{obj.url_imagen}"
+        return None  # Si no hay imagen, devolver None
+
+   
 
 #Serializador para las donaciones Util para los desplegables de opciones
 class DonacionSerializer(serializers.ModelSerializer):

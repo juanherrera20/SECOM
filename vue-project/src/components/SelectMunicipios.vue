@@ -12,7 +12,7 @@
   
   <script setup>
   import { ref, onMounted } from 'vue';
-  import { getMunicipios } from '../services/municipios';
+  import { getMunicipios } from '../services/ubicacion';
   
   // Estado reactivo
   const municipios = ref([]);

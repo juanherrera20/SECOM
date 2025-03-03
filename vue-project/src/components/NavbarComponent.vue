@@ -3,7 +3,7 @@ import MenuDespl from '../components/MenuDespl.vue';
 import MenuProfile from '../components/MenuProfile.vue';
 import { RouterLink } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import getCurrentUser from '../services/users'; // Usamos la función correcta
+import { getCurrentUser } from '../services/users';
 
 const user = ref(null);
 
@@ -62,7 +62,7 @@ onMounted( async () => {
           <MenuDespl />
         </li>
         <li><router-link class="lista_opci" to="/sostenibles">SOSTENIBLES</router-link></li>
-        <li><router-link class="lista_opci" to="/VerEvento">EVENTOS</router-link></li>
+        <li><router-link class="lista_opci" to="/Eventos">EVENTOS</router-link></li>
         <li><router-link class="lista_opci" to="/ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></router-link></li>
       </ul>
     </nav>
