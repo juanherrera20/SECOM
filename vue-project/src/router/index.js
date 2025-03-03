@@ -13,6 +13,7 @@ import AvisoDeActividadView from '@/views/AvisoDeActividadView.vue'
 import VenderComponent from '@/views/VenderComponent.vue'
 import AddImgsComponent from '@/components/AddImgsComponent.vue'
 import EventosList from '@/views/EventosList.vue'
+import VerEvento from '@/views/VerEvento.vue'
 
 
 const router = createRouter({
@@ -106,7 +107,11 @@ const router = createRouter({
       name: 'EventosList',
       component: EventosList,
     },
- 
+    {
+      path: '/VerEvento',
+      name: 'verevento',
+      component: VerEvento,
+    },
     // {
     //   path: '/about',
     //   name: 'about',
