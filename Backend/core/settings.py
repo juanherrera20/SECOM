@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from corsheaders.defaults import default_headers
+from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +28,10 @@ SECRET_KEY = 'django-insecure-5$s+$8p-270pqdlummg^u!&4%p7(o6@3&v05pj&a+9f^6-y(0q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] #Cambiar a la URL de producción
+
+#Definir la URL base del backend
+BASE_BACKEND_URL = "http://localhost:8000" #Cambiar a la URL de producción
 
 
 # Application definition
@@ -38,16 +44,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    #Nuestras apliaciones instaladas
+    #Apliaciones de terceros
     'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt',
+    
+    #Nuestras apliaciones instaladas
     'apps.articulos',
     'apps.eventos',
     'apps.usuarios',
+    'apps.ubicacion',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,6 +65,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -84,11 +96,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "secom_db",
-        "USER": "root",  #Quizas haya que cambiar
-        "PASSWORD": "juan25sql",  #Cambiar 
+        "NAME": "secom",  #Cambiar a nombre
+        "USER": "root",  
+        "PASSWORD": "1004528186",  #Cambiar 
         "HOST": "localhost",
-        "PORT": "3306",  #3306 o 3307
+        "PORT": "3307",  #3306 o 3307
     }
 }
 
@@ -115,9 +127,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
 
@@ -135,10 +147,76 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-#---------------- Aquí agregamos nuevas configuraciones ----------------
+#-------------------------------------------------------------Campos y configuraciones agregadas-------------------------------------------------------------s
 
 AUTH_USER_MODEL = "usuarios.CustomUser"
 
+
+# ------------------- Configuración de CORS -------------------
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+# Asegúrate de que estos encabezados sean permitidos
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "X-CSRFToken",  # Si usas CSRF
+    "Authorization",  # Si usas el encabezado Authorization
+    "Content-Type",  # Asegúrate de permitir Content-Type también
+]
+
+#Permitir todas las peticiones (Util durante el desarrollo)
+CORS_ALLOW_ALL_ORIGINS = True 
+
+#Permitir la Credenciales en las peticiones
+CORS_ALLOW_CREDENTIALS = True 
+
+# Añade estas configuraciones
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+
+
+# ------------------- Configuración Autenticación  -------------------
+#Instalar las clases de autenticación de DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'apps.usuarios.authentication.CookiesJWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # Asegúrate de que solo usuarios autenticados puedan acceder
+    ),
+    
+}
+
+#Configuración de los tokens
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+}
+
+
+# ------------------- Configuración de archivos estáticos y media -------------------
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Configuración para manejar archivos estáticos y media
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+# Configuraciones adicionales para el manejo de archivos
+FILE_UPLOAD_PERMISSIONS = 0o644
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB

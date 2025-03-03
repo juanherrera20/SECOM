@@ -1,59 +1,30 @@
 <script setup>
-import axios from 'axios';
-import { reactive, ref } from "vue";
+
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { register } from "../services/Authentication";
 
 const router = useRouter();
-
-const usuario = reactive({
-    username: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: ''
+const data = ref({
+    email: "",
+    password: "",
+    first_name: "",
+    last_name: "",
+    telefono: ""
 });
 
 const mensajeExito = ref("");
 const mensajeError = ref("");
 
-async function crearUsuario() {
-    mensajeExito.value = "";
-    mensajeError.value = "";
-
+const handleSubmit = async () => {
     try {
-        const response = await axios.post("http://127.0.0.1:8000/api/usuarios/", usuario);
-        if (response.status === 201) {
-            mensajeExito.value = "Usuario creado exitosamente.";
-            console.log("Usuario creado con éxito.");
-
-            Object.assign(usuario, {
-                username: "",
-                first_name: "",
-                last_name: "",
-                email: "",
-                password: "",
-            });
-
-            router.push({ name: "home" });
-            alert("Usuario creado exitosamente.")
-        }
+        console.log("Intentando registrar usuario");
+        const response = await register(data.value);
+        mensajeExito.value = "Usuario registrado exitosamente";
+        router.push("/login");
     } catch (error) {
-        if (error.response) {
-            mensajeError.value = error.response.data.detail || "Error al crear usuario.";
-        } else {
-            mensajeError.value = "No se pudo conectar al servidor.";
-        }
-
-        Object.assign(usuario, {
-                username: "",
-                first_name: "",
-                last_name: "",
-                email: "",
-                password: "",
-            });
-        
-        console.error("Error al crear usuario:", error);
-        alert("Error al crear usuario.")
+        console.error(error);
+        mensajeError.value = "Error al registrar usuario. Verifica tus credenciales.";
     }
 }
 </script>
@@ -70,13 +41,13 @@ async function crearUsuario() {
     </div>
 
     <div class="container right">
-        <form @submit.prevent="crearUsuario" class="container">
+        <form @submit.prevent="handleSubmit" class="container">
         <h1>REGISTRATE</h1>
-        <input v-model="usuario.username" type="text" required placeholder="Elije un nombre único" class="campos">
-        <input v-model="usuario.first_name" type="text" placeholder="Nombres" class="campos">
-        <input v-model="usuario.last_name" type="text" placeholder="Apellidos" class="campos">
-        <input v-model="usuario.email" type="email" placeholder="Email" class="campos">
-        <input v-model="usuario.password" type="password" required placeholder="Contraseña" class="campos">
+        <input v-model="data.first_name" type="text" placeholder="Nombres" class="campos">
+        <input v-model="data.last_name" type="text" placeholder="Apellidos" class="campos">
+        <input v-model="data.email" type="email" placeholder="Correo Electronico" class="campos">
+        <input v-model="data.telefono" type="text" placeholder="Telefono" class="campos">
+        <input v-model="data.password" type="password" required placeholder="Contraseña" class="campos">
         <button class="registro">Continuar</button>
 
         <div>
@@ -92,7 +63,7 @@ async function crearUsuario() {
 <style scoped>
 
 .pagina {
-    margin: 50px 0px;
+    margin: 20px 0px;
     width: 100%;
     height: 80%;
     display: flex;

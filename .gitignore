@@ -10,6 +10,8 @@ __pycache__/
 # Entorno virtual
 Backend/env/
 Backend/EntornoV
+Backend/media/
+
 
 # Node.js
 Frontend/node_modules/
