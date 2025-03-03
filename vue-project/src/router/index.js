@@ -12,6 +12,8 @@ import QuienesSomosView from '@/views/QuienesSomosView.vue'
 import AvisoDeActividadView from '@/views/AvisoDeActividadView.vue'
 import VenderComponent from '@/views/VenderComponent.vue'
 import AddImgsComponent from '@/components/AddImgsComponent.vue'
+import EventosList from '@/views/EventosList.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -99,7 +101,12 @@ const router = createRouter({
       name: 'addimgscomponent',
       component: AddImgsComponent,
     },
-    
+    {
+      path: '/Eventos',
+      name: 'EventosList',
+      component: EventosList,
+    },
+ 
     // {
     //   path: '/about',
     //   name: 'about',

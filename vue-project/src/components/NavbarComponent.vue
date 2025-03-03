@@ -70,7 +70,7 @@ onMounted( async () => {
 </template>
 
 
-<style>
+<style >
 
 * {
     box-sizing: border-box;

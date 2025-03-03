@@ -101,3 +101,10 @@ class CustomUserView(generics.RetrieveUpdateDestroyAPIView):
     
     def get_object(self):
         return self.request.user
+    
+    
+class CustomUserDetailView(generics.RetrieveAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = CustomUserSerializer
+    

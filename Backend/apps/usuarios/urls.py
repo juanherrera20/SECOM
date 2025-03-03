@@ -6,7 +6,7 @@ from . import views
 from rest_framework.routers import DefaultRouter
 from .views import CustomTokenObtainPairView, CustomRefreshTokenView #Autenticación
 from .views import ( #Vistas de la aplicación
-    register, logout, CustomUserView
+    register, logout, CustomUserView, CustomUserDetailView
     )
 
 urlpatterns = [
@@ -15,6 +15,7 @@ urlpatterns = [
     
     path("register/",register.as_view(), name="register"),
     path("me/", CustomUserView.as_view(), name="user"),
+    path("user/<int:pk>/", CustomUserDetailView.as_view(), name="user"),
     
     # Ruta de cierre de sesión
     path("logout/", logout, name="logout"),
