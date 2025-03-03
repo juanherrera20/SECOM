@@ -7,7 +7,7 @@ import getCurrentUser from '../services/users'; // Usamos la función correcta
 
 const user = ref(null);
 
-onMounted(async () => {
+onMounted( async () => {
     try {
         user.value = await getCurrentUser(); 
     } catch (error) {
