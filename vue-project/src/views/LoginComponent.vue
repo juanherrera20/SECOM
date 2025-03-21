@@ -38,7 +38,7 @@
   </div>
 
   <div class="container right">
-    <H1>INICIA SESIÓN</H1>
+    <h1>INICIA SESIÓN</h1>
     <input class="campos" type="text" v-model="email"  placeholder="Usuario o correo electrónico">
     <input class="campos" type="password" v-model="password" placeholder="Contraseña">
     <button class="iniciarsesion">Continuar</button>

@@ -1,6 +1,7 @@
 <script setup>
 import MenuDespl from '../components/MenuDespl.vue';
 import MenuProfile from '../components/MenuProfile.vue';
+import AddLocationComponent from '../components/AddLocationComponent.vue';
 import { RouterLink } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { getCurrentUser } from '../services/users';
@@ -14,9 +15,15 @@ onMounted( async () => {
         console.error('Error obteniendo usuario:', error);
     }
 });
+
+const mostrarModal = ref(false);
+
+
+
 </script>
 
 <template>
+  <div>
   <div> 
     <nav class="barraSuperior">
       <RouterLink to="/">
@@ -25,7 +32,7 @@ onMounted( async () => {
 
       <ul class="opciSuperiores">
         <li class="lista_opci ubicacion1">
-          <a href="#">Ubicación <span class="material-symbols-outlined">add_location_alt</span></a>
+            <a class="cursor" @click="mostrarModal = true">Ubicación <span class="material-symbols-outlined cursor">add_location_alt</span></a>
         </li>
       </ul>
 
@@ -67,6 +74,10 @@ onMounted( async () => {
       </ul>
     </nav>
   </div>
+  <div>
+    <AddLocationComponent :mostrar="mostrarModal" @cerrar="mostrarModal = false" />
+  </div>
+</div>
 </template>
 
 
@@ -167,6 +178,10 @@ body {
   
   .material-symbols-outlined {
     font-size: 22px;
+  }
+
+  .cursor {
+    cursor: pointer;
   }
   
   .nav_menu {
