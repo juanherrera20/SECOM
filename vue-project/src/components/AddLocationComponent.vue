@@ -50,7 +50,7 @@ async function obtenerUbicacion() {
             address.value.ciudad = data.address.city || data.address.town || data.address.village;
             address.value.pais = data.address.country;
             
-            console.log("Ubicación obtenida: ", address.value);
+            //console.log("Ubicación obtenida: ", address.value);
             console.log("latitud: ", lat, " longitud: ", lon);
 
             msgFalla.value = true;
@@ -70,15 +70,6 @@ async function obtenerUbicacion() {
 );
 }
 /*
-async function guardarUbicacion(pais, ciudad) {
-    try {
-        const response = await axios.post("http://127.0.0.1:8000/api/v1/ubicacion/", { pais, ciudad });
-        console.log("Ubicación guardada correctamente: ", response.data);
-    } catch (error) {
-        errorMsg.value = "Error al guardar la ubicación.";
-        console.log(error);
-    }
-}*/
 const guardarUbicacion = async () => {
   try {
     const token = localStorage.getItem('token');
@@ -88,7 +79,34 @@ const guardarUbicacion = async () => {
     alert('Ubicación guardada correctamente');
     ubicacion.value = { pais: '', ciudad: '' };
   } catch (error) {
+    errorMsg.value = "Error al guardar la ubicación.";
     console.error('Error al guardar la ubicación', error);
+  }
+};*/
+
+const guardarUbicacion = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      console.error("No hay token disponible.");
+      return;
+    }
+
+    const response = await axios.post(
+      'http://127.0.0.1:8000/api/v1/ubicacion/',
+      address.value,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      }
+    );
+
+    alert('Ubicación guardada correctamente');
+    ubicacion.value = { pais: '', ciudad: '' };
+  } catch (error) {
+    errorMsg.value = "Error al guardar la ubicación.";
+    console.error('Error al guardar la ubicación:', error.response?.data || error.message);
   }
 };
 
