@@ -7,6 +7,10 @@ from .serializers import CustomUserSerializer
 from rest_framework import status, generics
 from .models import CustomUser
 from django.contrib.auth import get_user_model
+from django.shortcuts import redirect
+from django.conf import settings
+import secrets, requests
+from rest_framework_simplejwt.tokens import RefreshToken
 
 #Obtener el modelo de usuario dinamicamente
 User = get_user_model()
@@ -108,3 +112,114 @@ class CustomUserDetailView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
     serializer_class = CustomUserSerializer
     
+
+class GoogleLogin(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        state = secrets.token_urlsafe(32)
+
+        # Guardar el state en una cookie HTTPOnly
+        response = Response({
+            "auth_url": (
+                f"https://accounts.google.com/o/oauth2/v2/auth?"
+                f"response_type=code&"
+                f"client_id={settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY}&"
+                f"redirect_uri={settings.SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI}&"
+                f"scope=email profile&"
+                f"state={state}&"
+                f"access_type=offline&"
+                f"prompt=consent"
+            ),
+            "state": state
+        })
+        response.set_cookie("oauth_state", state, httponly=True, secure=True, samesite="None", path="/")
+
+        return response
+    
+
+class GoogleAuthCallback(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        print("🚀 Callback de Google recibido")
+
+        # Intentamos obtener el código desde el cuerpo de la solicitud
+        code = request.data.get("code")  
+        received_state = request.data.get("state")
+        stored_state = request.COOKIES.get("oauth_state")
+
+        print(f"🔹 Código recibido: {code}")
+        print(f"🔹 State recibido: {received_state}, esperado: {stored_state}")
+
+        if not code or received_state != stored_state:
+            return Response({"error": "Invalid state or missing code"}, status=400)
+
+        # 🔄 Intercambio del código por el token de acceso en Google
+        token_response = requests.post(
+            "https://oauth2.googleapis.com/token",
+            data={
+                "code": code,
+                "client_id": settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY,
+                "client_secret": settings.SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET,
+                "redirect_uri": settings.SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI,
+                "grant_type": "authorization_code",
+            },
+        ).json()
+
+        if "error" in token_response:
+            return Response({"error": token_response["error"]}, status=400)
+
+        access_token = token_response.get("access_token")
+
+        # 🔍 Obtener información del usuario desde Google
+        user_info_response = requests.get(
+            "https://www.googleapis.com/oauth2/v2/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"},
+        ).json()
+
+        print(f"🔹 Datos del usuario: {user_info_response}")
+
+        email = user_info_response.get("email")
+        name = user_info_response.get("name")
+        picture = user_info_response.get("picture")
+
+        if not email:
+            return Response({"error": "No se pudo obtener el correo"}, status=400)
+
+        # 🔥 Manejo de username vacío o duplicado
+        base_username = email.split("@")[0]  
+        username = base_username
+        count = 1
+        while CustomUser.objects.filter(username=username).exists():
+            username = f"{base_username}{count}"
+            count += 1
+
+        # 🚀 Verificar si el usuario ya existe o crearlo
+        user, created = CustomUser.objects.get_or_create(
+            email=email,
+            defaults={
+                "first_name": name.split(" ")[0],  
+                "last_name": " ".join(name.split(" ")[1:]),  
+                "img_profile": picture,  
+                "username": username,  
+                "telefono": "",  
+                "is_active": True,
+            }
+        )
+
+        if not user.is_active:
+            return Response({"error": "Usuario inactivo"}, status=403)
+
+        # 🔑 Generar tokens JWT
+        try:
+            refresh = RefreshToken.for_user(user)
+            access = refresh.access_token
+        except Exception as e:
+            return Response({"error": "Error generando tokens"}, status=500)
+
+        response = Response({"access_token": str(access), "refresh_token": str(refresh)})
+        response.set_cookie("token", str(access), httponly=True, secure=False, samesite="None", path="/")
+        response.set_cookie("refresh_token", str(refresh), httponly=True, secure=False, samesite="None", path="/")
+
+        return response

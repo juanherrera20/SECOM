@@ -43,10 +43,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
     # Apliaciones de terceros
     "rest_framework",
     "corsheaders",
     "rest_framework_simplejwt",
+    "social_django",
+    "django_extensions", #simular certificado HHTPS Solo para fase desarrollo
+    
     # Nuestras apliaciones instaladas
     "apps.articulos",
     "apps.eventos",
@@ -92,11 +96,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "secom_db",  # Cambiar a nombre
+        "NAME": "secom",  # Cambiar a nombre
         "USER": "root",
-        "PASSWORD": "juan25sql",  # Cambiar
+        "PASSWORD": "1004528186",  # Cambiar
         "HOST": "localhost",
-        "PORT": "3306",  # 3306 o 3307
+        "PORT": "3307",  # 3306 o 3307
     }
 }
 
@@ -172,13 +176,48 @@ CSRF_COOKIE_HTTPONLY = True
 
 
 # ------------------- Configuración Autenticación  -------------------
+
+# Configuración de la autenticación de Para Oauth2
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',  # Agregar Google OAuth
+    'django.contrib.auth.backends.ModelBackend',  # Backend por defecto de Django
+)
+
 # Instalar las clases de autenticación de DRF
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "apps.usuarios.authentication.CookiesJWTAuthentication",
+        'apps.usuarios.authentication.CookiesJWTAuthentication',
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
+
+# Autenticación
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Google OAuth
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '' #No se puede compartir la clave de cliente mediante github
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '' #No se puede compartir la clave de cliente mediante github
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile']
+SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:5173/auth/callback'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'prompt': 'consent'
+}
+SOCIAL_AUTH_GOOGLE_OAUTH2_STATE_PARAMETER = True  # Habilita el manejo de state
+
+# Habilita sesiones (necesario para social-auth)
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  # O 'signed_cookies'
+SESSION_COOKIE_NAME = "google_oauth_session"  # Distinto de la cookie JWT
+
+# Configuración específica para social-auth
+SOCIAL_AUTH_GOOGLE_OAUTH2_STATE_PARAMETER = True
+SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SECURE = False
 
 # Configuración de los tokens
 SIMPLE_JWT = {

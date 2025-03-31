@@ -16,6 +16,20 @@ const data = ref({
 const mensajeExito = ref("");
 const mensajeError = ref("");
 
+
+const loginWithGoogle = async () => {
+    try {
+        const response = await fetch("http://localhost:8000/auth/google/");
+        const data = await response.json();
+
+        localStorage.setItem("oauth_state", data.state); // Guardamos el state
+
+        window.location.href = data.auth_url; // Redirigir a Google con el state correcto
+    } catch (error) {
+        console.error("Error al obtener la URL de autenticación:", error);
+    }
+};
+
 const handleSubmit = async () => {
     try {
         console.log("Intentando registrar usuario");
@@ -47,12 +61,12 @@ const handleSubmit = async () => {
         <input v-model="data.last_name" type="text" placeholder="Apellidos" class="campos">
         <input v-model="data.email" type="email" placeholder="Correo Electronico" class="campos">
         <input v-model="data.telefono" type="text" placeholder="Telefono" class="campos">
-        <input v-model="data.password" type="password" required placeholder="Contraseña" class="campos">
+        <input v-model="data.password" type="password"  placeholder="Contraseña" class="campos">
         <button class="registro">Continuar</button>
 
         <div>
             <p>Ó Registrate con:</p>
-            <button class="google"><img class="google" src="../assets/Images/google.png">Google</button>
+            <button class="google"  @click="loginWithGoogle" href=""><img class="google" src="../assets/Images/google.png">Google</button>
         </div>
     </form>
     </div>

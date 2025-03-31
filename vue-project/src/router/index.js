@@ -16,6 +16,7 @@ import EventosList from '@/views/EventosList.vue'
 import VerEvento from '@/views/VerEvento.vue'
 import EditEventoView from '@/views/EditEventoView.vue'
 import AddLocationComponent from '@/components/AddLocationComponent.vue'
+import LoginCallback from '@/components/LoginCallBack.vue' // Nueva importación
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -128,6 +129,11 @@ const router = createRouter({
       name: 'addlocationcomponent',
       component: AddLocationComponent,
     },
+    {
+      path: "/auth/callback", 
+      name: "AuthCallback", 
+      component: LoginCallback , // Nueva ruta
+    }
     // {
     //   path: '/about',
     //   name: 'about',

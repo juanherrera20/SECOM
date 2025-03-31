@@ -43,12 +43,15 @@ class Ubicacion(models.Model):
     longitud = models.DecimalField(
         max_digits=9, decimal_places=6, blank=True, null=True
     )
+    
+    #Este no va de momento !!!!!1
+    # usuario = models.ForeignKey(
+    #     CustomUser, related_name="ubicacion", on_delete=models.CASCADE
+    # )
+    
     # Añadí estos campos para guardar la ubicaión
-    usuario = models.ForeignKey(
-        CustomUser, related_name="ubicacion", on_delete=models.CASCADE
-    )
-    pais = models.CharField(max_length=80)
-    ciudad = models.CharField(max_length=80)
+    pais = models.CharField(max_length=80, null=True, blank=True)
+    ciudad = models.CharField(max_length=80, null=True, blank=True)
 
     class Meta:
         verbose_name = "Ubicación"

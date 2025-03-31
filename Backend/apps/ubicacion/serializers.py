@@ -22,8 +22,8 @@ class UbicacionSerializer(serializers.ModelSerializer):
         source="municipio.departamento.nombre", read_only=True
     )
     municipio_id = serializers.IntegerField(write_only=True)
-    pais = serializers.CharField()
-    ciudad = serializers.CharField()
+    pais = serializers.CharField(required=False)
+    ciudad = serializers.CharField(required=False)
 
     class Meta:
         model = Ubicacion
