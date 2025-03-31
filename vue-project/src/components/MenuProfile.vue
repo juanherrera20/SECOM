@@ -29,7 +29,7 @@ const handleLogout = async () => {
         </router-link>
       </li>
       <li class="li">
-        <router-link to="/Profile" class="link">Perfil 
+        <router-link to="/VerPerfil" class="link">Perfil 
           <span class="material-symbols-outlined">account_circle</span>
         </router-link>
       </li>

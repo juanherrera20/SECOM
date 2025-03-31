@@ -9,6 +9,19 @@
   const router = useRouter();
   const errorMessage = ref('')
 
+  const loginWithGoogle = async () => {
+    try {
+        const response = await fetch("http://localhost:8000/auth/google/");
+        const data = await response.json();
+
+        localStorage.setItem("oauth_state", data.state); // Guardamos el state
+
+        window.location.href = data.auth_url; // Redirigir a Google con el state correcto
+    } catch (error) {
+        console.error("Error al obtener la URL de autenticación:", error);
+    }
+};
+
   const handleSubmit = async () => {
     try {
       console.log("Intentando iniciar sesión");
@@ -38,11 +51,14 @@
   </div>
 
   <div class="container right">
-    <H1>INICIA SESIÓN</H1>
+    <h1>INICIA SESIÓN</h1>
     <input class="campos" type="text" v-model="email"  placeholder="Usuario o correo electrónico">
     <input class="campos" type="password" v-model="password" placeholder="Contraseña">
     <button class="iniciarsesion">Continuar</button>
     <a class="linkRecuperarContra" href="recuperarContra">¿Has olvidado la contraseña?</a>
+    <div>
+      <button type="button" class="google"  @click="loginWithGoogle" ><img class="google" src="../assets/Images/google.png">Google</button>
+    </div>
     <p>¿No tienes una cuenta? <RouterLink to="/Register">Registrarse</RouterLink></p>
     <p v-if="errorMessage" class="error" style="color: red">{{ errorMessage }}</p>
   </div>
@@ -135,5 +151,26 @@
   border: 2px solid #0F4F42;
   outline: none;
 }
+
+.google {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 4px;
+    width: 100px;
+    color: white;
+    font-family: 'Aldrich', sans-serif;
+}
+
+.google:hover {
+    border: 1px solid green;
+}
+
+.google img {
+    width: 40px;
+    border:  none;
+}
+
 
 </style>

@@ -15,6 +15,8 @@ import AddImgsComponent from '@/components/AddImgsComponent.vue'
 import EventosList from '@/views/EventosList.vue'
 import VerEvento from '@/views/VerEvento.vue'
 import EditEventoView from '@/views/EditEventoView.vue'
+import AddLocationComponent from '@/components/AddLocationComponent.vue'
+import LoginCallback from '@/components/LoginCallBack.vue' // Nueva importación
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -102,22 +104,36 @@ const router = createRouter({
       name: 'addimgscomponent',
       component: AddImgsComponent,
     },
+
     {
       path: '/Eventos',
       name: 'EventosList',
       component: EventosList,
     },
+
     {
       path: '/eventos/:id', // Usamos un parámetro dinámico para el ID del evento
       name: 'verevento',
       component: VerEvento,
       props: true, // Pasamos el parámetro como prop al componente
     },
+
     {
       path: '/eventos/edit/:id/',
       name: 'EditarEvento',
       component: EditEventoView,
     },
+
+    {
+      path: '/AddLocationComponent',
+      name: 'addlocationcomponent',
+      component: AddLocationComponent,
+    },
+    {
+      path: "/auth/callback", 
+      name: "AuthCallback", 
+      component: LoginCallback , // Nueva ruta
+    }
     // {
     //   path: '/about',
     //   name: 'about',

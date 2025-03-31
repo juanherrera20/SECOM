@@ -4,6 +4,8 @@ import ProductTarget from '@/components/ProductTarget.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import { RouterLink } from 'vue-router';
 
+
+
 let products = ref ([
     {id:1, img: "src/assets/Images/televisor.webp", descuento: false, precio: 730000, descrip: 'Televisor Smart 75 Neo Qled 4k Qn85d', tags: 'TVs'},
     {id:2, img:"src/assets/Images/applePC.webp", descuento: true, precio: 250000, descrip: 'iMac Retina 4k , Pantalla 21.5 Año 2019 Excelente Estado', tags: 'Computadora'},

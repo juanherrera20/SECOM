@@ -6,6 +6,9 @@ export const login = async (email, password) => {
   try {
     const response = await api.post(token_generate, { email, password });
 
+    // Para guardar el token en localStorage
+    localStorage.setItem('token', response.data.access); 
+
     return response.data;
   } catch (error) {
     console.error('Error en login:', error.response?.data || error.message);
