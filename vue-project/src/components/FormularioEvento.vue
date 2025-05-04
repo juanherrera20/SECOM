@@ -151,6 +151,8 @@
     donacion_id: null,
     fecha: '',
     imagenes: [],
+    pais: 'Colombia',
+    ciudad: 'Cali',
   });
   
   const cargarImagenes = ref(null);
