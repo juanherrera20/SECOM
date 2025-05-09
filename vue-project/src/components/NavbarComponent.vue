@@ -81,7 +81,7 @@ const mostrarModal = ref(false);
 </template>
 
 
-<style >
+<style lang="scss">
 
 * {
     box-sizing: border-box;
@@ -96,7 +96,7 @@ body {
 
   /*Estilos y estetica para la barra de navegación*/
   .barraSuperior {
-    background-color: #0F4F42;
+    background-color: $primary-color100;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -200,7 +200,7 @@ body {
   }
   
   .barraCategorias {
-    background-color: #a59a57;
+    background-color: $secondary-color50;
     padding: 0;
     display: flex;
     align-items: center;

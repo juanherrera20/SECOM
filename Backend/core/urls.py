@@ -13,6 +13,7 @@ urlpatterns = [
     path(BASE_API + 'usuarios/', include('apps.usuarios.urls')),
     path(BASE_API + 'eventos/', include('apps.eventos.urls')),
     path(BASE_API + 'ubicacion/', include('apps.ubicacion.urls')),
+    path(BASE_API + 'products/', include('apps.products.urls')),
     
     # Autenticación Google
     path('auth/google/', GoogleLogin.as_view(), name='google_login'),

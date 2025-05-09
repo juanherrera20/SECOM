@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     "django_extensions", #simular certificado HHTPS Solo para fase desarrollo
     
     # Nuestras apliaciones instaladas
-    "apps.articulos",
+    "apps.products",
     "apps.eventos",
     "apps.usuarios",
     "apps.ubicacion",

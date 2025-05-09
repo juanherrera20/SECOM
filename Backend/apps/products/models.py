@@ -19,7 +19,7 @@ class Categoria (models.Model):
 
 
 #Modelo de Articulo
-class Articulo (models.Model):
+class Product (models.Model):
     estados = {
         "1": "Disponible",
         "2": "Vendido",
@@ -57,7 +57,7 @@ class Etiqueta (models.Model):
 
 #Modelo para la relacion muchos a muchos entre articulos y etiquetas
 class ArticuloEtiqueta (models.Model):
-    articulo = models.ForeignKey(Articulo, on_delete=models.CASCADE, related_name="etiquetas")
+    articulo = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="etiquetas")
     etiqueta = models.ForeignKey(Etiqueta, on_delete=models.CASCADE, related_name="articulos")
     
     class Meta:
