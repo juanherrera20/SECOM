@@ -1,5 +1,6 @@
 # Importamos Dependencias
-from rest_framework import generics, viewsets, status
+from rest_framework import generics, status
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.views import APIView
@@ -16,7 +17,7 @@ class MunicipioView(generics.ListAPIView):
     serializer_class = MunicipioSerializer
     permission_classes = [AllowAny]  # Cualquier usuario puede acceder
 
-
+"""
 class UbicacionCreateView(generics.CreateAPIView):
     queryset = Ubicacion.objects.all()
     serializer_class = UbicacionSerializer
@@ -24,3 +25,12 @@ class UbicacionCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
+"""
+
+class UbicacionViewSet(ModelViewSet):
+    queryset = Ubicacion.objects.all()
+    serializer_class = UbicacionSerializer
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user) # Guarda el usuario autenticado como el creador de la ubicación

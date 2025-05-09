@@ -21,7 +21,7 @@ class MunicipioAdmin(admin.ModelAdmin):
     list_filter = ("departamento",)
     search_fields = ("nombre", "departamento__nombre")
 
-
+"""
 class UbicacionAdmin(admin.ModelAdmin):
     list_display = (
         "nombre",
@@ -43,7 +43,13 @@ class UbicacionAdmin(admin.ModelAdmin):
         ("Información Básica", {"fields": ("nombre", "municipio", "direccion")}),
         ("Geolocalización", {"fields": ("latitud", "longitud", "pais", "ciudad")}),
     ]
+"""
 
+class UbicacionAdmin(admin.ModelAdmin):
+    list_display = (
+        "pais",
+        "ciudad_o_municipio",
+    )
 
 # Registrar los modelos
 admin.site.register(Departamento, DepartamentoAdmin)

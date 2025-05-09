@@ -1,5 +1,6 @@
 from django.db import models
 from apps.usuarios.models import CustomUser
+from django.contrib.auth.models import User
 
 # Creamos los modelos para manejar la ubicación y geolocation de los elementos
 
@@ -30,7 +31,8 @@ class Municipio(models.Model):
     def __str__(self):
         return self.nombre
 
-
+#------------------------------------este es el original, lo comenté para probar otro----------------
+"""
 # Modelo para definir la ubicación de los elementos (Eventos, Articulos, etc), aquí se guardara la información de la api google maps
 class Ubicacion(models.Model):
     nombre = models.CharField(max_length=50, blank=True, null=True)
@@ -38,7 +40,7 @@ class Ubicacion(models.Model):
         Municipio, related_name="ubicacion", on_delete=models.PROTECT
     )
     direccion = models.CharField(max_length=100)
-    # Campos para la API de goodle maps o cualquier otra API de geolocalización
+    # Campos para la API de geolocalización
     latitud = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitud = models.DecimalField(
         max_digits=9, decimal_places=6, blank=True, null=True
@@ -59,3 +61,18 @@ class Ubicacion(models.Model):
 
     def __str__(self):
         return f"{self.pais}, {self.ciudad}"  # Edité esta parte
+        return self.direccion
+"""
+#---------------------------------------------------------------------------------------------------
+
+class Ubicacion(models.Model):
+    pais = models.CharField(max_length=50, blank=True, null=True)
+    ciudad_o_municipio = models.CharField(max_length=50, blank=True, null=True)
+    usuario = models.OneToOneField(CustomUser, related_name="ubicacion", on_delete=models.CASCADE) # Un usuario solo puede tener una ubicación
+
+    class Meta:
+        verbose_name = "Ubicación"
+        verbose_name_plural = "Ubicaciones"
+
+    def __str__(self):
+        return f"{self.ciudad_o_municipio}, {self.pais}"

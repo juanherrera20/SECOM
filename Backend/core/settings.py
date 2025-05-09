@@ -96,11 +96,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "secom",  # Cambiar a nombre
+        "NAME": "secom_db",  # Cambiar a nombre
         "USER": "root",
-        "PASSWORD": "1004528186",  # Cambiar
+        "PASSWORD": "juan25sql",  # Cambiar
         "HOST": "localhost",
-        "PORT": "3307",  # 3306 o 3307
+        "PORT": "3306",  # 3306 o 3307
     }
 }
 
@@ -198,8 +198,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Google OAuth
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '' #No se puede compartir la clave de cliente mediante github
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '' #No se puede compartir la clave de cliente mediante github
+#No se puede compartir la clave de cliente mediante github
+#No se puede compartir la clave de cliente mediante github
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile']
 SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:5173/auth/callback'
 

@@ -2,6 +2,7 @@
 import ButtonDefault from '@/components/ButtonDefault.vue';
 import { defineProps, defineEmits, ref } from 'vue';
 import axios from 'axios';
+import api from '../services/API'
 
 //Ajustes para el modal
 const props = defineProps({
@@ -18,13 +19,18 @@ const cerrarModal = () => {
 //Obtener y guardar ubicación
 const address = ref({
     pais: "",
-    ciudad: "",
+    ciudad_o_municipio: "",
 });
 
 const msgFalla = ref(false); //Para mostrar el mensaje de intentar obtener la ubicación otra vez si la obtenida es errónea
 
 const loading = ref(false);
 const errorMsg = ref("");
+
+const ubicacion = ref({
+    pais: "",
+    ciudad_o_municipio: "",
+});
 
 async function obtenerUbicacion() {
     if (!("geolocation" in navigator)) {
@@ -47,7 +53,7 @@ async function obtenerUbicacion() {
             
             const data = response.data;
             
-            address.value.ciudad = data.address.city || data.address.town || data.address.village;
+            address.value.ciudad_o_municipio = data.address.city || data.address.town || data.address.village;
             address.value.pais = data.address.country;
             
             //console.log("Ubicación obtenida: ", address.value);
@@ -58,7 +64,8 @@ async function obtenerUbicacion() {
             //await guardarUbicacion(address.value.pais, address.value.ciudad);
         } catch (error) {
             errorMsg.value = "Error al obtener la ubicación";
-            console.log(errorMsg);
+            console.log(errorMsg.value);
+            //console.error("Error real:", error);
         } finally {
             loading.value = false;
         }
@@ -69,21 +76,8 @@ async function obtenerUbicacion() {
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 } //Con esto el navegador usa el GPS y no la dirección IP
 );
 }
-/*
-const guardarUbicacion = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post('http://127.0.0.1:8000/api/v1/ubicacion/', address.value, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    alert('Ubicación guardada correctamente');
-    ubicacion.value = { pais: '', ciudad: '' };
-  } catch (error) {
-    errorMsg.value = "Error al guardar la ubicación.";
-    console.error('Error al guardar la ubicación', error);
-  }
-};*/
 
+// Guardar ubicación (FALTA ASIGNARLA AL USUARIO Y TAMBIÉN MOSTRAR MENSAJE CUANDO NO SIRVE POR NO ESTAR LOGUEADO)
 const guardarUbicacion = async () => {
   try {
     const token = localStorage.getItem('token');
@@ -93,8 +87,8 @@ const guardarUbicacion = async () => {
       return;
     }
 
-    const response = await axios.post(
-      'http://127.0.0.1:8000/api/v1/ubicacion/',
+    const response = await api.post(
+      '/ubicacion/',
       address.value,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -103,7 +97,8 @@ const guardarUbicacion = async () => {
     );
 
     alert('Ubicación guardada correctamente');
-    ubicacion.value = { pais: '', ciudad: '' };
+    ubicacion.value = { pais: '', ciudad_o_municipio: '' };
+    console.log('Ubicación guardada');
   } catch (error) {
     errorMsg.value = "Error al guardar la ubicación.";
     console.error('Error al guardar la ubicación:', error.response?.data || error.message);
@@ -128,7 +123,7 @@ const guardarUbicacion = async () => {
             <ButtonDefault @click="obtenerUbicacion" :disabled="loading" size="default" color="azul" icono="" class="agg" :text="loading ? 'Obteniendo ubicación...' : 'Obtener Ubicación'" />
         </div>
         <p v-if="address.pais"><strong>País:</strong> {{ address.pais }}</p>
-        <p v-if="address.ciudad"><strong>Ciudad:</strong> {{ address.ciudad }}</p>
+        <p v-if="address.ciudad_o_municipio"><strong>Ciudad:</strong> {{ address.ciudad_o_municipio }}</p>
         <p class="txt" v-if="msgFalla">Si esta no es tu ubicación actual, intentalo más tarde, pero si lo es, guardala.</p>
         <ButtonDefault v-if="msgFalla" @click="guardarUbicacion" :disabled="loading" size="default" color="azul" icono="" class="agg save" :text="loading ? 'Ubicación guardada' : 'Guardar Ubicación'" />
         <p id="error" v-if="errorMsg">{{ errorMsg }}</p>

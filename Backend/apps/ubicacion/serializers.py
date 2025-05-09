@@ -16,6 +16,7 @@ class MunicipioSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+"""
 class UbicacionSerializer(serializers.ModelSerializer):
     municipio = serializers.StringRelatedField()  # Solo muestra el nombre del municipio
     departamento = serializers.CharField(
@@ -29,3 +30,9 @@ class UbicacionSerializer(serializers.ModelSerializer):
         model = Ubicacion
         fields = "__all__"
         # extra_kwargs = {'direccion': {'required': False}} #No es necesario que la dirección sea requerida
+"""
+
+class UbicacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ubicacion
+        fields = ["pais", "ciudad_o_municipio"]
