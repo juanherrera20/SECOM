@@ -39,6 +39,7 @@ class UbicacionAdmin(admin.ModelAdmin):
         ("Información Básica", {"fields": ("name", "city", "address")}),
         ("Geolocalización", {"fields": ("latitude", "longitude", "pais")}),
     ]
+    blankspace_fields = ('city', "latitude", "longitude")  # Campos que se pueden dejar en blanco
     
 
 
