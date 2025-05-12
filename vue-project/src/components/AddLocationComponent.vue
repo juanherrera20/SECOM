@@ -21,6 +21,8 @@ const address = ref({
     ciudad: "",
 });
 
+
+
 const msgFalla = ref(false); //Para mostrar el mensaje de intentar obtener la ubicación otra vez si la obtenida es errónea
 
 const loading = ref(false);

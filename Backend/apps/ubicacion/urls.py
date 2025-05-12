@@ -4,8 +4,7 @@ from .views import *
 
 # Actualmente solo necesitamos esta View para crear Eventos
 urlpatterns = [
-    path("municipios/", CityView.as_view(), name="municipios"),
+    path("cities/", CityView.as_view(), name="cities"),
     path("", UbicacionCreateView.as_view(), name="guardar_ubicacion"),
 
-    path("", include(router.urls)),
 ]
