@@ -69,7 +69,7 @@
 
 
 
-<style scoped>
+<style scoped lang="scss">
 
 .pagina {
   margin: 50px 0px;
@@ -102,12 +102,12 @@
   padding: 20px;
   color: white;
   font-size: 22px;
-  background-color: #0B3C32;
+  background-color: $primary-color100;
 }
 
 .container.right{
   color: white;
-  background-color: #a59a57;
+  background-color: $secondary-color50;
 }
 
 /*elementos*/

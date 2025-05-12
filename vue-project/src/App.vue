@@ -16,7 +16,7 @@ import NavbarComponent from './components/NavbarComponent.vue';
 <RouterView />
 </template>
 
-<style>
+<style lang="scss" >
 /* Configuraciones generales para todas las vistas*/
 * {
   box-sizing: border-box;
@@ -26,7 +26,6 @@ import NavbarComponent from './components/NavbarComponent.vue';
 
 body {
   background-color: white;
-  font-family: 'Aldrich', sans-serif;
   height: 100vh;
   margin: 0;
   padding: 0;

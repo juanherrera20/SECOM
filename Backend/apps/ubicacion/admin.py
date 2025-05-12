@@ -1,57 +1,49 @@
-# admin.py
 from django.contrib import admin
-from .models import Departamento, Municipio, Ubicacion
+from .models import Departamento, City, Ubicacion
 
 
-class MunicipioInline(admin.TabularInline):
-    model = Municipio
-    extra = (
-        1  # Número de formularios vacíos que se muestran para agregar nuevos municipios
-    )
+class CityInline(admin.TabularInline):
+    model = City
+    extra = 1  # Número de formularios vacíos que se muestran para agregar nuevas ciudades
 
 
 class DepartamentoAdmin(admin.ModelAdmin):
-    list_display = ("nombre",)
-    search_fields = ("nombre",)
-    inlines = [MunicipioInline]
+    list_display = ("name",)
+    search_fields = ("name",)
+    inlines = [CityInline]
 
 
-class MunicipioAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "departamento")
+class CityAdmin(admin.ModelAdmin):
+    list_display = ("name", "departamento", "latitude", "longitude")
     list_filter = ("departamento",)
-    search_fields = ("nombre", "departamento__nombre")
+    search_fields = ("name", "departamento__name")
 
-"""
+
 class UbicacionAdmin(admin.ModelAdmin):
     list_display = (
-        "nombre",
-        "municipio",
-        "direccion",
-        "latitud",
-        "longitud",
+        "name",
+        "city",  # Muestra el nombre de la ciudad
+        "address",
+        "latitude",
+        "longitude",
         "pais",
-        "ciudad",
     )
-    list_filter = ("municipio__departamento", "municipio")
+    list_filter = ("city__departamento", "city")
     search_fields = (
-        "nombre",
-        "direccion",
-        "municipio__nombre",
-        "municipio__departamento__nombre",
+        "name",
+        "address",
+        "city__name",
+        "city__departamento__name",
     )
     fieldsets = [
-        ("Información Básica", {"fields": ("nombre", "municipio", "direccion")}),
-        ("Geolocalización", {"fields": ("latitud", "longitud", "pais", "ciudad")}),
+        ("Información Básica", {"fields": ("name", "city", "address")}),
+        ("Geolocalización", {"fields": ("latitude", "longitude", "pais")}),
     ]
-"""
+    
 
-class UbicacionAdmin(admin.ModelAdmin):
-    list_display = (
-        "pais",
-        "ciudad_o_municipio",
-    )
+
 
 # Registrar los modelos
 admin.site.register(Departamento, DepartamentoAdmin)
-admin.site.register(Municipio, MunicipioAdmin)
+admin.site.register(City, CityAdmin)
 admin.site.register(Ubicacion, UbicacionAdmin)

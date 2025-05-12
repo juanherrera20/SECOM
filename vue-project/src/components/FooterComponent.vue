@@ -51,7 +51,7 @@
 </footer>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .footer-container {
     height: 270px;
     background-color: #15323F;
@@ -150,4 +150,5 @@
     background-color: #1C4356;
     width: 1000px;
 }
+
 </style>
