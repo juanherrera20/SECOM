@@ -1,13 +1,15 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import MunicipioView, UbicacionViewSet
+from .views import ListarCityViewSet, CityView, UbicacionCreateView
 
+#Router para manejar las rutas de los ViewSets
 router = DefaultRouter()
-router.register(r'', UbicacionViewSet, basename='ubicacion')
+router.register(r'lista_city', ListarCityViewSet)
 
 # Actualmente solo necesitamos esta View para crear Eventos
 urlpatterns = [
-    path('', include(router.urls)),
-    path("municipios/", MunicipioView.as_view(), name="municipios"),
-    #path("", UbicacionCreateView.as_view(), name="guardar_ubicacion"),
+    path("municipios/", CityView.as_view(), name="municipios"),
+    path("", UbicacionCreateView.as_view(), name="guardar_ubicacion"),
+
+    path("", include(router.urls)),
 ]

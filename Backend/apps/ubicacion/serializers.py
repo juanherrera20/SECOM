@@ -1,38 +1,36 @@
 from rest_framework import serializers
-from .models import Ubicacion, Departamento, Municipio
+from .models import Departamento, City, Ubicacion
 
-
+# Serializador para Departamento
 class DepartamentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Departamento
-        fields = "__all__"
+        fields = ['id', 'name']
 
 
-class MunicipioSerializer(serializers.ModelSerializer):
-    departamento = DepartamentoSerializer()  # Incluye información del departamento
+# Serializador para Ciudad (antes Municipio)
+class CitySerializer(serializers.ModelSerializer):
+    departamento = DepartamentoSerializer()
 
     class Meta:
-        model = Municipio
-        fields = "__all__"
+        model = City
+        fields = ['id', 'name', 'departamento', 'latitude', 'longitude']
 
 
-"""
+# Serializador para listar Ciudad en el select
+class ListarCitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = ['name']
+
+
+# Serializador para Ubicación
 class UbicacionSerializer(serializers.ModelSerializer):
-    municipio = serializers.StringRelatedField()  # Solo muestra el nombre del municipio
-    departamento = serializers.CharField(
-        source="municipio.departamento.nombre", read_only=True
-    )
-    municipio_id = serializers.IntegerField(write_only=True)
+    # Relación de ciudad, usando PrimaryKeyRelatedField, ya que ahora usamos City
+    city = CitySerializer(read_only=True)
+    city_id = serializers.IntegerField(write_only=True)  # Campo para asociar la ciudad por ID
     pais = serializers.CharField(required=False)
-    ciudad = serializers.CharField(required=False)
 
     class Meta:
         model = Ubicacion
-        fields = "__all__"
-        # extra_kwargs = {'direccion': {'required': False}} #No es necesario que la dirección sea requerida
-"""
-
-class UbicacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ubicacion
-        fields = ["pais", "ciudad_o_municipio"]
+        fields = ['id', 'name', 'city', 'city_id', 'address', 'latitude', 'longitude', 'pais']

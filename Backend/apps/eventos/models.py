@@ -63,4 +63,4 @@ class Donacion(models.Model):
         verbose_name_plural = 'Donaciones'
         
     def __str__(self):
-        return self.nombre
+        return self.name
