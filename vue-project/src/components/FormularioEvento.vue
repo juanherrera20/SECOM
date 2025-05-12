@@ -60,14 +60,15 @@
             <SelectMunicipios v-model="evento.ubicacion.municipio_id" :municipios="municipios" />
 
             <p class="tituloDeInput"><strong>O también asigna una ubicación en tiempo real</strong></p>
-            <button class="btn-asignar-ubicacion" type="button" @click="asignarUbicacion" :disabled="loading" :text="loading ? 'Asignando ubicación...' : 'Asignar Ubicación'"> <!--hay que ajustar loading-->
-              Asignar ubicación
+            <button class="btn-asignar-ubicacion" type="button" @click="asignarUbicacion" :disabled="loading">
+              {{ loading ? 'Asignando ubicación...' : 'Asignar ubicación' }}
             </button>
+
             <p class="texto-emergencia">
               Aquí podrás obtener tu ubicación en tiempo real y asignarla a este evento
             </p>
-            <p class="texto-emergencia" id="exito" v-if="msgExito"><strong>Se asignó correctamente la ubicación a este evento.</strong></p> <!-- Sí o sí se está mostrando, hay que arreglarlo-->
-            <p class="texto-emergencia" v-if="msgFalla"><strong>Hubo un error al asignar la ubicación.</strong></p>
+            <p class="texto-emergencia" id="exito" v-if="msgExito"><strong>Se asignó correctamente la ubicación a este evento.</strong></p> <!-- Falta probar si se muestra cuando debe de ser-->
+            <p class="texto-emergencia" id="error" v-if="msgFalla"><strong>Hubo un error al asignar la ubicación.</strong></p>
           </div>
         </div>
 
@@ -130,23 +131,6 @@
   import SelectMunicipios from '@/components/SelectMunicipios.vue';
   import CargarImagenes from '@/components/CargarImagenes.vue';
   //import { c } from 'vite/dist/node/types.d-aGj9QkWt'; // Lo comenté porque me daba error y no dejaba correr el proyecto
-
-  /*
-  
-  click botón asignar ubicación -> obtener latitud y longitud
-  -> asignar latitud y longitud a evento.ubicacion.latitud y evento.ubicacion.longitud
-  -> mostrar mensaje de éxito o error
-  -> si se obtiene la ubicación, mostrarla en la consola
-
-
-  -------
-  msgFalla: false
-  msgExito: false
-
-  si no se obtiene la ubicación, msgFalla = true
-  si se obtiene la ubicación, msgExito = true
-
-  */
   
   const route = useRoute();
   const router = useRouter();
@@ -231,57 +215,68 @@
     loading.value = true;
     errorMsg.value = "";
 
-    try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-      const latitud = position.coords.latitude;
-      const longitud = position.coords.longitude;
+    msgFalla.value = false;
+    msgExito.value = false;
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitud = position.coords.latitude;
+        const longitud = position.coords.longitude;
+    
+        evento.value.ubicacion.latitud = latitud;
+        evento.value.ubicacion.longitud = longitud;
+    
+        msgExito.value = true;
+        console.log("latitud:", latitud, "longitud:", longitud);
+        loading.value = false;
+      },
+      (error) => {
+        msgFalla.value = true;
+        errorMsg.value = "No se pudo obtener la ubicación: " + error.message;
+        console.error(errorMsg.value);
+        loading.value = false;
+      }
+    );
+  };
 
-      msgExito.value = true;
-
-      console.log("latitud: ", latitud, " longitud: ", longitud);
-    })
-    } catch (error) {
-      msgFalla.value = true;
-      errorMsg.value = "Error al obtener la ubicación";
-      console.log(errorMsg.value);
-    }
-  }
   
   const guardarEvento = async () => {
-    try {
-      // Validar campos requeridos
-      if (
-        !evento.value.nombre ||
-        !evento.value.descripcion ||
-        !evento.value.causa ||
-        !evento.value.fecha ||
-        !evento.value.ubicacion.municipio_id ||
-        !evento.value.ubicacion.direccion ||
-        !evento.value.donacion_id
-      ) {
-        alert('Todos los campos requeridos deben estar completos');
-        return;
-      }
-  
-      const eventoData = {
-        ...evento.value,
-        organizador: currentUser.value.id, // Usar el ID del usuario autenticado
-        imagenes: cargarImagenes.value?.imagenes || [],
-      };
-  
-      if (modoEdicion) {
-        await updateEvento(eventoId, eventoData);
-        alert('Evento actualizado correctamente');
-      } else {
-        await createEvento(eventoData);
-        alert('Evento creado correctamente');
-      }
-      router.push({ name: 'EventosList' });
-    } catch (error) {
-      console.error('Error al guardar el evento:', error);
-      alert('Hubo un error al guardar el evento');
+  try {
+    // Validar campos requeridos
+    if (
+      !evento.value.nombre ||
+      !evento.value.descripcion ||
+      !evento.value.causa ||
+      !evento.value.fecha ||
+      !evento.value.ubicacion.municipio_id ||
+      !evento.value.donacion_id
+    ) {
+      alert('Todos los campos requeridos deben estar completos');
+      return;
     }
-  };
+
+    const eventoData = {
+      ...evento.value,
+      organizador: currentUser.value.id,
+      imagenes: cargarImagenes.value?.imagenes || [],
+    };
+
+    if (modoEdicion) {
+      await updateEvento(eventoId, eventoData);
+      alert('Evento actualizado correctamente');
+    } else {
+      console.log('Payload enviado:', eventoData); // muestra los datos que se envían
+      await createEvento(eventoData);
+      alert('Evento creado correctamente');
+    }
+
+    router.push({ name: 'EventosList' });
+  } catch (error) {
+    console.error('Error al guardar el evento:', error);
+    alert('Ocurrió un error al guardar el evento');
+  }
+};
+
 
   //Eliminar Evento
     const eliminarEvento = async () => {
@@ -382,6 +377,10 @@ h1 {
 
 #exito {
   color: #339636;
+}
+
+#error {
+  color: #B81C2C;
 }
 
 .boton {
