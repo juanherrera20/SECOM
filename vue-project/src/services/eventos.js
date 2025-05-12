@@ -1,113 +1,156 @@
-// src/services/eventos.js
 import api from './API';
 
 const base_url = 'eventos/';
-const donaciones_url = 'donaciones/';
-const imagenes_url = 'imagenes/';
+const imagenes_url = 'images/';
+const posts_url = base_url + 'posts/';
 
-// Obtener la lista de eventos
-export const getEventos = async () => {
+const EventosService = {
+  // ==================== EVENTOS ====================
+
+  async getEventos() {
     try {
-        const response = await api.get(base_url + "eventos/");
-        return response.data;
+      const response = await api.get(`${base_url}eventos/`);
+      return response.data;
     } catch (error) {
-        console.error('Error al obtener los eventos:', error.response?.data || error.message);
-        throw new Error('Error al obtener los eventos');
+      console.error('Error al obtener los eventos:', error.response?.data || error.message);
+      throw error;
     }
-};
+  },
 
-// Obtener un evento por ID
-export const getEventoById = async (id) => {
+  async getEventoById(id) {
     try {
-        const response = await api.get(`${base_url}eventos/${id}/`);
-        return response.data;
+      const response = await api.get(`${base_url}eventos/${id}/`);
+      return response.data;
     } catch (error) {
-        console.error('Error al obtener el evento:', error.response?.data || error.message);
-        throw new Error('Error al obtener el evento');
+      console.error('Error al obtener el evento:', error.response?.data || error.message);
+      throw error;
     }
-};
+  },
 
-// Crear un nuevo evento
-export const createEvento = async (eventoData) => {
+  async createEvento(eventoData) {
     try {
-        const response = await api.post(base_url + "eventos/", eventoData);
-        return response.data;
+      const response = await api.post(`${base_url}eventos/`, eventoData);
+      return response.data;
     } catch (error) {
-        console.error('Error al crear el evento:', error.response?.data || error.message);
-        throw new Error('Error al crear el evento');
+      console.error('Error al crear el evento:', error.response?.data || error.message);
+      throw error;
     }
-};
+  },
 
-// Actualizar un evento existente
-export const updateEvento = async (id, eventoData) => {
+  async updateEvento(id, eventoData) {
     try {
-        const response = await api.put(`${base_url}eventos/${id}/`, eventoData);
-        return response.data;
+      const response = await api.post(`${base_url}eventos/${id}/`, eventoData);
+      return response.data;
     } catch (error) {
-        console.error('Error al actualizar el evento:', error.response?.data || error.message);
-        throw new Error('Error al actualizar el evento');
+      console.error('Error al actualizar el evento:', error.response?.data || error.message);
+      throw error;
     }
-};
+  },
 
-// Eliminar un evento
-export const deleteEvento = async (id) => {
+  async deleteEvento(id) {
     try {
-        const response = await api.delete(`${base_url}eventos/${id}/`);
-        return response.data;
+      const response = await api.delete(`${base_url}eventos/${id}/`);
+      return response.data;
     } catch (error) {
-        console.error('Error al eliminar el evento:', error.response?.data || error.message);
-        throw new Error('Error al eliminar el evento');
+      console.error('Error al eliminar el evento:', error.response?.data || error.message);
+      throw error;
     }
-};
+  },
 
-// Obtener la lista de donaciones
-export const getDonaciones = async () => {
+  // ==================== SUBSCRIPCIÓN A EVENTO ====================
+
+  async subscribeToEvento(eventoId) {
     try {
-        const response = await api.get(base_url + donaciones_url);
-        return response.data;
+      const response = await api.post(`${base_url}eventos/${eventoId}/subscribe/`);
+      return response.data;
     } catch (error) {
-        console.error('Error al obtener las donaciones:', error.response?.data || error.message);
-        throw new Error('Error al obtener las donaciones');
+      console.error('Error al suscribirse al evento:', error.response?.data || error.message);
+      throw error;
     }
-};
+  },
 
-// Obtener imágenes de un evento
-export const getImagenesByEventoId = async (eventoId) => {
+  // ==================== POSTS DE EVENTOS ====================
+
+    async getPosts(eventoId = null) {
+        try {
+            const response = await api.get(posts_url, {
+            params: eventoId ? { evento: eventoId } : {},
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error al obtener posts de eventos:', error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+  async getPostById(id) {
     try {
-        const response = await api.get(`${base_url}${imagenes_url}${eventoId}/`);
-        return response.data;
+      const response = await api.get(`${posts_url}${id}/`);
+      return response.data;
     } catch (error) {
-        console.error('Error al obtener las imágenes:', error.response?.data || error.message);
-        throw new Error('Error al obtener las imágenes');
+      console.error('Error al obtener el post:', error.response?.data || error.message);
+      throw error;
     }
-};
+  },
 
-// Agregar o eliminar imágenes de un evento
-export const manageImagenes = async (eventoId, newImages, deletedImages) => {
+  async createPost(data) {
     try {
-        const formData = new FormData();
-        newImages.forEach((image) => formData.append('new_images', image));
-        deletedImages.forEach((imageId) => formData.append('deleted_images', imageId));
-
-        const response = await api.post(`${base_url}${imagenes_url}${eventoId}/`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        return response.data;
+      const response = await api.post(posts_url, data);
+      return response.data;
     } catch (error) {
-        console.error('Error al gestionar las imágenes:', error.response?.data || error.message);
-        throw new Error('Error al gestionar las imágenes');
+      console.error('Error al crear el post:', error.response?.data || error.message);
+      throw error;
     }
+  },
+
+  async updatePost(id, data) {
+    try {
+      const response = await api.post(`${posts_url}${id}/`, data);
+      return response.data;
+    } catch (error) {
+      console.error('Error al actualizar el post:', error.response?.data || error.message);
+      throw error;
+    }
+  },
+
+  // ==================== DONACIONES ====================
+
+  async getDonations() {
+    try {
+      const response = await api.get(`${base_url}donations/`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener las donaciones:', error.response?.data || error.message);
+      throw error;
+    }
+  },
+
+  // ==================== IMÁGENES ====================
+
+  async getImagesByEventoId(eventoId) {
+    try {
+      const response = await api.get(`${base_url}${imagenes_url}${eventoId}/`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener las imágenes del evento:', error.response?.data || error.message);
+      throw error;
+    }
+  },
+
+  async manageImages(eventoId, images) {
+    try {
+      const response = await api.post(`${base_url}${imagenes_url}${eventoId}/`, images, 
+        {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Sobrescribí el global solo acá
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error al gestionar imágenes del evento:', error.response?.data || error.message);
+      throw error;
+    }
+  },
 };
 
-export default {
-    getEventos,
-    getEventoById,
-    createEvento,
-    updateEvento,
-    deleteEvento,
-    getDonaciones,
-    getImagenesByEventoId,
-    manageImagenes,
-};
+export default EventosService;

@@ -19,6 +19,8 @@ export default defineConfig({
       scss: {
         additionalData:`
           @use "@/scss/_variables" as *;
+          @use "@/scss/_mixins" as *;
+          @use "@/scss/_forms" as *;
         `
       }
     }

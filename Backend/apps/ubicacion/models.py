@@ -50,7 +50,7 @@ class Ubicacion(models.Model):
         verbose_name_plural = "Ubicaciones"
 
     def __str__(self):
-        return f"{self.name}, {self.city.name}"  # Edité esta parte
+        return f"{self.name}, {self.address}"  # Edité esta parte
 
     # OverWrite save method, useful to create logic extra when save the instance
     def save(self, *args, **kwargs):

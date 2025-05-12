@@ -11,22 +11,22 @@
         class="evento-card"
         @click="navigateToEvento(evento.id)" 
       >
-        <div class="evento-image" v-if="evento.imagen">
-          <img :src="evento.imagen" alt="Imagen del evento" />
+        <div class="evento-image" v-if="evento.image">
+          <img :src="evento.image" alt="Imagen del evento" />
         </div>
         <div class="evento-info">
-          <h2>{{ evento.nombre }}</h2>
-          <p><strong>Fecha:</strong> {{ formatFecha(evento.fecha) }}</p>
+          <h2>{{ evento.name }}</h2>
+          <p><strong>Fecha:</strong> {{ formatFecha(evento.meet_date) }}</p>
           <p v-if="evento.ubicacion">
             <strong>Ubicación:</strong> 
-            {{ evento.ubicacion.direccion || 'Dirección no disponible' }}, 
-            {{ evento.ubicacion.municipio || 'Municipio no disponible' }}, 
-            {{ evento.ubicacion.departamento || 'Departamento no disponible' }}
+            {{ evento.ubicacion.address || 'Dirección no disponible' }}, 
+            {{ evento.ubicacion.city?.name || 'Ciudad no Definida' }}, 
+            {{ evento.ubicacion.city?.departamento || 'Departamento no Definido' }}
           </p>
           <p v-else>
             <strong>Ubicación:</strong> No disponible
           </p>
-          <p><strong>Causa:</strong> {{ evento.causa }}</p>
+          <p><strong>Donaciones:</strong> {{ evento.type_donation }}</p>
         </div>
       </div>
     </div>
@@ -36,25 +36,25 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getEventos } from '../services/eventos';
+import EventosService  from '../services/eventos';
 
-// Definimos la estructura de un evento
-const eventoStructure = {
-  id: null,
-  nombre: '',
-  fecha: '',
-  causa: '',
-  ubicacion: {
-    id: null,
-    municipio: '',
-    departamento: '',
-    nombre: '',
-    direccion: '',
-    latitud: '',
-    longitud: '',
-  },
-  imagen: null,
-};
+// // Definimos la estructura de un evento
+// const eventoStructure = {
+//   id: null,
+//   nombre: '',
+//   fecha: '',
+//   causa: '',
+//   ubicacion: {
+//     id: null,
+//     municipio: '',
+//     departamento: '',
+//     nombre: '',
+//     direccion: '',
+//     latitud: '',
+//     longitud: '',
+//   },
+//   image: null,
+// };
 
 // Estado reactivo
 const eventos = ref([]);
@@ -79,16 +79,17 @@ const navigateToEvento = (eventoId) => {
 // Cargar eventos al montar el componente
 onMounted(async () => {
   try {
-    const response = await getEventos();
-    eventos.value = response.map(evento => ({
-      ...eventoStructure, // Estructura base
-      ...evento, // Datos del backend
-    }));
+    const [ eventosResponse, ] = await Promise.all([
+      EventosService.getEventos(),
+    ]);
+    eventos.value = eventosResponse
+
+    console.log('Eventos cargados:', eventos.value);
+    loading.value = false;
+
   } catch (error) {
     console.error('Error al cargar los eventos:', error);
-  } finally {
-    loading.value = false;
-  }
+  } 
 });
 </script>
 
