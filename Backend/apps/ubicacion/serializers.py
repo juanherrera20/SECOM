@@ -7,7 +7,6 @@ class DepartamentoSerializer(serializers.ModelSerializer):
         model = Departamento
         fields = ['id', 'name']
 
-
 # Serializador para Ciudad (antes Municipio)
 class CitySerializer(serializers.ModelSerializer):
     departamento = DepartamentoSerializer()
@@ -15,14 +14,6 @@ class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
         fields = ['id', 'name', 'departamento', 'latitude', 'longitude']
-
-
-# Serializador para listar Ciudad en el select
-class ListarCitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = City
-        fields = ['name']
-
 
 # Serializador para Ubicación
 class UbicacionSerializer(serializers.ModelSerializer):
