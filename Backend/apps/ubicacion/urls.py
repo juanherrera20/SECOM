@@ -6,4 +6,6 @@ from .views import *
 urlpatterns = [
     path("municipios/", CityView.as_view(), name="municipios"),
     path("", UbicacionCreateView.as_view(), name="guardar_ubicacion"),
+
+    path("", include(router.urls)),
 ]
