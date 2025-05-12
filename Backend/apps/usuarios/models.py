@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
         verbose_name="Calificacion",
     )
     img_profile = models.ImageField(upload_to="ImagenesPerfil", null=True, blank=True)
-    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
+    username = models.CharField(max_length=150, unique=True, blank=True)
 
     # Especificamos cual va a ser el reemplazo de username y cuales son los requeridos
     USERNAME_FIELD = "email"

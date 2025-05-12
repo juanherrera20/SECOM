@@ -1,26 +1,30 @@
 # Importamos Dependencias
-from rest_framework import generics, viewsets, status
+from rest_framework import generics, status, serializers, viewsets
 from rest_framework.response import Response
-from rest_framework.decorators import action
-from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 # Importamos los modelos y serializadores necesarios
-from .models import Ubicacion, Municipio, Departamento
-from .serializers import UbicacionSerializer, MunicipioSerializer, Departamento
+from .models import Ubicacion, City, Departamento
+from .serializers import UbicacionSerializer, CitySerializer, DepartamentoSerializer
 
 
-# Generics Permite manejar las peticiones CRUD de una vista en una sola clase
-class MunicipioView(generics.ListAPIView):
-    queryset = Municipio.objects.all()  # Obtener las instancias de la base de datos
-    serializer_class = MunicipioSerializer
+# View para manejar las ciudades (anteriormente municipios)
+class CityView(generics.ListAPIView):
+    queryset = City.objects.all()  # Obtener las instancias de la base de datos
+    serializer_class = CitySerializer
     permission_classes = [AllowAny]  # Cualquier usuario puede acceder
 
 
+# View para crear una ubicación
 class UbicacionCreateView(generics.CreateAPIView):
     queryset = Ubicacion.objects.all()
     serializer_class = UbicacionSerializer
     permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder
 
     def perform_create(self, serializer):
-        serializer.save(usuario=self.request.user)
+        city_id = self.request.data.get('city_id')  # Obtener el city_id del request
+        try:
+            city = City.objects.get(id=city_id)  # Verificar si la ciudad existe
+            serializer.save(city=city, usuario=self.request.user)  # Guardar la ubicación con la ciudad seleccionada
+        except City.DoesNotExist:
+            raise serializers.ValidationError("La ciudad seleccionada no existe.")

@@ -50,9 +50,10 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "social_django",
     "django_extensions", #simular certificado HHTPS Solo para fase desarrollo
+    'django_filters',
     
     # Nuestras apliaciones instaladas
-    "apps.articulos",
+    "apps.products",
     "apps.eventos",
     "apps.usuarios",
     "apps.ubicacion",
@@ -188,7 +189,10 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         'apps.usuarios.authentication.CookiesJWTAuthentication',
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend',
+                                'rest_framework.filters.OrderingFilter',  # Habilitar el ordenamiento
+    ],
 }
 
 # Autenticación

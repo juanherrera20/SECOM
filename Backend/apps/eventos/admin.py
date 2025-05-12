@@ -1,43 +1,44 @@
-# admin.py
 from django.contrib import admin
-from .models import Evento, Imagen, Donacion
 from django.utils.html import format_html
+from .models import Evento, Image, Donation, EventPost, Subscription
 
-class ImagenInline(admin.TabularInline):
-    model = Imagen
-    extra = 1  # Número de formularios vacíos que se muestran para agregar nuevas imágenes
-    fields = ('url_imagen', 'orden', 'imagen_preview')
-    readonly_fields = ('imagen_preview',)
+class ImageInline(admin.TabularInline):
+    model = Image
+    extra = 1
+    fields = ('url', 'order', 'image_preview')
+    readonly_fields = ('image_preview',)
 
-    def imagen_preview(self, obj):
-        if obj.url_imagen:
-            return format_html('<img src="{}" width="100" height="100" />', obj.url_imagen.url)
+    def image_preview(self, obj):
+        if obj.url:
+            return format_html('<img src="{}" width="100" height="100" />', obj.url.url)
         return "No hay imagen"
-    
-    imagen_preview.short_description = 'Vista Previa'
+
+    image_preview.short_description = 'Vista Previa'
+
 
 class EventoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'fecha', 'ubicacion', 'organizador', 'imagen_preview')
-    list_filter = ('fecha', 'organizador')
-    search_fields = ('nombre', 'descripcion', 'ubicacion__nombre', 'organizador__email')
-    inlines = [ImagenInline]
+    list_display = ('name', 'meet_date', 'ubicacion', 'organizador', 'main_image_preview')
+    list_filter = ('meet_date', 'organizador')
+    search_fields = ('name', 'description', 'ubicacion__name', 'organizador__email')
+    inlines = [ImageInline]
 
-    def imagen_preview(self, obj):
-        primera_imagen = obj.imagenes.first()
-        if primera_imagen and primera_imagen.url_imagen:
-            return format_html('<img src="{}" width="50" height="50" />', primera_imagen.url_imagen.url)
+    def main_image_preview(self, obj):
+        primera_imagen = obj.images.first()
+        if primera_imagen and primera_imagen.url:
+            return format_html('<img src="{}" width="50" height="50" />', primera_imagen.url.url)
         return "No hay imagen"
-    
-    imagen_preview.short_description = 'Imagen Principal'
+
+    main_image_preview.short_description = 'Imagen Principal'
 
 
-class DonacionAdmin(admin.ModelAdmin):
-    list_display = ('nombre',)
-    search_fields = ('nombre',)
-    
-    
-    
-# Registrar los modelos
+class DonationAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+
+# Registro de modelos
 admin.site.register(Evento, EventoAdmin)
-admin.site.register(Imagen)
-admin.site.register(Donacion, DonacionAdmin)
+admin.site.register(Image)
+admin.site.register(Donation, DonationAdmin)
+admin.site.register(EventPost)
+admin.site.register(Subscription)

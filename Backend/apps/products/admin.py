@@ -1,6 +1,6 @@
 # admin.py
 from django.contrib import admin
-from .models import Categoria, Articulo, Etiqueta, ArticuloEtiqueta
+from .models import Categoria, Product, Etiqueta, ArticuloEtiqueta
 
 class ArticuloEtiquetaInline(admin.TabularInline):
     model = ArticuloEtiqueta
@@ -32,6 +32,6 @@ class ArticuloEtiquetaAdmin(admin.ModelAdmin):
 
 # Registrar los modelos
 admin.site.register(Categoria)
-admin.site.register(Articulo, ArticuloAdmin)
+admin.site.register(Product, ArticuloAdmin)
 admin.site.register(Etiqueta, EtiquetaAdmin)
 admin.site.register(ArticuloEtiqueta, ArticuloEtiquetaAdmin)
