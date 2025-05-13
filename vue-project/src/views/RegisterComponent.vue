@@ -74,7 +74,7 @@ const handleSubmit = async () => {
 </template>
 
 
-<style scoped>
+<style scoped lang="scss">
 
 .pagina {
     margin: 20px 0px;
@@ -107,7 +107,7 @@ const handleSubmit = async () => {
     padding: 20px;
     color: white;
     font-size: 22px;
-    background-color: #a59a57;
+    background-color: $secondary_color50;
 }
 
 .container.right{

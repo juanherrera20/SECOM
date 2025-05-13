@@ -202,9 +202,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Google OAuth
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '' #No se puede compartir la clave de cliente mediante github
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '' #No se puede compartir la clave de cliente mediante github
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile']
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
 SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:5173/auth/callback'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
