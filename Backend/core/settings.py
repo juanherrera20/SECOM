@@ -57,6 +57,9 @@ INSTALLED_APPS = [
     "apps.eventos",
     "apps.usuarios",
     "apps.ubicacion",
+    "apps.chat",
+    "apps.notifications",
+    "apps.marketflow"
 ]
 
 MIDDLEWARE = [

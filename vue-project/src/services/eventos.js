@@ -39,7 +39,7 @@ const EventosService = {
 
   async updateEvento(id, eventoData) {
     try {
-      const response = await api.post(`${base_url}eventos/${id}/`, eventoData);
+      const response = await api.put(`${base_url}eventos/${id}/`, eventoData);
       return response.data;
     } catch (error) {
       console.error('Error al actualizar el evento:', error.response?.data || error.message);
@@ -105,7 +105,7 @@ const EventosService = {
 
   async updatePost(id, data) {
     try {
-      const response = await api.post(`${posts_url}${id}/`, data);
+      const response = await api.put(`${posts_url}${id}/`, data);
       return response.data;
     } catch (error) {
       console.error('Error al actualizar el post:', error.response?.data || error.message);

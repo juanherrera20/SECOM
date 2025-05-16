@@ -1,37 +1,59 @@
-# admin.py
 from django.contrib import admin
-from .models import Categoria, Product, Etiqueta, ArticuloEtiqueta
+from .models import Category, Tag, Product, Offer, WishList, Image
 
-class ArticuloEtiquetaInline(admin.TabularInline):
-    model = ArticuloEtiqueta
-    extra = 1  # Número de formularios vacíos que se muestran para agregar nuevas etiquetas
+class ImageInline(admin.TabularInline):
+    model = Image
+    extra = 1
 
-class ArticuloAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'categoria', 'estado', 'usuario', 'fecha_publicacion')
-    list_filter = ('categoria', 'estado', 'usuario')
-    search_fields = ('nombre', 'descripcion', 'categoria__nombre', 'usuario__username')
-    inlines = [ArticuloEtiquetaInline]
+class OfferInline(admin.StackedInline):
+    model = Offer
+    extra = 0
 
-    fieldsets = [
-        ('Información Básica', {
-            'fields': ('nombre', 'descripcion', 'categoria', 'estado')
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'state', 'condition', 'price', 'user', 'create_date')
+    list_filter = ('category', 'state', 'condition', 'user')
+    search_fields = ('name', 'description', 'category__name', 'user__username')
+    inlines = [ImageInline, OfferInline]
+    filter_horizontal = ('tags',)
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('name', 'description', 'category', 'tags', 'condition', 'state', 'price')
         }),
-        ('Relaciones', {
-            'fields': ('usuario', 'ubicacion')
-        })
-    ]
+        ('Relations', {
+            'fields': ('user', 'ubicacion')
+        }),
+        ('Dates', {
+            'fields': ('create_date', 'update_date')
+        }),
+    )
+    readonly_fields = ('create_date', 'update_date')
 
-class EtiquetaAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'descripcion')
-    search_fields = ('nombre', 'descripcion')
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category')
+    search_fields = ('name',)
+    list_filter = ('category',)
 
-class ArticuloEtiquetaAdmin(admin.ModelAdmin):
-    list_display = ('articulo', 'etiqueta')
-    list_filter = ('articulo', 'etiqueta')
-    search_fields = ('articulo__nombre', 'etiqueta__nombre')
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
 
-# Registrar los modelos
-admin.site.register(Categoria)
-admin.site.register(Product, ArticuloAdmin)
-admin.site.register(Etiqueta, EtiquetaAdmin)
-admin.site.register(ArticuloEtiqueta, ArticuloEtiquetaAdmin)
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    list_display = ('product', 'offer_price', 'start_date', 'end_date', 'active')
+    list_filter = ('active',)
+    search_fields = ('product__name',)
+
+@admin.register(WishList)
+class WishListAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'create_date')
+    search_fields = ('user__username', 'product__name')
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ('product', 'url', 'order')
+    search_fields = ('product__name',)
+    list_filter = ('product',)

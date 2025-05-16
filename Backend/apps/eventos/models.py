@@ -8,10 +8,10 @@ import os
 #-------------------Función para subir las imagenes de los eventos-------------------
 def get_image_upload_path(instance, filename):
     # Obtener el nombre del evento y limpiarlo para usarlo como carpeta
-    eventos_name = slugify(instance.evento.name)
+    eventos_id = slugify(instance.evento.id)
     
     # Construir la ruta
-    return os.path.join('Eventos', eventos_name, 'Images', filename)
+    return os.path.join('Eventos', eventos_id, filename)
 #-----------------------------------------------------------------------------------------
 
 # Modelos Aquí
