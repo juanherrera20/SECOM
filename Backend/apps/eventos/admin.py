@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Evento, Image, Donation
+from .models import Evento, Image, Donation, EventPost, Subscription
 
 class ImageInline(admin.TabularInline):
     model = Image
@@ -40,3 +40,5 @@ class DonationAdmin(admin.ModelAdmin):
 admin.site.register(Evento, EventoAdmin)
 admin.site.register(Image)
 admin.site.register(Donation, DonationAdmin)
+admin.site.register(EventPost)
+admin.site.register(Subscription)

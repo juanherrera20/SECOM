@@ -1,0 +1,91 @@
+// Import variables such as color and font
+@use '_variables' as *;
+
+
+// Mixin para estilos base de campos de formulario
+@mixin form-field(
+  $focus-color: $confirm_green200,
+  $base-shadow: $neutral_gray90,
+  $min-height: auto
+) {
+  position: relative;
+  max-width: 600px; // Aumentamos un poco el ancho
+  width: 100%;
+  border: none;
+  border-radius: 4px; // Antes: 0.25rem
+  box-shadow: 0px 2px 0px 0px $base-shadow;
+  padding: 0.6rem; // Antes: 0.5rem
+  transition: all 200ms ease-in-out;
+  opacity: 0.9;
+  background-color: $neutral_white;
+  font-family: $primary-font;
+  font-size: 1rem; // Antes: 0.875rem
+  min-height: $min-height;
+
+  &::placeholder {
+    color: rgb(145, 145, 145);
+    font-size: 0.875rem; // Antes: 0.75rem
+  }
+
+  &:focus {
+    border: none;
+    box-shadow: 0px 2px 0px 0px $focus-color;
+    outline: none;
+  }
+
+  &.error {
+    box-shadow: 0px 2px 0px 0px $error_red100;
+  }
+
+  &:hover {
+    border: none;
+    box-shadow: 0px 2px 0px 0px $focus-color;
+    outline: none;
+  }
+}
+
+
+// Mixin para los contenedores y etiquetas de los campos
+@mixin input-box {
+  display: flex;
+  flex-direction: column;
+
+  .input-label {
+    font-size: 0.75rem; // Antes: 0.625rem
+    font-weight: bold;
+    color: $neutral_black;
+    margin-bottom: 6px;
+    margin-left: 1px;
+    width: 100%;
+    max-width: 600px; // Aumentamos un poco el ancho
+  }
+
+  .input-helper {
+    color: $neutral_gray70;
+    font-size: 0.625rem;
+    margin-top: 7px;
+    margin-left: 1px;
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition: all 150ms ease;
+    position: relative;
+    z-index: 1;
+    max-width: 600px; // Aumentamos un poco el ancho
+  }
+  
+  .input:focus + .input-helper,
+  .select:focus + .input-helper,
+  .textarea:focus + .input-helper,
+  .date:focus + .input-helper {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .input[disabled]:hover + .input-helper,
+  .select[disabled]:hover + .input-helper,
+  .textarea[disabled]:hover + .input-helper,
+  .date[disabled]:hover + .input-helper {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

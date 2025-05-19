@@ -2,32 +2,7 @@
 import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
 import ButtonDefault from '@/components/ButtonDefault.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
-/*
-import axios from 'axios';
-import { reactive, onMounted } from "vue";
 
-const usuario = reactive({
-    id: '',
-    username: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-});
-
-const usuarioID = route.params.id;
-
-const obtenerUsuario = async () => {
-    console.log("Usuario ID:", usuarioID);
-  try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/usuarios/${usuarioID}`);
-    Object.assign(usuario, response.data);
-  } catch (error) {
-    console.error('Error obteniendo datos:', error);
-  }
-};
-
-onMounted(obtenerUsuario);
-*/
 </script>
 
 <template>

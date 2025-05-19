@@ -3,8 +3,11 @@
     Mixins are reusable pieces of code that can be included in other styles.
     such as boxradious, shadows, grid, distribution, efects, transitions, etc.
 */
+@use '_variables' as *;
 
 // Example of a mixin for box shadow
-@mixin box-shadow-example($color) {
-    box-shadow: 0 4px 8px rgba($color, 0.2), 0 6px 20px rgba($color, 0.19);
+@mixin box-shadow-gray50($color:$neutral_gray50) {
+    box-shadow: 3px 6px 10px $color;
 }
+
+

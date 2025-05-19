@@ -27,8 +27,8 @@ class City(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
 
     class Meta:
-        verbose_name = "Municipio"
-        verbose_name_plural = "Municipios"
+        verbose_name = "Ciudad"
+        verbose_name_plural = "Ciudades"
 
     def __str__(self):
         return self.name
@@ -37,11 +37,11 @@ class City(models.Model):
 # Modelo para definir la ubicación de los elementos (Eventos, Articulos, etc), aquí se guardara la información de la api google maps
 class Ubicacion(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
-    city = models.ForeignKey(City, related_name="ubicacion", on_delete=models.PROTECT)
+    city = models.ForeignKey(City, related_name="ubicacion", on_delete=models.PROTECT, null=True)
     address = models.CharField(max_length=100)
     # Campos para la API de goodle maps o cualquier otra API de geolocalización
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True)
 
     pais = models.CharField(max_length=80, blank=True)
 
@@ -50,4 +50,19 @@ class Ubicacion(models.Model):
         verbose_name_plural = "Ubicaciones"
 
     def __str__(self):
-        return f"{self.name}, {self.city.name}"  # Edité esta parte
+        return f"{self.name}, {self.address}"  # Edité esta parte
+
+    # OverWrite save method, useful to create logic extra when save the instance
+    def save(self, *args, **kwargs):
+        # if the instance is not have latitude and longitude, set the city's latitude and longitude
+        if not self.latitude and not self.longitude:
+            try: 
+                self.latitude = self.city.latitude
+                self.longitude = self.city.longitude
+            except: # Si no se encuentra la ciudad, asigna valores por defecto
+                self.latitude = 1.1
+                self.longitude = 1.1
+            
+        super().save(*args, **kwargs)
+        
+

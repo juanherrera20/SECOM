@@ -1,11 +1,12 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django_filters.rest_framework import DjangoFilterBackend
 
-from .models import Evento, Image, Donation
-from .serializers import EventoSerializer, EventoListSerializer, ImageSerializer, DonationSerializer
+from .models import Evento, Image, Donation, EventPost
+from .serializers import EventoSerializer, EventoListSerializer, ImageSerializer, DonationSerializer, EventPostSerializer
 
 # ViewSet para manejar CRUD de eventos
 class EventoViewSet(viewsets.ModelViewSet):
@@ -16,13 +17,48 @@ class EventoViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return EventoListSerializer
         return EventoSerializer
+    
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def subscribe(self, request, pk=None):
+        try:
+            evento = self.get_object()
+            user = request.user
+
+            # Verificar si el usuario ya está suscrito
+            if evento.subscriptions.filter(user=user).exists():
+                return Response({"detail": "Ya estás suscrito a este evento."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Crear la suscripción
+            Subscription.objects.create(user=user, evento=evento)
+            return Response({"detail": "Suscripción exitosa."}, status=status.HTTP_201_CREATED)
+
+        except Evento.DoesNotExist:
+            return Response({"detail": "Evento no encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 
+class EventPostViewSet(viewsets.ModelViewSet):
+    queryset = EventPost.objects.all().prefetch_related('evento')
+    serializer_class = EventPostSerializer
+    permission_classes = [AllowAny]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['evento']
+    ordering = ['-create_date']
+    
+    
 # Vista para listar tipos de donación
 class DonationView(generics.ListAPIView):
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
     permission_classes = [AllowAny]
+
+@api_view(['GET'])
+def get_donacion_por_evento(request, evento_id):
+    try:
+        donacion = Donation.objects.get(evento__id=evento_id)
+        serializer = DonationSerializer(donacion)
+        return Response(serializer.data)
+    except Donation.DoesNotExist:
+        return Response({'detail': 'No se encontró donación para este evento.'}, status=404)
 
 
 # Vista para manejar imágenes del evento (GET y POST)

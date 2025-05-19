@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 # Importamos los modelos y serializadores necesarios
 from .models import Ubicacion, City, Departamento
-from .serializers import UbicacionSerializer, CitySerializer, DepartamentoSerializer, ListarCitySerializer
+from .serializers import UbicacionSerializer, CitySerializer, DepartamentoSerializer
 
 
 # View para manejar las ciudades (anteriormente municipios)
@@ -15,9 +15,11 @@ class CityView(generics.ListAPIView):
     permission_classes = [AllowAny]  # Cualquier usuario puede acceder
 
 
-class ListarCityViewSet(viewsets.ModelViewSet):
+# View para listar por ID
+class CityDetailView(generics.RetrieveAPIView):
     queryset = City.objects.all()
-    serializer_class = ListarCitySerializer
+    serializer_class = CitySerializer
+    permission_classes = [AllowAny]
 
 
 # View para crear una ubicación

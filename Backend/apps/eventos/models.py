@@ -76,3 +76,16 @@ class Donation(models.Model):
         
     def __str__(self):
         return self.name
+    
+
+class EventPost(models.Model):
+    evento = models.ForeignKey(Evento, related_name="posts", on_delete=models.CASCADE)
+    create_date = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+    
+    class Meta:
+        verbose_name = 'Post'
+        verbose_name_plural = 'Posts'
+    
+    def __str__(self):
+        return f"{self.evento.name} - {self.create_date}"
