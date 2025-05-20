@@ -28,7 +28,6 @@ onMounted(async () => {
       
       donations.value = donationsResponse;
       formData.value = eventoResponse;
-    
       
       const donation = donations.value.find(obj => obj.name === formData.value.type_donation)
       formData.value.donation_id = donation.id

@@ -4,18 +4,17 @@
       <div class="event-card">
 
         <div class="header">
+          <!--
           <div class="evento-image" v-if="event.images.length > 0">
             <img
               :src="event.images[0]"
               alt="Imagen principal del evento"
             />
           </div>
-          <!--<img :src="event.images[0]" alt="Imagen del evento" class="event-image" />-->
-          <h2>{{ event.nombre }}</h2>
-          <p class="info">📅 Fecha: <strong>{{ event.meet_date }}</strong></p>
-          <!--
-          <p class="info">📍 Ubicación: <strong>{{ ubicacion.city }} {{ ubicacion.departamento }}</strong></p>
           -->
+          <!--<img :src="event.images[0]" alt="Imagen del evento" class="event-image" />-->
+          <h2>{{ event.name }}</h2>
+          <p class="info">📅 Fecha: <strong>{{ event.meet_date }}</strong></p>
           <p class="info">📍 Ubicación: <strong>{{ ubicacion.city?.name || 'Ciudad no definida' }}, 
             {{ ubicacion.city?.departamento || 'Departamento no definido' }}</strong>
           </p>
@@ -42,7 +41,7 @@
   
         <div class="donations">
           <h3>🎁 Categoría de donaciones aceptadas</h3>
-          <p class="typeDonac">{{ event.donacion }}</p>
+          <p class="typeDonac">{{ event.type_donation }}</p>
         </div>
   
         <div class="button-container">
@@ -80,16 +79,18 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import EventosService from '../services/eventos';
 
 const route = useRoute();
-const router = useRouter();
 const eventoId = route.params.id;
 
+const router = useRouter();
+
+const donations = ref([]);
+
 const event = ref({
-  nombre: '',
+  name: "",
   meet_date: '',
-  causa: '',
   description: '',
-  donacion: '',
-  images: [],
+  type_donation: '',
+  donation_id: null,
 });
 
 const user = ref({
@@ -112,13 +113,16 @@ const ubicacion = ref({
 onMounted(async () => {
   try {
     // Obtener evento
-    const eventoResponse = await EventosService.getEventoById(eventoId);
-    const imagenesResponse = await EventosService.getImagesByEventoId(eventoId);
+    const [donationsResponse, eventoResponse] = await Promise.all([
+      EventosService.getDonations(),
+      EventosService.getEventoById(eventoId)
+    ]);
 
-    event.value = {
-      ...eventoResponse,
-      images: imagenesResponse.map((imagen) => imagen.url_imagen),
-    };
+    donations.value = donationsResponse;
+    event.value = eventoResponse;
+
+    const donation = donations.value.find(obj => obj.name === event.value.type_donation)
+    event.value.donation_id = donation.id
 
     // Obtener detalles del organizador
     const userResponse = await getUserDetail(eventoResponse.organizador);
