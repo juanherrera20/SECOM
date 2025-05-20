@@ -13,8 +13,8 @@ from .models import Evento, Image, Donation, EventPost
 class EventoSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer()
     type_donation = serializers.StringRelatedField()
+    donation_id = serializers.PrimaryKeyRelatedField(queryset=Donation.objects.all(), source='type_donation')
     organizador = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), many=False)
-    donation_id = serializers.IntegerField(write_only=True)
     #meet_date = serializers.DateField(required=False, allow_null=True)
     
     class Meta:
