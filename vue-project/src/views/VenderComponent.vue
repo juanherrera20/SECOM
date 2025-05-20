@@ -29,13 +29,12 @@ onMounted(async () => {
       donations.value = donationsResponse;
       formData.value = eventoResponse;
     
-      
-      const donation = donations.value.find(obj => obj.name === formData.value.type_donation)
-      formData.value.donation_id = donation.id
+      //Ya no es necesario el serializador ya envia string y ID
+    //   const donation = donations.value.find(obj => obj.name === formData.value.type_donation)
+    //   formData.value.donation_id = donation.id
 
       console.log('Donations:', donations.value);
       console.log('Evento info', formData.value);
-      console.log('Texto de la donación obtenido', formData.value.donation_id)
 
     } catch (error) {
       console.error('Error cargando datos iniciales:', error);

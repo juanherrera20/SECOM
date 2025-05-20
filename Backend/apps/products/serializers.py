@@ -12,9 +12,11 @@ class OfferSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField()
+    category_id = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), source='category')
     class Meta:
         model = Product  
-        fields = '__all__'  # Esto incluirá todos los campos del modelo
+        fields = ['id', 'name', 'description', 'category', 'category_id']  
         
          
 class ProductListSerializer(serializers.ModelSerializer):
@@ -49,4 +51,10 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
+        
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'name'] # category
     
