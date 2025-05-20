@@ -58,7 +58,7 @@
   <script setup>
   import { ref, onMounted } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { getEventoById, getImagenesByEventoId } from '../services/eventos';
+
   import { getCurrentUser, getUserDetail } from '../services/users';
   import ButtonDefault from '@/components/ButtonDefault.vue';
   import FooterComponent from '@/components/FooterComponent.vue';

@@ -111,6 +111,7 @@ class EventoSerializer(serializers.ModelSerializer):
 class EventoListSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer()
     image = serializers.SerializerMethodField()
+    type_donation = serializers.StringRelatedField()
 
     class Meta:
         model = Evento

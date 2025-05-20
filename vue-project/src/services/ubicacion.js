@@ -1,17 +1,18 @@
-// src/services/municipios.js
 import api from './API';
 
 const base_url = 'ubicacion/';
 
-// Obtener la lista de municipios
-export const getMunicipios = async () => {
-    try {
-        const response = await api.get(base_url + "municipios/");
-        return response.data;
-    } catch (error) {
-        console.error('Error al obtener los municipios:', error.response?.data || error.message);
-        throw new Error('Error al obtener los municipios');
-    }
-};
+const UbicacionService = {
+    // ==================== CITIES ====================
+    async getCities() {
+        try {
+            const response = await api.get(base_url + "cities/");
+            return response.data;
+        } catch (error) {
+            console.error('Error al obtener las ciudades:', error.response?.data || error.message);
+            throw new Error('Error al obtener las ciudades');
+        }
+    },
+}
 
-export default getMunicipios;
+export default UbicacionService;

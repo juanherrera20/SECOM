@@ -25,7 +25,7 @@ import NavbarComponent from './components/NavbarComponent.vue';
 }
 
 body {
-  background-color: white;
+  background-color: $neutral_white;
   height: 100vh;
   margin: 0;
   padding: 0;

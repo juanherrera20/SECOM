@@ -58,7 +58,7 @@ let products = ref ([
 </template>
 
 
-<style scoped>
+<style scoped lang="scss">
 .pagina {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -114,7 +114,7 @@ let products = ref ([
     align-self: center;
     width: 99px;
     height: 25px;
-    background-color: #2DD7B5;
+    background-color: $primary_color100;
     font-family: 'Aldrich', sans-serif;
     color: whitesmoke;
     border-radius: 10px;

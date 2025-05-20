@@ -10,7 +10,7 @@ router.register(r'posts', EventPostViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),  # Incluimos las rutas del router
-    path('donaciones/', DonationView.as_view(), name='donaciones'),
-    path('imagenes/<int:pk>/', ImageView.as_view(), name='imagenes'), # Ruta para las imagenes, necesita ID del evento
+    path('donations/', DonationView.as_view(), name='donations'),
+    path('images/<int:pk>/', ImageView.as_view(), name='images'), # Ruta para las imagenes, necesita ID del evento
 
 ]
