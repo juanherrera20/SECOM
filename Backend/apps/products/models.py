@@ -1,5 +1,6 @@
 import os
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 
 from apps.usuarios.models import CustomUser
@@ -9,7 +10,7 @@ from apps.ubicacion.models import Ubicacion
 class State(models.TextChoices):
     AVAILABLE = '1', "Disponible"
     SOLD = '2',  "Vendido"
-    IN_PROGRESS = '3', "En Proceso"
+    IN_PROGRESS = '3', "En Proceso" 
     CANCELED = '4', "Cancelado"
 #-------------------Función para subir las imagenes de los eventos-------------------
 def get_image_upload_path(instance, filename):
@@ -85,7 +86,7 @@ class Product (models.Model):
 class Offer (models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="offer")
     offer_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio de Oferta")
-    start_date = models.DateField(auto_now=True, verbose_name="Fecha de Inicio")
+    start_date = models.DateField(default=timezone.now, verbose_name="Fecha de Inicio")
     end_date = models.DateField(null=True, verbose_name="Fecha Fin de la promoción")
     active = models.BooleanField(default=True, verbose_name="Oferta Activa")
 
@@ -95,6 +96,13 @@ class Offer (models.Model):
         
     def __str__(self):
         return f"{self.product.name} - ${self.offer_price}"
+    
+    #Calculate percentage according to the price and new price, Useful to show in the frontend
+    @property
+    def discount_percentage(self):
+        if self.product.price and self.offer_price:
+            return round(100 * (self.product.price - self.offer_price) / self.product.price, 2)
+        return 0
     
 
 # Products WishList Users
