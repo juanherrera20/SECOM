@@ -1,12 +1,24 @@
 <template>
+  <div>
     <div class="container">
       <div class="event-card">
+
         <div class="header">
-          <img :src="event.images[0]" alt="Imagen del evento" class="event-image" />
-          <h2>{{ event.nombre }}</h2>
-          <p class="info">📅 Fecha: <strong>{{ event.fecha }}</strong></p>
-          <p class="info">📍 Ubicación: <strong>{{ event.ubicacion.municipio }}, {{ event.ubicacion.departamento }}</strong></p>
-          <p class="info">🏠 Dirección: <strong>{{ event.ubicacion.direccion }}</strong></p>
+          <!--
+          <div class="evento-image" v-if="event.images.length > 0">
+            <img
+              :src="event.images[0]"
+              alt="Imagen principal del evento"
+            />
+          </div>
+          -->
+          <!--<img :src="event.images[0]" alt="Imagen del evento" class="event-image" />-->
+          <h2>{{ event.name }}</h2>
+          <p class="info">📅 Fecha: <strong>{{ event.meet_date }}</strong></p>
+          <p class="info">📍 Ubicación: <strong>{{ ubicacion.city?.name || 'Ciudad no definida' }}, 
+            {{ ubicacion.city?.departamento || 'Departamento no definido' }}</strong>
+          </p>
+          <p class="info">🏠 Dirección: <strong>{{ ubicacion.address }}</strong></p>
           <p class="info">👤 Organizador: <strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
           <p class="info">✉️ Contacto: <strong>{{ user.email }}</strong></p>
           <span class="badge">{{ event.causa }}</span>
@@ -24,12 +36,12 @@
   
         <div class="description">
           <h3>📝 Descripción del evento</h3>
-          <p>{{ event.descripcion }}</p>
+          <p>{{ event.description }}</p>
         </div>
   
         <div class="donations">
           <h3>🎁 Categoría de donaciones aceptadas</h3>
-          <p class="typeDonac">{{ event.donacion }}</p>
+          <p class="typeDonac">{{ event.type_donation }}</p>
         </div>
   
         <div class="button-container">
@@ -53,69 +65,89 @@
       
     </div>
     <FooterComponent />
+  </div>
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-  import { getCurrentUser, getUserDetail } from '../services/users';
-  import ButtonDefault from '@/components/ButtonDefault.vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-  
-  const route = useRoute();
-  const router = useRouter();
-  const eventoId = route.params.id;
-  
-  const event = ref({
-    nombre: '',
-    fecha: '',
-    organizador: '',
-    causa: '',
-    descripcion: '',
-    ubicacion: {
-      municipio: '',
-      departamento: '',
-      direccion: '',
-    },
-    donacion: '',
-    images: [],
-  });
-  
-  const user = ref({ first_name: '', last_name: '', email: '' });
-  const currentUser = ref(null);
-  const isOrganizer = ref(false);
-  
-  onMounted(async () => {
-    try {
-      // Obtener evento
-      const eventoResponse = await getEventoById(eventoId);
-      const imagenesResponse = await getImagenesByEventoId(eventoId);
-  
-      event.value = {
-        ...eventoResponse,
-        images: imagenesResponse.map((imagen) => imagen.url_imagen),
-      };
-  
-      // Obtener detalles del organizador
-      const userResponse = await getUserDetail(eventoResponse.organizador);
-      user.value = userResponse;
-  
-      // Obtener usuario autenticado
-      const currentUserResponse = await getCurrentUser();
-      currentUser.value = currentUserResponse;
-  
-      // Verificar si el usuario autenticado es el organizador
-      isOrganizer.value = currentUserResponse?.id === eventoResponse.organizador;
-    } catch (error) {
-      console.error('Error al cargar datos:', error);
-    }
-  });
-  
-  const EditarEvento = () => {
-    router.push({ name: 'EditarEvento', params: { id: eventoId } });
-  };
-  </script>
+import { getCurrentUser, getUserDetail } from '../services/users';
+import ButtonDefault from '@/components/ButtonDefault.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
+
+import EventosService from '../services/eventos';
+
+const route = useRoute();
+const eventoId = route.params.id;
+
+const router = useRouter();
+
+const donations = ref([]);
+
+const event = ref({
+  name: "",
+  meet_date: '',
+  description: '',
+  type_donation: '',
+  donation_id: null,
+});
+
+const user = ref({
+  first_name: '',
+  last_name: '',
+  email: ''
+});
+
+const currentUser = ref(null);
+const isOrganizer = ref(false);
+
+const ubicacion = ref({
+  address: '',
+  city: {
+    name: '',
+    departamento: ''
+  }
+});
+
+onMounted(async () => {
+  try {
+    // Obtener evento
+    const [donationsResponse, eventoResponse] = await Promise.all([
+      EventosService.getDonations(),
+      EventosService.getEventoById(eventoId)
+    ]);
+
+    donations.value = donationsResponse;
+    event.value = eventoResponse;
+
+    const donation = donations.value.find(obj => obj.name === event.value.type_donation)
+    event.value.donation_id = donation.id
+
+    // Obtener detalles del organizador
+    const userResponse = await getUserDetail(eventoResponse.organizador);
+    user.value = userResponse;
+
+    // Obtener usuario autenticado
+    const currentUserResponse = await getCurrentUser();
+    currentUser.value = currentUserResponse;
+
+    // Verificar si el usuario autenticado es el organizador
+    isOrganizer.value = currentUserResponse?.id === eventoResponse.organizador;
+
+    // Asignar directamente la ubicación
+    ubicacion.value = eventoResponse.ubicacion;
+
+  } catch (error) {
+    console.error('Error al cargar datos:', error);
+  }
+});
+
+const EditarEvento = () => {
+  router.push({ name: 'EditarEvento', params: { id: eventoId } });
+};
+
+</script>
   
   <style scoped>
   .container {
@@ -136,11 +168,18 @@
     margin-bottom: 20px;
   }
   
-  .event-image {
+  .evento-image {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
+  }
+
+  .evento-image img {
     width: 100%;
-    height: 300px;
+    height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    display: block;
   }
   
   .info {

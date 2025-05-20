@@ -28,7 +28,7 @@ onMounted(async () => {
       
       donations.value = donationsResponse;
       formData.value = eventoResponse;
-    
+
       //Ya no es necesario el serializador ya envia string y ID
     //   const donation = donations.value.find(obj => obj.name === formData.value.type_donation)
     //   formData.value.donation_id = donation.id

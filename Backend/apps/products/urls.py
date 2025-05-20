@@ -11,5 +11,4 @@ urlpatterns = [
     path('', include(router.urls)),
     path('categories/', CategoryView.as_view(), name='categories'),
     path('tags/', TagView.as_view(), name='tags'),
-    
 ]

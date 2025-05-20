@@ -15,6 +15,13 @@ class CityView(generics.ListAPIView):
     permission_classes = [AllowAny]  # Cualquier usuario puede acceder
 
 
+# View para listar por ID
+class CityDetailView(generics.RetrieveAPIView):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    permission_classes = [AllowAny]
+
+
 # View para crear una ubicación
 class UbicacionCreateView(generics.CreateAPIView):
     queryset = Ubicacion.objects.all()

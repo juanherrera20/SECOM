@@ -1,4 +1,5 @@
 <template>
+  <div>
   <!-- Encabezado con título y botón -->
   <header class="botonYTitulo">
     <BotonPaginaAnterior />
@@ -9,52 +10,62 @@
     <section class="form-section">
       <div class="form-container">
         <h2>Información Principal</h2>
-        
-          <div class="input-box">
-            <label class="input-label">Nombre del Evento</label>
-            <input placeholder="Recaudación de fondos Niños Huerfanos" class="input" v-model="formData.name" type="text" required :disabled="false">
-            <span class="input-helper">Ingresar Nombre principal para el Evento</span>
-          </div>
 
-          <div class="input-box">
-            <label class="input-label">Fecha de Reunion</label>
-            <input
-              type="date"
-              class="input date"
-              name="fecha"
-              v-model="formData.meet_date"
-            />
-            <span class="input-helper">Ingresar Fecha de Reunion definida para el evento</span>
-          </div> 
+        <div class="input-box">
+          <label class="input-label">Nombre del Evento</label>
+          <input
+            placeholder="Recaudación de fondos Niños Huerfanos"
+            class="input"
+            v-model="formData.name"
+            type="text"
+            required
+            :disabled="false"
+          />
+          <span class="input-helper">Ingresar Nombre principal para el Evento</span>
+        </div>
 
-          <SelectInput
-            v-model="formData.donation_id"
-            :options="donations"
-            label="Tipo de Donación *"
-            extra="Seleccionar el tipo de donación que se va a recibir"
-            :isRequired=true
-            :isDesabled=false>
-          </SelectInput>
+        <div class="input-box">
+          <label class="input-label">Fecha de Reunión</label>
+          <input
+            type="date"
+            class="input date"
+            name="fecha"
+            v-model="formData.meet_date"
+          />
+          <span class="input-helper">Ingresar Fecha de Reunión definida para el evento</span>
+        </div>
 
-          <div class="input-box">
-            <label class="input-label">Descripción *</label>
-            <textarea
-              placeholder="Agregar Una Descripción"
-              class="input textarea"
-              v-model="formData.description"
-              :disabled="false"
-              :required="true"
-            ></textarea>
-            <span class="input-helper">Ingrese la Información Principal del Evento</span>
-          </div>
+        <SelectInput
+          v-model="formData.donation_id"
+          :options="donations"
+          label="Tipo de Donación *"
+          extra="Seleccionar el tipo de donación que se va a recibir"
+          :isRequired="true"
+          :isDesabled="false"
+        ></SelectInput>
+
+        <div class="input-box">
+          <label class="input-label">Descripción *</label>
+          <textarea
+            placeholder="Agregar Una Descripción"
+            class="input textarea"
+            v-model="formData.description"
+            :disabled="false"
+            :required="true"
+          ></textarea>
+          <span class="input-helper">Ingrese la Información Principal del Evento</span>
+        </div>
       </div>
 
       <div class="form-container">
         <h2>Ubicación y localización del Evento</h2>
-        
+
         <div class="location-info">
-          <p class="location-description">Es necesario ubicar el evento mediante GPS. Por favor elija usar ubicación actual o seleccionar una ciudad en el menú desplegable.</p>
-          
+          <p class="location-description">
+            Es necesario ubicar el evento mediante GPS. Por favor elija usar
+            ubicación actual o seleccionar una ciudad en el menú desplegable.
+          </p>
+
           <div class="location-grid">
             <!-- Columna izquierda -->
             <div class="location-column">
@@ -64,40 +75,55 @@
                 label="Ciudad"
                 extra="Seleccionar la ciudad donde se va a realizar el evento"
                 :isRequired="false"
-                :isDesabled="false">
-              </SelectInput>
+                :isDesabled="false"
+              ></SelectInput>
 
               <div class="input-box">
                 <label class="input-label">Nombre del Lugar</label>
-                <input placeholder="Ej: Caseta Comunal Barrio Sonda" class="input" v-model="formData.ubicacion.name" type="text"  :disabled="false">
+                <input
+                  placeholder="Ej: Caseta Comunal Barrio Sonda"
+                  class="input"
+                  v-model="formData.ubicacion.name"
+                  type="text"
+                  :disabled="false"
+                />
                 <span class="input-helper">Nombre del lugar (Local, Sector, Barrio, etc)</span>
               </div>
             </div>
-            
+
             <!-- Columna derecha -->
             <div class="location-column">
               <div class="input-box">
                 <label class="input-label">Dirección *</label>
-                <input placeholder="Ej: Carrera 4ta #56-34" class="input" v-model="formData.ubicacion.address" type="text" required :disabled="false">
+                <input
+                  placeholder="Ej: Carrera 4ta #56-34"
+                  class="input"
+                  v-model="formData.ubicacion.address"
+                  type="text"
+                  required
+                  :disabled="false"
+                />
                 <span class="input-helper">Dirección exacta del Evento</span>
               </div>
-              
+
               <SelectInput
                 v-model="formData.ubicacion.pais"
                 :options="countries"
                 label="País"
                 extra="Seleccionar el país del evento"
                 :isRequired="false"
-                :isDesabled="false">
-              </SelectInput>
+                :isDesabled="false"
+              ></SelectInput>
             </div>
           </div>
-          
+
           <!-- Sección de geolocalización -->
           <div class="geolocation-section">
             <label class="geolocation-label">Ubicación GPS (Opcional)</label>
-            <p class="geolocation-help">Puede asignar coordenadas exactas usando su ubicación actual</p>
-            
+            <p class="geolocation-help">
+              Puede asignar coordenadas exactas usando su ubicación actual
+            </p>
+
             <div class="geolocation-controls">
               <button
                 class="btn-asignar-ubicacion"
@@ -105,15 +131,22 @@
                 @click="asignUbication"
                 :disabled="loading"
               >
-                {{ loading ? 'Obteniendo ubicación...' : 'Usar mi ubicación actual' }}
+                {{ loading ? "Obteniendo ubicación..." : "Usar mi ubicación actual" }}
               </button>
-              
-              <div v-if="msgExist" class="geolocation-feedback" :class="{ 'success': msg.includes('correctamente'), 'error': msg.includes('Error') }">
+
+              <div
+                v-if="msgExist"
+                class="geolocation-feedback"
+                :class="{ success: msg.includes('correctamente'), error: msg.includes('Error') }"
+              >
                 <span>{{ msg }}</span>
               </div>
             </div>
-            
-            <div v-if="formData.ubicacion.latitude && formData.ubicacion.longitude" class="coordinates-display">
+
+            <div
+              v-if="formData.ubicacion.latitude && formData.ubicacion.longitude"
+              class="coordinates-display"
+            >
               <span>Latitud: {{ formData.ubicacion.latitude.toFixed(6) }}</span>
               <span>Longitud: {{ formData.ubicacion.longitude.toFixed(6) }}</span>
             </div>
@@ -122,13 +155,30 @@
       </div>
 
       <div class="files-container">
-        <h2>Imagenes/Fotos del Evento</h2>
-        <input type="file" @change="handleImageUpdload" multiple accept="image/*"/>
+        <h2>Imágenes/Fotos del Evento</h2>
+        <input
+          type="file"
+          @change="handleImageUpdload"
+          multiple
+          accept="image/*"
+        />
         <div v-if="selectedImages.length > 0" class="selected-images">
-          <h3>Imagenes Seleccionadas</h3>
-          <div v-for="(img, index) in selectedImages" :key="index" class="images-list">
-            <img :src="getImagePreview(img)" :alt="img.name" class="property-image" />
-            <button @click="removeImage(index)" class="remove-file" type="button">
+          <h3>Imágenes Seleccionadas</h3>
+          <div
+            v-for="(img, index) in selectedImages"
+            :key="index"
+            class="images-list"
+          >
+            <img
+              :src="getImagePreview(img)"
+              :alt="img.name"
+              class="property-image"
+            />
+            <button
+              @click="removeImage(index)"
+              class="remove-file"
+              type="button"
+            >
               ✕
             </button>
           </div>
@@ -136,190 +186,167 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="submit-button" >Publicar</button>
+        <button type="submit" class="submit-button">Publicar</button>
       </div>
     </section>
   </form>
+  <div>
   <FooterComponent />
+  </div>
+  </div>
 </template>
 
 <script setup>
-//Import libraries, tools and helpers
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  
-  //Import components
-  import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-  import SelectInput from '@/components/SelectInput.vue';
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-  // Import services to consume API
-  import EventosService from '../services/eventos';
-  import UbicacionService from '@/services/ubicacion';
-  import { getCurrentUser } from '../services/users';
+import BotonPaginaAnterior from "../components/BotonPaginaAnterior.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
+import SelectInput from "@/components/SelectInput.vue";
 
-  // Necesary variables 
-  const route = useRoute();
-  const router = useRouter();
-  const countries = ref([{  // List of countries to the select input
-    id:'Colombia', name: 'Colombia',
-  }, {
-    id:'Ecuador', name: 'Ecuador',
-  }, {
-    id:'Peru', name: 'Peru',
-  }]);
-  const msg = ref('');
-  const msgExist = ref(false);
-  const loading = ref(false);
-  const selectedImages = ref([]) // Images
-  const eventoID = ref(null)
- 
+import EventosService from "../services/eventos";
+import UbicacionService from "@/services/ubicacion";
+import { getCurrentUser } from "../services/users";
 
-  //Principal data object to send to API
-  const formData = ref({
-    name: '', // Nombre del evento
-    meet_date: '', // Fecha de la reunión (puede ser null)
-    organizador: null, // ID del organizador
-    description: '', // Descripción del evento
-    donation_id: null, // ID de la donación
-    
-    ubicacion: {
-      city_id: null, // ID de la ciudad (puede ser null)
-      name: '', // Nombre de la ubicación (puede ser null)
-      address: '', // Dirección (no obligatoria, puede ser vacía)
-      latitude: null, // Latitud (puede ser null)
-      longitude: null, // Longitud (puede ser null)
-      pais: null, // País (puede ser null)
+const route = useRoute();
+const router = useRouter();
+const countries = ref([
+  { id: "Colombia", name: "Colombia" },
+  { id: "Ecuador", name: "Ecuador" },
+  { id: "Peru", name: "Peru" },
+]);
+const msg = ref("");
+const msgExist = ref(false);
+const loading = ref(false);
+const selectedImages = ref([]);
+const eventoID = ref(null);
+
+const formData = ref({
+  name: "",
+  meet_date: "",
+  organizador: null,
+  description: "",
+  donation_id: null,
+  ubicacion: {
+    city_id: null,
+    name: "",
+    address: "",
+    latitude: null,
+    longitude: null,
+    pais: null,
+  },
+});
+
+const donations = ref([]);
+const cities = ref([]);
+
+onMounted(async () => {
+  try {
+    const [citiesResponse, donationsResponse] = await Promise.all([
+      UbicacionService.getCities(),
+      EventosService.getDonations(),
+    ]);
+
+    cities.value = citiesResponse;
+    donations.value = donationsResponse;
+
+    console.log("Cities:", cities.value);
+    console.log("Donations:", donations.value);
+  } catch (error) {
+    console.error("Error cargando datos iniciales:", error);
+  }
+});
+
+async function asignUbication() {
+  if (!("geolocation" in navigator)) {
+    msg.value = "Este navegador no soporta geolocalización.";
+    msgExist.value = true;
+    return;
+  }
+
+  loading.value = true;
+  msg.value = "";
+  msgExist.value = false;
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      formData.value.ubicacion.latitude = position.coords.latitude;
+      formData.value.ubicacion.longitude = position.coords.longitude;
+
+      msg.value = "Ubicación asignada correctamente.";
+      msgExist.value = true;
+      loading.value = false;
     },
-  });
-
-  //Information to get from API
-  const donations = ref([]);
-  const cities = ref([]);
-
-  onMounted(async () => {
-    try {
-      const [citiesResponse, donationsResponse] = await Promise.all([
-        UbicacionService.getCities(),
-        EventosService.getDonations(),
-      ]);
-      
-      cities.value = citiesResponse;
-      donations.value = donationsResponse;
- 
-      console.log('Cities:', cities.value);
-      console.log('Donations:', donations.value);
-
-    } catch (error) {
-      console.error('Error cargando datos iniciales:', error);
-    }
-  });
-
-  // Asignar ubicación con geolocalización
-  async function asignUbication() {
-    if (!("geolocation" in navigator)) {
-      msg.value = "Este navegador no soporta geolocalización.";
+    (error) => {
+      msg.value = "Error al obtener la ubicación: " + error.message;
       msgExist.value = true;
-      return;
+      loading.value = false;
     }
+  );
+}
 
-    loading.value = true;
-    msg.value = "";
-    msgExist.value = false;
+const handleSubmit = async () => {
+  msg.value = "";
+  msgExist.value = false;
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const latitud = position.coords.latitude;
-        const longitud = position.coords.longitude;
-
-        formData.value.ubicacion.latitude = Number(latitud.toFixed(6));
-        formData.value.ubicacion.longitude = Number(longitud.toFixed(6));
-
-        msg.value = "Ubicación asignada correctamente";
-        msgExist.value = true;
-
-        console.log("Ubicación asignada correctamente:", latitud, longitud);
-        loading.value = false;
-      },
-      (err) => {
-        msg.value = "Error al obtener la ubicación: " + err.message;
-        msgExist.value = true;
-        loading.value = false;
-      }
-    );
+  if (
+    !formData.value.ubicacion.city_id &&
+    (!formData.value.ubicacion.latitude || !formData.value.ubicacion.longitude)
+  ) {
+    msg.value = "Debes seleccionar una ciudad o asignar tu ubicación actual.";
+    msgExist.value = true;
+    return;
   }
 
-  // Handle form submission
-  const handleSubmit = async () => {
-    msg.value = "";
-    msgExist.value = false;
+  const currentUser = await getCurrentUser();
+  formData.value.organizador = currentUser.id;
 
-    if (
-      !formData.value.ubicacion.city_id &&
-      (!formData.value.ubicacion.latitude || !formData.value.ubicacion.longitude)
-    ) {
-      msg.value = "Debes seleccionar una ciudad o asignar tu ubicación actual.";
-      msgExist.value = true;
-      return;
-    }
+  try {
+    const response = await EventosService.createEvento(formData.value);
+    console.log("Evento creado:", response);
+    eventoID.value = response.id;
 
-    // to set the ID of the user who is creating the event
-    const currentUser = await getCurrentUser();
-    formData.value.organizador = currentUser.id;
+    await uploadImages();
+    router.push({ name: "EventosList" });
+  } catch (error) {
+    console.error("Error al crear el evento:", error);
+    msg.value = "Error al crear el evento. Por favor, inténtalo de nuevo.";
+    msgExist.value = true;
+  }
+};
 
-    console.log('Datos del evento:', formData.value);
-    try {
-      const response = await EventosService.createEvento(formData.value);
-      console.log('Evento creado:', response);
-      eventoID.value = response.id;
+const handleImageUpdload = (event) => {
+  const newImages = Array.from(event.target.files);
+  selectedImages.value = [...selectedImages.value, ...newImages];
+};
 
-      await uploadImages(); // Upload images after creating the event
-      router.push({ name: 'EventosList'});
-    } catch (error) {
-      console.error('Error al crear el evento:', error);
-      msg.value = "Error al crear el evento. Por favor, inténtalo de nuevo.";
-      msgExist.value = true;
-    }
-  };
+const removeImage = (index) => {
+  selectedImages.value.splice(index, 1);
+};
 
+const getImagePreview = (file) => {
+  return URL.createObjectURL(file);
+};
 
-    // Handle to image upload and remove (Images)
-  const handleImageUpdload = (event) => {
-    const newImages = Array.from(event.target.files)
-    selectedImages.value = [...selectedImages.value, ...newImages]
+const uploadImages = async () => {
+  if (!eventoID.value || selectedImages.value.length === 0) {
+    return;
   }
 
-  const removeImage = (index) => {
-    selectedImages.value.splice(index, 1)
+  try {
+    const formData = new FormData();
+    selectedImages.value.forEach((file) => {
+      formData.append("new_images", file);
+    });
+
+    await EventosService.manageImages(eventoID.value, formData);
+    console.log("Imágenes subidas con éxito");
+  } catch (error) {
+    console.error("Error al subir las imágenes:", error);
   }
-
-  const getImagePreview = (file) => {
-    return URL.createObjectURL(file)
-  }
-
-  const uploadImages = async () => {
-    if (!eventoID.value || selectedImages.value.length === 0) {
-      return
-    }
-
-    try {
-      const formData = new FormData()
-
-      // Agregar archivos (esto lo espera el backend en request.FILES.getlist('new_files'))
-      selectedImages.value.forEach(file => {
-        formData.append('new_images', file)
-      })
-
-      console.log('Imagenes subidas con éxito', formData)
-      // Enviar al backend
-      await EventosService.manageImages(eventoID.value, formData)
-      console.log('Imagenes subidas con éxito')
-    } catch (error) {
-      console.error('Error al subir las imagenes:', error)
-    }
-  }
-
+};
 </script>
+
 
 
 <style scoped lang="scss">
@@ -511,12 +538,72 @@
     border: none;
     border-radius: 8px;
     transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: $primary_color50;
-      cursor: pointer;
-    }
   }
+}
+.campo {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tituloDeInput {
+  font-size: 1rem;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.inputInfoEvento {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.inputInfoEvento:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+.spanYCampoRequer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+  color: #B81C2C;
+  margin-top: 5px;
+}
+
+.campoRequerido {
+  color: #B81C2C;
+}
+
+#exito {
+  color: #339636;
+}
+
+#error {
+  color: #B81C2C;
+}
+
+.boton {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.Publicar {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.Publicar:hover {
+  background-color: #45a049;
 }
 
 .btn-asignar-ubicacion {
@@ -643,7 +730,6 @@
     color: darken($error_red50, 20%);
   }
 }
-
 .coordinates-display {
   margin-top: 1rem;
   display: flex;
@@ -658,4 +744,5 @@
     font-family: monospace;
   }
 }
+
 </style>
