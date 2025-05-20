@@ -3,15 +3,62 @@ import AddImgsComponent from '@/components/AddImgsComponent.vue'
 import ButtonDefault from '@/components/ButtonDefault.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 
+// Codigo de ejemplo para hacer vista de ver Evento
+import SelectInput from '@/components/SelectInput.vue';
+import EventosService from '../services/eventos';
+import { ref, onMounted } from 'vue';
+
+const donations = ref([]);
+
+const formData = ref({
+        id: null,
+        name: "",
+        meet_date: "",
+        type_donation: "",
+        donation_id: null,
+        image: ""
+})
+
+onMounted(async () => {
+    try {
+      const [donationsResponse, eventoResponse] = await Promise.all([
+        EventosService.getDonations(),
+        EventosService.getEventoById(1)
+      ]);
+      
+      donations.value = donationsResponse;
+      formData.value = eventoResponse;
+    
+      
+      const donation = donations.value.find(obj => obj.name === formData.value.type_donation)
+      formData.value.donation_id = donation.id
+
+      console.log('Donations:', donations.value);
+      console.log('Evento info', formData.value);
+      console.log('Texto de la donación obtenido', formData.value.donation_id)
+
+    } catch (error) {
+      console.error('Error cargando datos iniciales:', error);
+    }
+  });
+// Aquí termina el Evento
 </script>
 
 
 <template>
-
     <div>
 
     <div class="container">
-
+        <label> {{ formData.type_donation }}</label>
+        <label>Donación permitida por el evento {{ formData.donation_id }}</label>
+                <SelectInput
+                    v-model="formData.donation_id"
+                    :options="donations"
+                    label="Tipo de Donaciones"
+                    extra="Seleccionar el tipo de donacion permitida"
+                    :isRequired="false"
+                    :isDesabled="false">
+              </SelectInput>
         <div class="img">
             <img src="../assets/Images/publica archivo.png" alt="Publicar" id="imgVender">
         </div>
