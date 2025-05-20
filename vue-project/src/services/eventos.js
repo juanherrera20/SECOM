@@ -125,6 +125,17 @@ const EventosService = {
     }
   },
 
+  async getDonationsByEventoId(eventoId) {
+    try {
+      const response = await api.get(`${base_url}donations/evento/${eventoId}/`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener la donación del evento:', error.response?.data || error.message);
+      throw error;
+    }
+  },
+
+
   // ==================== IMÁGENES ====================
 
   async getImagesByEventoId(eventoId) {

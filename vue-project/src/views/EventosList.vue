@@ -16,7 +16,7 @@
         </div>
         <div class="evento-info">
           <h2>{{ evento.name }}</h2>
-          <p><strong>Fecha:</strong> {{ formatFecha(evento.meet_date) }}</p>
+          <p><strong>Fecha:</strong> {{ (evento.meet_date) }}</p>
           <p v-if="evento.ubicacion">
             <strong>Ubicación:</strong> 
             {{ evento.ubicacion.address || 'Dirección no disponible' }}, 
@@ -60,12 +60,12 @@ import EventosService  from '../services/eventos';
 const eventos = ref([]);
 const loading = ref(true);
 const router = useRouter();
-
+/*
 // Función para formatear la fecha
 const formatFecha = (fecha) => {
   return new Date(fecha).toLocaleDateString();
 };
-
+*/
 // Función para navegar a la vista de agregar evento
 const navigateToAddEvent = () => {
   router.push({ name: 'crearevento' });

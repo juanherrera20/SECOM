@@ -1,6 +1,6 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
@@ -50,6 +50,15 @@ class DonationView(generics.ListAPIView):
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
     permission_classes = [AllowAny]
+
+@api_view(['GET'])
+def get_donacion_por_evento(request, evento_id):
+    try:
+        donacion = Donation.objects.get(evento__id=evento_id)
+        serializer = DonationSerializer(donacion)
+        return Response(serializer.data)
+    except Donation.DoesNotExist:
+        return Response({'detail': 'No se encontró donación para este evento.'}, status=404)
 
 
 # Vista para manejar imágenes del evento (GET y POST)

@@ -21,13 +21,14 @@ class ProductViewSet(viewsets.ModelViewSet):
             return ProductListSerializer
         return ProductSerializer
     
+    
 #View to list the categories
 class CategoryView(generics.ListAPIView):
     queryset = Category.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] #only can Read info
     serializer_class = CategorySerializer
-    
 
+    
 class TagView(generics.ListAPIView):
     queryset = Tag.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] #only can Read info

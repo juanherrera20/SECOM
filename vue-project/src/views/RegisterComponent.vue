@@ -77,7 +77,7 @@ const handleSubmit = async () => {
 <style scoped lang="scss">
 
 .pagina {
-    margin: 20px 0px;
+    margin: 50px 0px;
     width: 100%;
     height: 80%;
     display: flex;
