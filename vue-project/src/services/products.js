@@ -7,9 +7,11 @@ const offers_url = base_url + 'offers/';
 const ProductsService = {
   // ==================== PRODUCTOS ====================
 
-  async getProductos() {
+  async getProductos(params = {}) {
     try {
-      const response = await api.get(`${base_url}products/`);
+      const response = await api.get(`${base_url}products/`, {
+        params, // 👈 aquí van los filtros dinámicos
+      });
       return response.data;
     } catch (error) {
       console.error('Error al obtener productos:', error.response?.data || error.message);
