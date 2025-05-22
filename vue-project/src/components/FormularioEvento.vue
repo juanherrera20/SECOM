@@ -1,5 +1,4 @@
 <template>
-  <div>
   <!-- Encabezado con título y botón -->
   <header class="botonYTitulo">
     <BotonPaginaAnterior />
@@ -190,10 +189,7 @@
       </div>
     </section>
   </form>
-  <div>
   <FooterComponent />
-  </div>
-  </div>
 </template>
 
 <script setup>
@@ -270,11 +266,16 @@ async function asignUbication() {
 
   navigator.geolocation.getCurrentPosition(
     (position) => {
-      formData.value.ubicacion.latitude = position.coords.latitude;
-      formData.value.ubicacion.longitude = position.coords.longitude;
+      const latitud = position.coords.latitude;
+      const longitud = position.coords.longitude;
 
-      msg.value = "Ubicación asignada correctamente.";
+      formData.value.ubicacion.latitude = Number(latitud.toFixed(6));
+      formData.value.ubicacion.longitude = Number(longitud.toFixed(6));
+
+      msg.value = "Ubicación asignada correctamente";
       msgExist.value = true;
+
+      console.log("Ubicación asignada correctamente:", latitud, longitud);
       loading.value = false;
     },
     (error) => {

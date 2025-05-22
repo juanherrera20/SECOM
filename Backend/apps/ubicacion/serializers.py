@@ -20,7 +20,7 @@ class UbicacionSerializer(serializers.ModelSerializer):
     # Relación de ciudad, usando PrimaryKeyRelatedField, ya que ahora usamos City
     city = CitySerializer(read_only=True)
     city_id = serializers.IntegerField(write_only=True, allow_null=True)  # Campo para asociar la ciudad por ID
-    pais = serializers.CharField(required=False, allow_null=True)  # Campo para el país, opcional
+    pais = serializers.CharField(required=False)  
 
     class Meta:
         model = Ubicacion

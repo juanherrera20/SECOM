@@ -6,35 +6,51 @@ import FooterComponent from '@/components/FooterComponent.vue';
 // Codigo de ejemplo para hacer vista de ver Evento
 import SelectInput from '@/components/SelectInput.vue';
 import EventosService from '../services/eventos';
+import ProductsService from '../services/products'
 import { ref, onMounted } from 'vue';
 
-const donations = ref([]);
-
-const formData = ref({
-        id: null,
-        name: "",
-        meet_date: "",
-        type_donation: "",
-        donation_id: null,
-        image: ""
+const conditions = ref([])
+const productForm = ref({
+  name: "Computador Lenovo 42' con camara y pantalla tactil",
+  description: "Computador Lenovo, color negro con pantalla tactil omg",
+  category_id: 1,
+  tags_ids: [3, 2],
+  ubicacion: {
+    city_id: 1,
+    name: "Casa Juan",
+    address: "Villa Olimpica Calle 2",
+    latitude: null,
+    longitude: null,
+    pais: "Colombia"
+  },
+  price: "420000",
+  condition: "1"
 })
+
+const createProduct = async () => {
+  try {
+    const response = await ProductsService.addToWishlist(1)
+    console.log('Producto Agregado a Wishlist:', response.detail)
+  } catch (error) {
+    console.error('Error creando producto:', error.response?.data || error.message)
+  }
+}
 
 onMounted(async () => {
     try {
-      const [donationsResponse, eventoResponse] = await Promise.all([
-        EventosService.getDonations(),
-        EventosService.getEventoById(1)
+      const [ conditionsResponse] = await Promise.all([
+
+        ProductsService.getConditions()
+
       ]);
       
-      donations.value = donationsResponse;
-      formData.value = eventoResponse;
+      conditions.value = conditionsResponse
 
       //Ya no es necesario el serializador ya envia string y ID
     //   const donation = donations.value.find(obj => obj.name === formData.value.type_donation)
     //   formData.value.donation_id = donation.id
 
-      console.log('Donations:', donations.value);
-      console.log('Evento info', formData.value);
+      console.log('Conditions:', conditions.value);
 
     } catch (error) {
       console.error('Error cargando datos iniciales:', error);
@@ -48,19 +64,7 @@ onMounted(async () => {
     <div>
 
     <div class="container">
-        <label> {{ formData.type_donation }}</label>
-        <label>Donación permitida por el evento {{ formData.donation_id }}</label>
-                <SelectInput
-                    v-model="formData.donation_id"
-                    :options="donations"
-                    label="Tipo de Donaciones"
-                    extra="Seleccionar el tipo de donacion permitida"
-                    :isRequired="false"
-                    :isDesabled="false">
-              </SelectInput>
-        <div class="img">
-            <img src="../assets/Images/publica archivo.png" alt="Publicar" id="imgVender">
-        </div>
+        <button @click="createProduct">Enviar</button>
 
         <div class="tipoProducto">
             <div class="descripciones">
