@@ -4,14 +4,13 @@
       <div class="event-card">
 
         <div class="header">
-          <!--
-          <div class="evento-image" v-if="event.images.length > 0">
+          <div class="evento-image">
             <img
-              :src="event.images[0]"
+              v-if="imgEvento.length > 0"
+              :src="imgEvento[0].url"
               alt="Imagen principal del evento"
             />
           </div>
-          -->
           <!--<img :src="event.images[0]" alt="Imagen del evento" class="event-image" />-->
           <h2>{{ event.name }}</h2>
           <p class="info">📅 Fecha: <strong>{{ event.meet_date }}</strong></p>
@@ -85,6 +84,8 @@ const router = useRouter();
 
 const donations = ref([]);
 
+const imgEvento = ref([]);
+
 const event = ref({
   name: "",
   meet_date: '',
@@ -113,13 +114,15 @@ const ubicacion = ref({
 onMounted(async () => {
   try {
     // Obtener evento
-    const [donationsResponse, eventoResponse] = await Promise.all([
+    const [donationsResponse, eventoResponse, getDonationsByEventoId] = await Promise.all([
       EventosService.getDonations(),
-      EventosService.getEventoById(eventoId)
+      EventosService.getEventoById(eventoId),
+      EventosService.getImagesByEventoId(eventoId)
     ]);
 
     donations.value = donationsResponse;
     event.value = eventoResponse;
+    imgEvento.value = getDonationsByEventoId;
 
     const donation = donations.value.find(obj => obj.name === event.value.type_donation)
     event.value.donation_id = donation.id
@@ -180,6 +183,10 @@ const EditarEvento = () => {
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  h2 {
+    margin-top: 15px;
   }
   
   .info {
