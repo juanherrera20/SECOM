@@ -137,7 +137,7 @@ const EventosService = {
 
 
   // ==================== IMÁGENES ====================
-
+  // List Images Evento
   async getImagesByEventoId(eventoId) {
     try {
       const response = await api.get(`${base_url}${imagenes_url}${eventoId}/`);
@@ -148,6 +148,7 @@ const EventosService = {
     }
   },
 
+  // Add & delete Images Evento
   async manageImages(eventoId, images) {
     try {
       const response = await api.post(`${base_url}${imagenes_url}${eventoId}/`, images, 

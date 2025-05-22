@@ -52,12 +52,6 @@ const router = createRouter({
     },
 
     {
-      path: '/Gratuitos',
-      name: 'gratuitos',
-      component: GratuitosView,
-    },
-
-    {
       path: '/EditPerfil',
       name: 'editperfil',
       component: EditPerfil,
