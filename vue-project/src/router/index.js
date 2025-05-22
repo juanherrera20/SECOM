@@ -17,6 +17,9 @@ import VerEvento from '@/views/VerEvento.vue'
 import EditEventoView from '@/views/EditEventoView.vue'
 import AddLocationComponent from '@/components/AddLocationComponent.vue'
 import LoginCallback from '@/components/LoginCallBack.vue' // Nueva importación
+import AlertComponent from '@/components/AlertComponent.vue'
+import ChatModalComponent from '@/components/ChatModalComponent.vue'
+import ChatInternoComponent from '@/components/ChatInternoComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,11 +126,32 @@ const router = createRouter({
       name: 'addlocationcomponent',
       component: AddLocationComponent,
     },
+
     {
       path: "/auth/callback", 
       name: "AuthCallback", 
       component: LoginCallback , // Nueva ruta
-    }
+    },
+
+    {
+      path: '/AlertComponent',
+      name: 'alertComponent',
+      component: AlertComponent,
+      props: true,
+    },
+
+    {
+      path: '/ChatModalComponent',
+      name: 'chatModalComponent',
+      component: ChatModalComponent,
+    },
+
+    {
+      path: '/ChatInternoComponent',
+      name: 'chatInternoComponent',
+      component: ChatInternoComponent,
+    },
+
     // {
     //   path: '/about',
     //   name: 'about',

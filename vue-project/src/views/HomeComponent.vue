@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ProductTarget from '@/components/ProductTarget.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import { RouterLink } from 'vue-router';
-
+import AlertComponent from '../components/AlertComponent.vue'
 
 
 let products = ref ([
@@ -13,11 +13,29 @@ let products = ref ([
     {id:4, img:"src/assets/Images/pantalon.webp", descuento: false, precio: 30000, descrip: 'PANTALON STYLE TALLA 8', tags: 'Pantalones'}
 ])  
 
+const showAlertLogin = ref(false)
+const showAlertLogout = ref(false)
+
+onMounted(() => {
+  if (localStorage.getItem('loginSuccess') === 'true') {
+    showAlertLogin.value = true
+    localStorage.removeItem('loginSuccess')
+    setTimeout(() => showAlertLogin.value = false, 3000)
+  }
+  else if (localStorage.getItem('loginSuccess') === 'false') {
+    showAlertLogout.value = true
+    localStorage.removeItem('loginSuccess')
+    setTimeout(() => showAlertLogout.value = false, 3000)
+  }
+})
+
 </script>
 
 
 <template>
     <div id="contenedorMayor">
+        <AlertComponent v-if="showAlertLogin" title="Inicio de sesión exitoso" message="¡Bienvenido/a a SECOM!" />
+        <AlertComponent v-if="showAlertLogout" title="Sesión cerrada exitosamente" message="¡Adios!" />
 <div class="pagina">
     <div class="eventos">
         <button class="boton eventos-right"><span class="material-symbols-outlined">arrow_left</span></button>

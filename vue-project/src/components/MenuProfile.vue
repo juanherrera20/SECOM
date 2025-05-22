@@ -7,7 +7,7 @@ const router = useRouter();
 const handleLogout = async () => {
   try {
     await logoutService();
-    alert('Sesión cerrada exitosamente');
+    //alert('Sesión cerrada exitosamente');
     router.push('/'); // Redirigir a la página de inicio
   } catch (error) {
     console.error('Error al cerrar sesión:', error);
