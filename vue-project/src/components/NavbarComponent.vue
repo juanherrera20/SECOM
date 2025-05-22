@@ -5,6 +5,9 @@ import AddLocationComponent from '../components/AddLocationComponent.vue';
 import { RouterLink } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { getCurrentUser } from '../services/users';
+import ChatModalComponent from './ChatModalComponent.vue'
+import ChatInternoComponent from './ChatInternoComponent.vue'
+import { nextTick } from 'vue'
 
 const user = ref(null);
 
@@ -18,7 +21,18 @@ onMounted( async () => {
 
 const mostrarModal = ref(false);
 
+const showChats = ref(false)
+const toggleChatModal = () => {
+  showChats.value = !showChats.value
+}
 
+const chatSeleccionado = ref(null)
+
+const abrirChatPrivado = async (chat) => {
+  showChats.value = false
+  await nextTick()
+  chatSeleccionado.value = chat  // Abre el modal de chat privado
+}
 
 </script>
 
@@ -42,7 +56,11 @@ const mostrarModal = ref(false);
       </div>
 
       <ul class="opciSuperiores" id="mensajYNotif">
-        <li class="lista_opci mensaje1"><a href="#"><span class="material-symbols-outlined">forum</span></a></li>
+        <li class="lista_opci mensaje1"><a class="cursor" @click="toggleChatModal"><span class="material-symbols-outlined">forum</span></a></li>
+        <ChatModalComponent :visible="showChats" @close="toggleChatModal" @abrirChatPrivado="abrirChatPrivado" />
+        <ChatInternoComponent v-if="chatSeleccionado" :visible="true" :chat="chatSeleccionado" @cerrar="chatSeleccionado = null"
+        />
+
         <li class="lista_opci notificacion1"><a href="#"><span class="material-symbols-outlined" id="iconNotif">notifications</span></a></li>
       </ul>
 

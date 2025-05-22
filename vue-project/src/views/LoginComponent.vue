@@ -27,7 +27,6 @@
       console.log("Intentando iniciar sesión");
 
       const response = await login(email.value, password.value);
-      alert('Inicio de sesión exitoso');
       router.push('/');
 
     } catch (error) {
