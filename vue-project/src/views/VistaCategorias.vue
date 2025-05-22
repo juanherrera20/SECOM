@@ -4,6 +4,22 @@ import ButtonDefault from '../components/ButtonDefault.vue';
 import ProductTarget from '@/components/ProductTarget.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 
+// Ejemplo de como mandar filtros
+// const filtros = {
+//   category: 3,
+//   tags: 7,
+//   price_min: 10000,
+//   price_max: 80000,
+//   condition: '1',
+//   free: true,
+//   offers: true,
+//   ordering: '-price',
+//   search: 'chanel',
+// };
+
+// const productos = await ProductsService.getProductos(filtros);
+
+
 let products = ref ([
     // {id:100, img:"src/assets/Images/pantalon.webp", descuento: false, precio: 30000, descrip: 'PANTALON STYLE TALLA 8', tags: 'Pantalones'},
     {id:1, img:"src/assets/Tecnologia/ImageC.png", descuento: false, precio: 450000, descrip: 'TOZO T6 True Wireless Earbuds Bluetooth Headphon...', tags: 'Celulares'},
