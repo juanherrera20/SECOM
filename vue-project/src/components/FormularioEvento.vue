@@ -219,7 +219,7 @@ const eventoID = ref(null);
 
 const formData = ref({
   name: "",
-  meet_date: "",
+  meet_date: null,
   organizador: null,
   description: "",
   donation_id: null,
@@ -229,7 +229,7 @@ const formData = ref({
     address: "",
     latitude: null,
     longitude: null,
-    pais: null,
+    pais: "",
   },
 });
 

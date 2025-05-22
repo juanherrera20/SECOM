@@ -5,12 +5,14 @@ from rest_framework.decorators import action
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 from .serializers import (
     ProductSerializer, ProductListSerializer, CategorySerializer, 
     TagSerializer, ImageSerializer, OfferSerializer
 )  
 from .models import Product, Category, Tag, Image, Offer, WishList, State
+from .filters import ProductFilter  # Import Filters
 
 # Create your views here.
 class ProductViewSet(viewsets.ModelViewSet):
@@ -20,6 +22,14 @@ class ProductViewSet(viewsets.ModelViewSet):
         .prefetch_related('tags', 'offer', 'wishlist', 'images')
     )
     permission_classes = [permissions.AllowAny]
+    
+    #Custom Filtering
+    filterset_class = ProductFilter 
+    #Searching
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]
+    search_fields = ['name']
+    #ordering
+    ordering_fields = ["price", "user__reputacion", "create_date"]
     
     #define serializer to use according to request
     def get_serializer_class(self):
