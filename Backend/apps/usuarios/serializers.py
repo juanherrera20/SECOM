@@ -26,3 +26,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class VerCustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id']
