@@ -11,37 +11,26 @@
         <h2>Información Principal</h2>
 
         <div class="input-box">
-          <label class="input-label">Nombre del Evento</label>
+          <label class="input-label">Nombre del Producto</label>
           <input
-            placeholder="Recaudación de fondos Niños Huerfanos"
+            placeholder="Celular Samsung Pro-max 40 Pixeles pantalla azul"
             class="input"
             v-model="formData.name"
             type="text"
             required
             :disabled="false"
           />
-          <span class="input-helper">Ingresar Nombre principal para el Evento</span>
+          <span class="input-helper">Ingresar nombre que haga referencia a que esta vendiendo</span>
         </div>
 
-        <div class="input-box">
-          <label class="input-label">Fecha de Reunión</label>
-          <input
-            type="date"
-            class="input date"
-            name="fecha"
-            v-model="formData.meet_date"
-          />
-          <span class="input-helper">Ingresar Fecha de Reunión definida para el evento</span>
-        </div>
-
-        <SelectInput
-          v-model="formData.donation_id"
-          :options="donations"
-          label="Tipo de Donación *"
-          extra="Seleccionar el tipo de donación que se va a recibir"
+        <SelectInputChoices
+          v-model="formData.condition"
+          :options="conditions"
+          label="Condición del Producto *"
+          extra="Seleccionar el tipo de Condición/Estado en la que se encuentra el producto"
           :isRequired="true"
           :isDesabled="false"
-        ></SelectInput>
+        ></SelectInputChoices>
 
         <div class="input-box">
           <label class="input-label">Descripción *</label>
@@ -199,123 +188,140 @@ import { useRoute, useRouter } from "vue-router";
 import BotonPaginaAnterior from "../components/BotonPaginaAnterior.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 import SelectInput from "@/components/SelectInput.vue";
+import SelectInputChoices from "@/components/SelectInputChoices.vue"
 
-import EventosService from "../services/eventos";
+import ProductsService from "../services/products";
 import UbicacionService from "@/services/ubicacion";
-import { getCurrentUser } from "../services/users";
+// import { getCurrentUser } from "../services/users";
 
+// Necesary variables
 const route = useRoute();
 const router = useRouter();
-const countries = ref([
+const countries = ref([  // Useful for the select contruies
   { id: "Colombia", name: "Colombia" },
   { id: "Ecuador", name: "Ecuador" },
   { id: "Peru", name: "Peru" },
+  { id: "Brasil", name: "Brasil"}
 ]);
 const msg = ref("");
 const msgExist = ref(false);
 const loading = ref(false);
-const selectedImages = ref([]);
-const eventoID = ref(null);
+const selectedImages = ref([]); //attachment Images
+const ProductID = ref(null);  //Get Id prodcut from response after to send product
 
+//Principal data object to send to API
 const formData = ref({
-  name: "",
-  meet_date: null,
-  organizador: null,
-  description: "",
-  donation_id: null,
-  ubicacion: {
-    city_id: null,
     name: "",
-    address: "",
-    latitude: null,
-    longitude: null,
-    pais: "",
-  },
+    description: "", 
+    category_id: null,
+    tags_ids: [],
+    ubicacion: {
+        city_id: null, //No es obligatorio Puede ser null
+        name: "", // No Obligatorio, puede ser null/vacio
+        address: "",
+        latitude: null, //No Obligatorio, puede ser null
+        longitude: null, //No Obligatorio, puede ser null
+        pais: "" 
+    },
+    price: null,//No Obligatorio, puede ser null
+    condition: ""
 });
 
-const donations = ref([]);
+//Information to get from API
+const conditions = ref([]);
+const categories = ref([]);
+const tags = ref([]);
 const cities = ref([]);
 
 onMounted(async () => {
   try {
-    const [citiesResponse, donationsResponse] = await Promise.all([
+    const [citiesResponse, conditionsResponse, categoriesResponse, tagsResponse] = await Promise.all([
       UbicacionService.getCities(),
-      EventosService.getDonations(),
+      ProductsService.getConditions(),
+      ProductsService.getCategories(),
+      ProductsService.getTags(),
     ]);
 
     cities.value = citiesResponse;
-    donations.value = donationsResponse;
+    conditions.value = conditionsResponse;
+    categories.value = categoriesResponse;
+    tags.value =tagsResponse;
+
 
     console.log("Cities:", cities.value);
-    console.log("Donations:", donations.value);
+    console.log("Conditions:", conditions.value);
+    console.log("Categories:",categories.value);
+    console.log("tags:", tags.value);
+
   } catch (error) {
     console.error("Error cargando datos iniciales:", error);
   }
 });
 
-async function asignUbication() {
-  if (!("geolocation" in navigator)) {
-    msg.value = "Este navegador no soporta geolocalización.";
-    msgExist.value = true;
-    return;
-  }
+// async function asignUbication() {
+//   if (!("geolocation" in navigator)) {
+//     msg.value = "Este navegador no soporta geolocalización.";
+//     msgExist.value = true;
+//     return;
+//   }
 
-  loading.value = true;
-  msg.value = "";
-  msgExist.value = false;
+//   loading.value = true;
+//   msg.value = "";
+//   msgExist.value = false;
 
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const latitud = position.coords.latitude;
-      const longitud = position.coords.longitude;
+//   navigator.geolocation.getCurrentPosition(
+//     (position) => {
+//       const latitud = position.coords.latitude;
+//       const longitud = position.coords.longitude;
 
-      formData.value.ubicacion.latitude = Number(latitud.toFixed(6));
-      formData.value.ubicacion.longitude = Number(longitud.toFixed(6));
+//       formData.value.ubicacion.latitude = Number(latitud.toFixed(6));
+//       formData.value.ubicacion.longitude = Number(longitud.toFixed(6));
 
-      msg.value = "Ubicación asignada correctamente";
-      msgExist.value = true;
+//       msg.value = "Ubicación asignada correctamente";
+//       msgExist.value = true;
 
-      console.log("Ubicación asignada correctamente:", latitud, longitud);
-      loading.value = false;
-    },
-    (error) => {
-      msg.value = "Error al obtener la ubicación: " + error.message;
-      msgExist.value = true;
-      loading.value = false;
-    }
-  );
-}
+//       console.log("Ubicación asignada correctamente:", latitud, longitud);
+//       loading.value = false;
+//     },
+//     (error) => {
+//       msg.value = "Error al obtener la ubicación: " + error.message;
+//       msgExist.value = true;
+//       loading.value = false;
+//     }
+//   );
+// }
 
-const handleSubmit = async () => {
-  msg.value = "";
-  msgExist.value = false;
+// const handleSubmit = async () => {
+//   msg.value = "";
+//   msgExist.value = false;
 
-  if (
-    !formData.value.ubicacion.city_id &&
-    (!formData.value.ubicacion.latitude || !formData.value.ubicacion.longitude)
-  ) {
-    msg.value = "Debes seleccionar una ciudad o asignar tu ubicación actual.";
-    msgExist.value = true;
-    return;
-  }
+//   if (
+//     !formData.value.ubicacion.city_id &&
+//     (!formData.value.ubicacion.latitude || !formData.value.ubicacion.longitude)
+//   ) {
+//     msg.value = "Debes seleccionar una ciudad o asignar tu ubicación actual.";
+//     msgExist.value = true;
+//     return;
+//   }
 
-  const currentUser = await getCurrentUser();
-  formData.value.organizador = currentUser.id;
+//   const currentUser = await getCurrentUser();
+//   formData.value.organizador = currentUser.id;
 
-  try {
-    const response = await EventosService.createEvento(formData.value);
-    console.log("Evento creado:", response);
-    eventoID.value = response.id;
+//   try {
+//     const response = await EventosService.createEvento(formData.value);
+//     console.log("Evento creado:", response);
+//     eventoID.value = response.id;
 
-    await uploadImages();
-    router.push({ name: "EventosList" });
-  } catch (error) {
-    console.error("Error al crear el evento:", error);
-    msg.value = "Error al crear el evento. Por favor, inténtalo de nuevo.";
-    msgExist.value = true;
-  }
-};
+//     await uploadImages();
+//     router.push({ name: "EventosList" });
+//   } catch (error) {
+//     console.error("Error al crear el evento:", error);
+//     msg.value = "Error al crear el evento. Por favor, inténtalo de nuevo.";
+//     msgExist.value = true;
+//   }
+// };
 
+// ------------------ handle Updload Images ----------------------
 const handleImageUpdload = (event) => {
   const newImages = Array.from(event.target.files);
   selectedImages.value = [...selectedImages.value, ...newImages];

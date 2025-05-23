@@ -1,2605 +1,526 @@
+<script setup>
+import AddImgsComponent from '@/components/AddImgsComponent.vue'
+import ButtonDefault from '@/components/ButtonDefault.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
+
+// Codigo de ejemplo para hacer vista de ver Evento
+import SelectInput from '@/components/SelectInput.vue';
+import EventosService from '../services/eventos';
+import ProductsService from '../services/products'
+import { ref, onMounted } from 'vue';
+
+const conditions = ref([])
+const productForm = ref({
+  name: "Computador Lenovo 42' con camara y pantalla tactil",
+  description: "Computador Lenovo, color negro con pantalla tactil omg",
+  category_id: 1,
+  tags_ids: [3, 2],
+  ubicacion: {
+    city_id: 1,
+    name: "Casa Juan",
+    address: "Villa Olimpica Calle 2",
+    latitude: null,
+    longitude: null,
+    pais: "Colombia"
+  },
+  price: "420000",
+  condition: "1"
+})
+
+const createProduct = async () => {
+  try {
+    const response = await ProductsService.addToWishlist(1)
+    console.log('Producto Agregado a Wishlist:', response.detail)
+  } catch (error) {
+    console.error('Error creando producto:', error.response?.data || error.message)
+  }
+}
+
+onMounted(async () => {
+    try {
+      const [ conditionsResponse] = await Promise.all([
+
+        ProductsService.getConditions()
+
+      ]);
+      
+      conditions.value = conditionsResponse
+
+      //Ya no es necesario el serializador ya envia string y ID
+    //   const donation = donations.value.find(obj => obj.name === formData.value.type_donation)
+    //   formData.value.donation_id = donation.id
+
+      console.log('Conditions:', conditions.value);
+
+    } catch (error) {
+      console.error('Error cargando datos iniciales:', error);
+    }
+  });
+// Aquí termina el Evento
+</script>
+
+
 <template>
-  <div>
-    <!-- Encabezado con título y botón -->
-    <header class="botonYTitulo">
-      <BotonPaginaAnterior />
-      <h1>{{ modoEdicion ? 'Editar Evento' : 'Crea tu Evento' }}</h1>
-    </header>
+    <div>
 
-    <!-- Sección de información del evento -->
-    <section class="infoEvento">
-      <div class="infoEventoEInputs">
-        <h3 id="subtitulo">INFORMACIÓN DEL EVENTO</h3>
-      </div>
+    <div class="container">
+        <button @click="createProduct">Enviar</button>
 
-      <div class="contenedorInputs">
-        <div class="inputsInfo">
-          <!-- Nombre del Evento -->
-          <div class="campo">
-            <label for="eventoNombre" class="tituloDeInput"><strong>Nombre del evento</strong></label>
-            <input
-              id="eventoNombre"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.nombre"
-              required
-              placeholder="Ejemplo: Ayuda para María"
-            />
-            <p v-if="!evento.nombre" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Descripción del Evento -->
-          <div class="campo">
-            <label for="eventoDescripcion" class="tituloDeInput"><strong>Descripción del evento</strong></label>
-            <textarea
-              id="eventoDescripcion"
-              class="inputInfoEvento"
-              v-model="evento.descripcion"
-              placeholder="Ejemplo: Hola, buenos días..."
-            ></textarea>
-          </div>
+        <div class="tipoProducto">
+            <div class="descripciones">
+                <div class="sostenibles">
+                    <h2 class="white">SOSTENIBLES</h2>
+                    <p class="white">Son aquellos que se han producido, 
+                    <br>
+                    utilizado o diseñado de una manera que 
+                    <br>
+                    minimiza el impacto negativo en el 
+                    <br>
+                    medio ambiente y promueve un uso 
+                    <br>
+                    responsable de los recursos.</p>
+                </div>
+                <div class="normales">
+                    <h2>NORMALES</h2>
+                    <p>Son todos los demás productos que 
+                        <br>
+                        puedes vender en nuestra plataforma.</p>
+                </div>
+           </div>
         </div>
 
-        <div class="inputsInfo">
-          <!-- Causa del Evento -->
-          <div class="campo">
-            <label for="eventoCausa" class="tituloDeInput"><strong>Causa por la que se crea el evento</strong></label>
-            <input
-              id="eventoCausa"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.causa"
-              required
-              placeholder="Ejemplo: Incendio de vivienda"
-            />
-            <p v-if="!evento.causa" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Ubicación del Evento -->
-          <div class="campo">
-            <label for="eventoUbicacion" class="tituloDeInput"><strong>Ubicación del evento</strong></label>
-            <SelectMunicipios v-model="evento.ubicacion.municipio_id" :municipios="municipios" />
-            <label for="asignarUbicacion" class="tituloDeInput"><strong>O también asigna una ubicación en tiempo real</strong></label>
-            <button
-              id="asignarUbicacion"
-              class="btn-asignar-ubicacion"
-              type="button"
-              @click="asignarUbicacion"
-              :disabled="loading"
-            >
-              {{ loading ? 'Asignando ubicación...' : 'Asignar Ubicación' }}
-            </button>
-
-            <!-- Mensajes de error y éxito -->
-            <p v-if="msgFalla" class="texto-emergencia">
-              <strong>Hubo un error al asignar la ubicación.</strong>
-            </p>
-            <p v-if="msgExito" class="texto-emergencia">
-              <strong>Se asignó correctamente la ubicación a este evento.</strong>
-            </p>
-          </div>
+        <div class="elegirTipo">
+            <div class="btns">
+                <button class="btn" id="moverALeft">SOSTENIBLES</button>
+                <button class="btn">NORMALES</button>
+           </div>
         </div>
 
-        <div class="inputsInfo">
-          <!-- Categoría de donaciones -->
-          <div class="campo">
-            <label for="eventoDonacion" class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></label>
-            <select id="eventoDonacion" v-model="evento.donacion_id" required>
-              <option v-for="donacion in donaciones" :key="donacion.id" :value="donacion.id">
-                {{ donacion.nombre }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Fecha del Evento -->
-          <div class="campo">
-            <label for="eventoFecha" class="tituloDeInput"><strong>Fecha Evento</strong></label>
-            <input id="eventoFecha" class="inputInfoEvento" type="date" v-model="evento.fecha" />
-          </div>
+        <div class="contenedorTitulo">
+            <p class="nombreContenedor">INFORMACIÓN DEL PRODUCTO</p>
         </div>
 
-        <!-- Imágenes -->
-        <div class="inputsInfo">
-          <div class="addIMGS">
-            <label class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></label>
-            <CargarImagenes ref="cargarImagenes" :imagenes-existente="evento.imagenes" />
-          </div>
+        <div class="fondo">
+            <div class="top">
+                <div class="Inputs">
+                    <div class="inputInterior">
+                        <p><strong>Nombre del producto</strong></p>
+                        <input type="text" placeholder="Escriba el nombre aquí"/>
+                        <div class="mensajeRequerido">
+                          <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                          <p class="requerido"><strong>Campo requerido</strong></p>
+                        </div>
+                    </div>
+                    <div class="inputInterior">
+                        <p><strong>Descripción</strong></p>
+                        <input type="text" placeholder="Describa el producto"/>
+                    </div>
+                </div>
+
+                <div class="addImgs">
+                    <div class="addIMGS">
+                        <div>
+                            <p class="tituloDeInput"><strong>Añada imágenes de producto</strong></p>
+                        </div>
+                        <AddImgsComponent />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="block">
+                <div class="cant">
+                    <p><strong>Cantidad</strong></p>
+                    <input type="number" id="inputCantidad">
+                    <div class="mensajeRequerido">
+                      <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                      <p class="requerido"><strong>Campo requerido</strong></p>
+                    </div>
+                </div>
+            </div>
+            
         </div>
-      </div>
-    </section>
 
-    <!-- Botón de acción para guardar -->
-    <footer class="boton">
-      <ButtonDefault
-        size="default"
-        color="azul"
-        :text="modoEdicion ? 'Guardar Cambios' : 'Publicar'"
-        icono="archive"
-        class="Publicar"
-        @click="guardarEvento"
-      />
-    </footer>
+        <div class="contenedorTitulo">
+            <p class="nombreContenedor">DIRECCIÓN DEL PRODUCTO</p>
+        </div>
 
-    <!-- Botón de eliminar evento si estamos en modo edición -->
-    <ButtonDefault
-      v-if="modoEdicion"
-      size="default"
-      color="rojo"
-      text="Eliminar Evento"
-      @click="eliminarEvento"
-    />
+        <div class="fondo">
+            <div class="mensajeDeAyuda">
+                <div>
+                  <span class="material-symbols-outlined" id="help">help</span>
+                </div>
+                <div>
+                  <p class="mensajeHelp">Registra la Ubicación donde se publicará el producto, de esta manera los usuarios podrán verla si estan cerca. Puedes usar la dirección asociada a tu cuenta o agregar una para el producto.</p>
+                </div>
+            </div>
+
+            <div class="Inputs ubica">
+                <div class="inputInterior">
+                    <p><strong>País</strong></p>
+                    <input type="text" placeholder="País de ubicación"/>
+                    <div class="mensajeRequerido">
+                      <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                      <p class="requerido"><strong>Campo requerido</strong></p>
+                    </div>
+                </div>
+                <div class="inputInterior">
+                    <p><strong>Ciudad</strong></p>
+                    <input type="text" placeholder="Ciudad de ubicación"/>
+                    <div class="mensajeRequerido">
+                      <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                      <p class="requerido"><strong>Campo requerido</strong></p>
+                    </div>
+                </div>
+                <div class="inputInterior containerBtnDefault">
+                    <ButtonDefault size="default" color="azul" text="Usar mi ubicación" icono="location_on" class="insertarUbic" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="contenedorTitulo">
+            <p class="nombreContenedor">CATEGORÍAS DEL PRODUCTO</p>
+        </div>
+
+        <div class="fondo">
+            <div class="mensajeDeAyuda">
+                <div>
+                  <span class="material-symbols-outlined" id="help">help</span>
+                </div>
+                <div>
+                  <p class="mensajeHelp">Categorizar correctamente tu producto ayudará a que los clientes lo puedan encontrar más fácil.</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="containerCategYSubcateg">
+                    <div class="inputInterior forCateg">
+                        <p><strong>Categoría</strong></p>
+                        <select name="categoriasAceptadas" class="categoriasAceptadas">
+                            <option value="opciion1">Transporte</option>
+                            <option value="opciion2">Tecnología</option>
+                            <option value="opciion3">Hogar y muebles</option>
+                            <option value="opciion4">Electrodomésticos</option>
+                            <option value="opciion5">Ropa</option>
+                            <option value="opciion6">Accesorios y moda</option>
+                            <option value="opciion7">Deportes y fitness</option>
+                            <option value="opciion8">Cuidado personal</option>
+                            <option value="opciion9">Herramientas</option>
+                            <option value="opciion10">Juegos y juguetes</option>
+                            <option value="opciion11">Manualidades</option>
+                            <option value="opciion12">Salud</option>
+                        </select>
+                        <div class="mensajeRequerido">
+                          <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                          <p class="requerido"><strong>Campo requerido</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="inputInterior forCateg">
+                        <p><strong>Subategoría</strong></p>
+                        <select name="subcategoriasAceptadas" class="categoriasAceptadas">
+                            <option value="opciion1">Subcategoría 1</option>
+                            <option value="opciion2">Subcategoría 2...</option>
+                        </select>
+                        <div class="mensajeRequerido">
+                          <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                          <p class="requerido"><strong>Campo requerido</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="containerCategYSubcateg">
+                    <div class="inputInterior forCateg">
+                        <p><strong>Marcas populares</strong></p>
+                        <select name="categoriasAceptadas" class="categoriasAceptadas">
+                            <option value="opciion1">Opción 1</option>
+                            <option value="opciion2">Opción 2...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="inputInterior forCateg">
+                        <p><strong>Estado del producto</strong></p>
+                        <select name="categoriasAceptadas" class="categoriasAceptadas">
+                            <option value="opciion1">Sin usar</option>
+                            <option value="opciion2">Pocos usos</option>
+                            <option value="opciion3">Muchos usos</option>
+                            <option value="opciion4">Tercera mano</option>
+                            <option value="opciion5">Otro</option>
+                        </select>
+                        <div class="mensajeRequerido">
+                          <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                          <p class="requerido"><strong>Campo requerido</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contenedorTitulo">
+            <p class="nombreContenedor">PRECIOS Y PROMOCIONES</p>
+        </div>
+
+        <div class="fondo">
+            <div class="Inputs ubica">
+                <div class="inputInterior">
+                    <p><strong>Precio</strong></p>
+                    <input type="text" placeholder="Precio del producto"/>
+                    <div class="mensajeRequerido">
+                      <span class="material-symbols-outlined puntoRojo">radio_button_unchecked</span>
+                      <p class="requerido"><strong>Campo requerido</strong></p>
+                    </div>
+                </div>
+                <div class="inputInterior">
+                    <p><strong>Ofertas</strong></p>
+                    <select name="categoriasAceptadas" class="categoriasAceptadas">
+                            <option value="opciion1">Ninguna</option>
+                            <option value="opciion2">10%</option>
+                            <option value="opciion3">20%</option>
+                            <option value="opciion4">30%</option>
+                            <option value="opciion5">40%</option>
+                            <option value="opciion6">50%</option>
+                            <option value="opciion7">60%</option>
+                            <option value="opciion8">70%</option>
+                        </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="containerBtnPublicar">
+            <ButtonDefault size="default" color="azul" text="Publicar" class="publicarP" />
+        </div>
+
+    </div>
 
     <FooterComponent />
-  </div>
+
+</div>
+
 </template>
 
-<script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  
-  import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
-  import ButtonDefault from '@/components/ButtonDefault.vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-  import SelectMunicipios from '@/components/SelectMunicipios.vue';
-  import CargarImagenes from '@/components/CargarImagenes.vue';
 
-  // Import services to consume API
-  import EventosService from '../services/eventos';
-  import { getCurrentUser } from '../services/users';
+<style scoped>
 
-  const route = useRoute();
-  const router = useRouter();
-  const eventoId = route.params.id;
-  const modoEdicion = !!eventoId;
-  
-  const evento = ref({
-    nombre: '',
-    descripcion: '',
-    causa: '',
-    ubicacion: {
-      municipio_id: null,
-      nombre: '',
-      direccion: '',
-      latitud: '',
-      longitud: '',
-    },
-    donacion_id: null,
-    fecha: '',
-    imagenes: [],
-    pais: 'Colombia',
-    ciudad: 'Cali',
-  });
-  
-  const cargarImagenes = ref(null);
-  const currentUser = ref(null);
-  const donaciones = ref([]);
-  const municipios = ref([]);
-  
-  const msgFalla = ref(false); 
-  const msgExito = ref(false); 
-  const errorMsg = ref("");
-  const loading = ref(false);
+.container {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    flex-direction: column;
+    margin-top: 20px;
+}
 
-  onMounted(async () => {
-    try {
-      // Obtener usuario autenticado
-      const userResponse = await getCurrentUser();
-      currentUser.value = userResponse;
+#imgVender {
+    height: 240px;
+    width: 967px;
+}
 
-      // Obtener donaciones
-      donaciones.value = await getDonaciones();
+.img {
+    display: flex;
+    justify-content: center;
+}
 
-      // Obtener municipios
-      const response = await api.get('/ubicacion/lista_city/');
-      municipios.value = response.data;
+.sostenibles {
+    background: #0B3C32;
+}
 
-      // Cargar datos del evento si estamos en modo edición
-      if (modoEdicion) {
-        const eventoResponse = await getEventoById(eventoId);
-        evento.value = { ...eventoResponse };
-        
-        if (eventoResponse.ubicacion) {
-          evento.value.ubicacion.municipio_id = eventoResponse.ubicacion.municipio_id;
-        }
-        if (eventoResponse.donacion_id) {
-          evento.value.donacion_id = eventoResponse.donacion_id;
-        }
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos:", error);
-      alert("Hubo un error al cargar los datos.");
-    }
-  });
+.normales {
+    background: #a59a57;
+}
 
-  // Asignar ubicación con geolocalización
-  async function asignarUbicacion() {
-    if (!("geolocation" in navigator)) {
-        errorMsg.value = "Este navegador no soporta geolocalización.";
-        return;
-    }
+.sostenibles, .normales {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+    border-radius: 1px;
+}
 
-    loading.value = true;
-    errorMsg.value = "";
-    msgFalla.value = false;
-    msgExito.value = false;
+h2 {
+    margin-block: 5px;
+}
 
-    try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const latitud = position.coords.latitude;
-        const longitud = position.coords.longitude;
+.white {
+    color: white;
+}
 
-        evento.value.ubicacion.latitud = latitud;
-        evento.value.ubicacion.longitud = longitud;
+p {
+    font-size: 14px;
+}
 
-        msgExito.value = true;
-        console.log("Ubicación asignada correctamente:", latitud, longitud);
-      }, (err) => {
-        msgFalla.value = true;
-        errorMsg.value = "Error al obtener la ubicación: " + err.message;
-        console.log(errorMsg.value);
-      });
-    } catch (error) {
-      msgFalla.value = true;
-      errorMsg.value = "Error al obtener la ubicación";
-      console.error(errorMsg.value);
-    } finally {
-      loading.value = false;
-    }
-  }
-  
-  const guardarEvento = async () => {
-    try {
-      // Validar campos requeridos
-      if (
-        !evento.value.nombre ||
-        !evento.value.descripcion ||
-        !evento.value.causa ||
-        !evento.value.fecha ||
-        !evento.value.ubicacion.municipio_id ||
-        !evento.value.ubicacion.direccion ||
-        !evento.value.donacion_id
-      ) {
-        alert('Todos los campos requeridos deben estar completos');
-        return;
-      }
+.tipoProducto {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
 
-      const eventoData = {
-        ...evento.value,
-        organizador: currentUser.value.id,
-        imagenes: cargarImagenes.value?.imagenes || [],
-      };
+.descripciones {
+    display: flex;
+}
 
-      if (modoEdicion) {
-        await updateEvento(eventoId, eventoData);
-        alert('Evento actualizado correctamente');
-      } else {
-        await createEvento(eventoData);
-        alert('Evento creado correctamente');
-      }
+.elegirTipo {
+    display: flex;
+    justify-content: center;
+}
 
-      router.push({ name: 'EventosList' });
-    } catch (error) {
-      console.error('Error al guardar el evento:', error);
-      alert('Hubo un error al guardar el evento');
-    }
-  };
+.btns {
+    background: rgb(236, 236, 236);
+    padding: 3px 2px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px rgb(197, 197, 197);
+}
 
-  // Eliminar Evento
-  const eliminarEvento = async () => {
-    if (confirm('¿Seguro que deseas eliminar este evento?')) {
-      try {
-        await deleteEvento(eventoId);
-        alert('Evento eliminado correctamente');
-        router.push({ name: 'EventosList' });
-      } catch (error) {
-        console.error('Error al eliminar el evento:', error);
-        alert('Hubo un error al eliminar el evento');
-      }
-    }
-  };
-</script>
+.btn {
+    padding: 1px 2px;
+    border: none;
+    border-radius: 7px;
+    background: rgb(236, 236, 236);
+    font-family: 'Aldrich', sans-serif;
+}
 
 
-<style scoped lang="scss">
-  .botonYTitulo {
+#moverALeft {
+    margin-right: 5px;
+}
+
+.btn:hover {
+    background: #15323f;
+    color: white;
+}
+
+.btn:focus {
+    background: #15323f;
+    color: white;
+}
+
+.contenedorTitulo {
+    background-color: #0F4F42;
+    padding: 10px 0px;
+    width: 78.5%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.nombreContenedor {
+    color: white;
+    font-size: 35px;
+}
+
+.fondo {
+    display: flex;
+    background-color: rgb(245, 245, 245);
+    border: solid 1px rgb(197, 197, 197);
+    width: 78.5%;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.Inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+.ubica {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.inputInterior {
+    margin: 18px 15px;
+}
+
+.forCateg {
+    padding: 0px 100px;
+}
+
+input, .categoriasAceptadas {
+    padding: 5px 80px;
+    padding-left: 2px;
+}
+
+.mensajeRequerido {
+    display: flex;
+    justify-items: left;
+    margin-top: 3px;
+}
+
+.puntoRojo {
+    background-color: rgb(177, 0, 0);
+    color: rgb(177, 0, 0);
+    border-radius: 9px;
+    font-size: 11px;
+    margin-right: 3px;
+    padding: 0px 1px;
+}
+
+.requerido {
+    font-size: 11px;
+}
+
+.addImgs {
+    margin-right: 50px;
+}
+
+#inputCantidad {
+    padding: 5px 0px;
+}
+
+.top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.block {
+    display: flex;
+    margin-left: 1.6%;
+    padding-block: 15px;
+}
+
+.mensajeDeAyuda {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+#help {
+    margin-top: 5px;
+    margin-right: 7px;
+}
+
+.mensajeHelp {
+    font-size: 16px;
+}
+
+.insertarUbic, .publicarP {
+    padding: 10px 0px;
+    width: 170px;
+    border-radius: 2px;
+}
+
+.containerBtnDefault {
+    display: flex;
+    align-items: center;
+}
+
+.containerCategYSubcateg {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
+}
 
-  h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin: 0;
-  }
-
-  .infoEvento {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .infoEventoEInputs {
-    background-color: #0f4f42;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-
-  .contenedorInputs {
+.containerBtnPublicar {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+    justify-content: center;
+    margin: 20px 0px;
+}
 
-  .inputsInfo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .campo {
-    flex: 1 1 300px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tituloDeInput {
-    font-size: 1rem;
-    color: #2c3e50;
-    margin-bottom: 8px;
-  }
-
-  .inputInfoEvento {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-
-  .inputInfoEvento:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
-
-  .spanYCampoRequer {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
-    color: #B81C2C;
-    margin-top: 5px;
-  }
-
-  .campoRequerido {
-    color: #B81C2C;
-  }
-
-  #exito {
-    color: #339636;
-  }
-
-  .boton {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .Publicar {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .Publicar:hover {
-    background-color: #45a049;
-  }
-
-  .btn-asignar-ubicacion {
-    padding: 10px;
-    background-color: #0F4F42;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .btn-asignar-ubicacion:hover {
-    background-color: #0c3b32;
-  }
-
-  .texto-emergencia {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 8px;
-  }
-</style><template>
-  <div>
-    <!-- Encabezado con título y botón -->
-    <header class="botonYTitulo">
-      <BotonPaginaAnterior />
-      <h1>{{ modoEdicion ? 'Editar Evento' : 'Crea tu Evento' }}</h1>
-    </header>
-
-    <!-- Sección de información del evento -->
-    <section class="infoEvento">
-      <div class="infoEventoEInputs">
-        <h3 id="subtitulo">INFORMACIÓN DEL EVENTO</h3>
-      </div>
-
-      <div class="contenedorInputs">
-        <div class="inputsInfo">
-          <!-- Nombre del Evento -->
-          <div class="campo">
-            <label for="eventoNombre" class="tituloDeInput"><strong>Nombre del evento</strong></label>
-            <input
-              id="eventoNombre"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.nombre"
-              required
-              placeholder="Ejemplo: Ayuda para María"
-            />
-            <p v-if="!evento.nombre" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Descripción del Evento -->
-          <div class="campo">
-            <label for="eventoDescripcion" class="tituloDeInput"><strong>Descripción del evento</strong></label>
-            <textarea
-              id="eventoDescripcion"
-              class="inputInfoEvento"
-              v-model="evento.descripcion"
-              placeholder="Ejemplo: Hola, buenos días..."
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Causa del Evento -->
-          <div class="campo">
-            <label for="eventoCausa" class="tituloDeInput"><strong>Causa por la que se crea el evento</strong></label>
-            <input
-              id="eventoCausa"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.causa"
-              required
-              placeholder="Ejemplo: Incendio de vivienda"
-            />
-            <p v-if="!evento.causa" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Ubicación del Evento -->
-          <div class="campo">
-            <label for="eventoUbicacion" class="tituloDeInput"><strong>Ubicación del evento</strong></label>
-            <SelectMunicipios v-model="evento.ubicacion.municipio_id" :municipios="municipios" />
-            <label for="asignarUbicacion" class="tituloDeInput"><strong>O también asigna una ubicación en tiempo real</strong></label>
-            <button
-              id="asignarUbicacion"
-              class="btn-asignar-ubicacion"
-              type="button"
-              @click="asignarUbicacion"
-              :disabled="loading"
-            >
-              {{ loading ? 'Asignando ubicación...' : 'Asignar Ubicación' }}
-            </button>
-
-            <!-- Mensajes de error y éxito -->
-            <p v-if="msgFalla" class="texto-emergencia">
-              <strong>Hubo un error al asignar la ubicación.</strong>
-            </p>
-            <p v-if="msgExito" class="texto-emergencia">
-              <strong>Se asignó correctamente la ubicación a este evento.</strong>
-            </p>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Categoría de donaciones -->
-          <div class="campo">
-            <label for="eventoDonacion" class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></label>
-            <select id="eventoDonacion" v-model="evento.donacion_id" required>
-              <option v-for="donacion in donaciones" :key="donacion.id" :value="donacion.id">
-                {{ donacion.nombre }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Fecha del Evento -->
-          <div class="campo">
-            <label for="eventoFecha" class="tituloDeInput"><strong>Fecha Evento</strong></label>
-            <input id="eventoFecha" class="inputInfoEvento" type="date" v-model="evento.fecha" />
-          </div>
-        </div>
-
-        <!-- Imágenes -->
-        <div class="inputsInfo">
-          <div class="addIMGS">
-            <label class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></label>
-            <CargarImagenes ref="cargarImagenes" :imagenes-existente="evento.imagenes" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Botón de acción para guardar -->
-    <footer class="boton">
-      <ButtonDefault
-        size="default"
-        color="azul"
-        :text="modoEdicion ? 'Guardar Cambios' : 'Publicar'"
-        icono="archive"
-        class="Publicar"
-        @click="guardarEvento"
-      />
-    </footer>
-
-    <!-- Botón de eliminar evento si estamos en modo edición -->
-    <ButtonDefault
-      v-if="modoEdicion"
-      size="default"
-      color="rojo"
-      text="Eliminar Evento"
-      @click="eliminarEvento"
-    />
-
-    <FooterComponent />
-  </div>
-</template>
-
-<script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  
-  import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
-  import ButtonDefault from '@/components/ButtonDefault.vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-  import SelectMunicipios from '@/components/SelectMunicipios.vue';
-  import CargarImagenes from '@/components/CargarImagenes.vue';
-
-  // Import services to consume API
-  import EventosService from '../services/eventos';
-  import { getCurrentUser } from '../services/users';
-
-  const route = useRoute();
-  const router = useRouter();
-  const eventoId = route.params.id;
-  const modoEdicion = !!eventoId;
-  
-  const evento = ref({
-    nombre: '',
-    descripcion: '',
-    causa: '',
-    ubicacion: {
-      municipio_id: null,
-      nombre: '',
-      direccion: '',
-      latitud: '',
-      longitud: '',
-    },
-    donacion_id: null,
-    fecha: '',
-    imagenes: [],
-    pais: 'Colombia',
-    ciudad: 'Cali',
-  });
-  
-  const cargarImagenes = ref(null);
-  const currentUser = ref(null);
-  const donaciones = ref([]);
-  const municipios = ref([]);
-  
-  const msgFalla = ref(false); 
-  const msgExito = ref(false); 
-  const errorMsg = ref("");
-  const loading = ref(false);
-
-  onMounted(async () => {
-    try {
-      // Obtener usuario autenticado
-      const userResponse = await getCurrentUser();
-      currentUser.value = userResponse;
-
-      // Obtener donaciones
-      donaciones.value = await getDonaciones();
-
-      // Obtener municipios
-      const response = await api.get('/ubicacion/lista_city/');
-      municipios.value = response.data;
-
-      // Cargar datos del evento si estamos en modo edición
-      if (modoEdicion) {
-        const eventoResponse = await getEventoById(eventoId);
-        evento.value = { ...eventoResponse };
-        
-        if (eventoResponse.ubicacion) {
-          evento.value.ubicacion.municipio_id = eventoResponse.ubicacion.municipio_id;
-        }
-        if (eventoResponse.donacion_id) {
-          evento.value.donacion_id = eventoResponse.donacion_id;
-        }
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos:", error);
-      alert("Hubo un error al cargar los datos.");
-    }
-  });
-
-  // Asignar ubicación con geolocalización
-  async function asignarUbicacion() {
-    if (!("geolocation" in navigator)) {
-        errorMsg.value = "Este navegador no soporta geolocalización.";
-        return;
-    }
-
-    loading.value = true;
-    errorMsg.value = "";
-    msgFalla.value = false;
-    msgExito.value = false;
-
-    try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const latitud = position.coords.latitude;
-        const longitud = position.coords.longitude;
-
-        evento.value.ubicacion.latitud = latitud;
-        evento.value.ubicacion.longitud = longitud;
-
-        msgExito.value = true;
-        console.log("Ubicación asignada correctamente:", latitud, longitud);
-      }, (err) => {
-        msgFalla.value = true;
-        errorMsg.value = "Error al obtener la ubicación: " + err.message;
-        console.log(errorMsg.value);
-      });
-    } catch (error) {
-      msgFalla.value = true;
-      errorMsg.value = "Error al obtener la ubicación";
-      console.error(errorMsg.value);
-    } finally {
-      loading.value = false;
-    }
-  }
-  
-  const guardarEvento = async () => {
-    try {
-      // Validar campos requeridos
-      if (
-        !evento.value.nombre ||
-        !evento.value.descripcion ||
-        !evento.value.causa ||
-        !evento.value.fecha ||
-        !evento.value.ubicacion.municipio_id ||
-        !evento.value.ubicacion.direccion ||
-        !evento.value.donacion_id
-      ) {
-        alert('Todos los campos requeridos deben estar completos');
-        return;
-      }
-
-      const eventoData = {
-        ...evento.value,
-        organizador: currentUser.value.id,
-        imagenes: cargarImagenes.value?.imagenes || [],
-      };
-
-      if (modoEdicion) {
-        await updateEvento(eventoId, eventoData);
-        alert('Evento actualizado correctamente');
-      } else {
-        await createEvento(eventoData);
-        alert('Evento creado correctamente');
-      }
-
-      router.push({ name: 'EventosList' });
-    } catch (error) {
-      console.error('Error al guardar el evento:', error);
-      alert('Hubo un error al guardar el evento');
-    }
-  };
-
-  // Eliminar Evento
-  const eliminarEvento = async () => {
-    if (confirm('¿Seguro que deseas eliminar este evento?')) {
-      try {
-        await deleteEvento(eventoId);
-        alert('Evento eliminado correctamente');
-        router.push({ name: 'EventosList' });
-      } catch (error) {
-        console.error('Error al eliminar el evento:', error);
-        alert('Hubo un error al eliminar el evento');
-      }
-    }
-  };
-</script>
-
-
-<style scoped lang="scss">
-  .botonYTitulo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin: 0;
-  }
-
-  .infoEvento {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .infoEventoEInputs {
-    background-color: #0f4f42;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-
-  .contenedorInputs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .inputsInfo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .campo {
-    flex: 1 1 300px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tituloDeInput {
-    font-size: 1rem;
-    color: #2c3e50;
-    margin-bottom: 8px;
-  }
-
-  .inputInfoEvento {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-
-  .inputInfoEvento:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
-
-  .spanYCampoRequer {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
-    color: #B81C2C;
-    margin-top: 5px;
-  }
-
-  .campoRequerido {
-    color: #B81C2C;
-  }
-
-  #exito {
-    color: #339636;
-  }
-
-  .boton {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .Publicar {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .Publicar:hover {
-    background-color: #45a049;
-  }
-
-  .btn-asignar-ubicacion {
-    padding: 10px;
-    background-color: #0F4F42;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .btn-asignar-ubicacion:hover {
-    background-color: #0c3b32;
-  }
-
-  .texto-emergencia {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 8px;
-  }
-</style><template>
-  <div>
-    <!-- Encabezado con título y botón -->
-    <header class="botonYTitulo">
-      <BotonPaginaAnterior />
-      <h1>{{ modoEdicion ? 'Editar Evento' : 'Crea tu Evento' }}</h1>
-    </header>
-
-    <!-- Sección de información del evento -->
-    <section class="infoEvento">
-      <div class="infoEventoEInputs">
-        <h3 id="subtitulo">INFORMACIÓN DEL EVENTO</h3>
-      </div>
-
-      <div class="contenedorInputs">
-        <div class="inputsInfo">
-          <!-- Nombre del Evento -->
-          <div class="campo">
-            <label for="eventoNombre" class="tituloDeInput"><strong>Nombre del evento</strong></label>
-            <input
-              id="eventoNombre"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.nombre"
-              required
-              placeholder="Ejemplo: Ayuda para María"
-            />
-            <p v-if="!evento.nombre" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Descripción del Evento -->
-          <div class="campo">
-            <label for="eventoDescripcion" class="tituloDeInput"><strong>Descripción del evento</strong></label>
-            <textarea
-              id="eventoDescripcion"
-              class="inputInfoEvento"
-              v-model="evento.descripcion"
-              placeholder="Ejemplo: Hola, buenos días..."
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Causa del Evento -->
-          <div class="campo">
-            <label for="eventoCausa" class="tituloDeInput"><strong>Causa por la que se crea el evento</strong></label>
-            <input
-              id="eventoCausa"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.causa"
-              required
-              placeholder="Ejemplo: Incendio de vivienda"
-            />
-            <p v-if="!evento.causa" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Ubicación del Evento -->
-          <div class="campo">
-            <label for="eventoUbicacion" class="tituloDeInput"><strong>Ubicación del evento</strong></label>
-            <SelectMunicipios v-model="evento.ubicacion.municipio_id" :municipios="municipios" />
-            <label for="asignarUbicacion" class="tituloDeInput"><strong>O también asigna una ubicación en tiempo real</strong></label>
-            <button
-              id="asignarUbicacion"
-              class="btn-asignar-ubicacion"
-              type="button"
-              @click="asignarUbicacion"
-              :disabled="loading"
-            >
-              {{ loading ? 'Asignando ubicación...' : 'Asignar Ubicación' }}
-            </button>
-
-            <!-- Mensajes de error y éxito -->
-            <p v-if="msgFalla" class="texto-emergencia">
-              <strong>Hubo un error al asignar la ubicación.</strong>
-            </p>
-            <p v-if="msgExito" class="texto-emergencia">
-              <strong>Se asignó correctamente la ubicación a este evento.</strong>
-            </p>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Categoría de donaciones -->
-          <div class="campo">
-            <label for="eventoDonacion" class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></label>
-            <select id="eventoDonacion" v-model="evento.donacion_id" required>
-              <option v-for="donacion in donaciones" :key="donacion.id" :value="donacion.id">
-                {{ donacion.nombre }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Fecha del Evento -->
-          <div class="campo">
-            <label for="eventoFecha" class="tituloDeInput"><strong>Fecha Evento</strong></label>
-            <input id="eventoFecha" class="inputInfoEvento" type="date" v-model="evento.fecha" />
-          </div>
-        </div>
-
-        <!-- Imágenes -->
-        <div class="inputsInfo">
-          <div class="addIMGS">
-            <label class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></label>
-            <CargarImagenes ref="cargarImagenes" :imagenes-existente="evento.imagenes" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Botón de acción para guardar -->
-    <footer class="boton">
-      <ButtonDefault
-        size="default"
-        color="azul"
-        :text="modoEdicion ? 'Guardar Cambios' : 'Publicar'"
-        icono="archive"
-        class="Publicar"
-        @click="guardarEvento"
-      />
-    </footer>
-
-    <!-- Botón de eliminar evento si estamos en modo edición -->
-    <ButtonDefault
-      v-if="modoEdicion"
-      size="default"
-      color="rojo"
-      text="Eliminar Evento"
-      @click="eliminarEvento"
-    />
-
-    <FooterComponent />
-  </div>
-</template>
-
-<script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  
-  import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
-  import ButtonDefault from '@/components/ButtonDefault.vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-  import SelectMunicipios from '@/components/SelectMunicipios.vue';
-  import CargarImagenes from '@/components/CargarImagenes.vue';
-
-  // Import services to consume API
-  import EventosService from '../services/eventos';
-  import { getCurrentUser } from '../services/users';
-
-  const route = useRoute();
-  const router = useRouter();
-  const eventoId = route.params.id;
-  const modoEdicion = !!eventoId;
-  
-  const evento = ref({
-    nombre: '',
-    descripcion: '',
-    causa: '',
-    ubicacion: {
-      municipio_id: null,
-      nombre: '',
-      direccion: '',
-      latitud: '',
-      longitud: '',
-    },
-    donacion_id: null,
-    fecha: '',
-    imagenes: [],
-    pais: 'Colombia',
-    ciudad: 'Cali',
-  });
-  
-  const cargarImagenes = ref(null);
-  const currentUser = ref(null);
-  const donaciones = ref([]);
-  const municipios = ref([]);
-  
-  const msgFalla = ref(false); 
-  const msgExito = ref(false); 
-  const errorMsg = ref("");
-  const loading = ref(false);
-
-  onMounted(async () => {
-    try {
-      // Obtener usuario autenticado
-      const userResponse = await getCurrentUser();
-      currentUser.value = userResponse;
-
-      // Obtener donaciones
-      donaciones.value = await getDonaciones();
-
-      // Obtener municipios
-      const response = await api.get('/ubicacion/lista_city/');
-      municipios.value = response.data;
-
-      // Cargar datos del evento si estamos en modo edición
-      if (modoEdicion) {
-        const eventoResponse = await getEventoById(eventoId);
-        evento.value = { ...eventoResponse };
-        
-        if (eventoResponse.ubicacion) {
-          evento.value.ubicacion.municipio_id = eventoResponse.ubicacion.municipio_id;
-        }
-        if (eventoResponse.donacion_id) {
-          evento.value.donacion_id = eventoResponse.donacion_id;
-        }
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos:", error);
-      alert("Hubo un error al cargar los datos.");
-    }
-  });
-
-  // Asignar ubicación con geolocalización
-  async function asignarUbicacion() {
-    if (!("geolocation" in navigator)) {
-        errorMsg.value = "Este navegador no soporta geolocalización.";
-        return;
-    }
-
-    loading.value = true;
-    errorMsg.value = "";
-    msgFalla.value = false;
-    msgExito.value = false;
-
-    try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const latitud = position.coords.latitude;
-        const longitud = position.coords.longitude;
-
-        evento.value.ubicacion.latitud = latitud;
-        evento.value.ubicacion.longitud = longitud;
-
-        msgExito.value = true;
-        console.log("Ubicación asignada correctamente:", latitud, longitud);
-      }, (err) => {
-        msgFalla.value = true;
-        errorMsg.value = "Error al obtener la ubicación: " + err.message;
-        console.log(errorMsg.value);
-      });
-    } catch (error) {
-      msgFalla.value = true;
-      errorMsg.value = "Error al obtener la ubicación";
-      console.error(errorMsg.value);
-    } finally {
-      loading.value = false;
-    }
-  }
-  
-  const guardarEvento = async () => {
-    try {
-      // Validar campos requeridos
-      if (
-        !evento.value.nombre ||
-        !evento.value.descripcion ||
-        !evento.value.causa ||
-        !evento.value.fecha ||
-        !evento.value.ubicacion.municipio_id ||
-        !evento.value.ubicacion.direccion ||
-        !evento.value.donacion_id
-      ) {
-        alert('Todos los campos requeridos deben estar completos');
-        return;
-      }
-
-      const eventoData = {
-        ...evento.value,
-        organizador: currentUser.value.id,
-        imagenes: cargarImagenes.value?.imagenes || [],
-      };
-
-      if (modoEdicion) {
-        await updateEvento(eventoId, eventoData);
-        alert('Evento actualizado correctamente');
-      } else {
-        await createEvento(eventoData);
-        alert('Evento creado correctamente');
-      }
-
-      router.push({ name: 'EventosList' });
-    } catch (error) {
-      console.error('Error al guardar el evento:', error);
-      alert('Hubo un error al guardar el evento');
-    }
-  };
-
-  // Eliminar Evento
-  const eliminarEvento = async () => {
-    if (confirm('¿Seguro que deseas eliminar este evento?')) {
-      try {
-        await deleteEvento(eventoId);
-        alert('Evento eliminado correctamente');
-        router.push({ name: 'EventosList' });
-      } catch (error) {
-        console.error('Error al eliminar el evento:', error);
-        alert('Hubo un error al eliminar el evento');
-      }
-    }
-  };
-</script>
-
-
-<style scoped lang="scss">
-  .botonYTitulo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin: 0;
-  }
-
-  .infoEvento {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .infoEventoEInputs {
-    background-color: #0f4f42;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-
-  .contenedorInputs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .inputsInfo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .campo {
-    flex: 1 1 300px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tituloDeInput {
-    font-size: 1rem;
-    color: #2c3e50;
-    margin-bottom: 8px;
-  }
-
-  .inputInfoEvento {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-
-  .inputInfoEvento:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
-
-  .spanYCampoRequer {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
-    color: #B81C2C;
-    margin-top: 5px;
-  }
-
-  .campoRequerido {
-    color: #B81C2C;
-  }
-
-  #exito {
-    color: #339636;
-  }
-
-  .boton {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .Publicar {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .Publicar:hover {
-    background-color: #45a049;
-  }
-
-  .btn-asignar-ubicacion {
-    padding: 10px;
-    background-color: #0F4F42;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .btn-asignar-ubicacion:hover {
-    background-color: #0c3b32;
-  }
-
-  .texto-emergencia {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 8px;
-  }
-</style><template>
-  <div>
-    <!-- Encabezado con título y botón -->
-    <header class="botonYTitulo">
-      <BotonPaginaAnterior />
-      <h1>{{ modoEdicion ? 'Editar Evento' : 'Crea tu Evento' }}</h1>
-    </header>
-
-    <!-- Sección de información del evento -->
-    <section class="infoEvento">
-      <div class="infoEventoEInputs">
-        <h3 id="subtitulo">INFORMACIÓN DEL EVENTO</h3>
-      </div>
-
-      <div class="contenedorInputs">
-        <div class="inputsInfo">
-          <!-- Nombre del Evento -->
-          <div class="campo">
-            <label for="eventoNombre" class="tituloDeInput"><strong>Nombre del evento</strong></label>
-            <input
-              id="eventoNombre"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.nombre"
-              required
-              placeholder="Ejemplo: Ayuda para María"
-            />
-            <p v-if="!evento.nombre" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Descripción del Evento -->
-          <div class="campo">
-            <label for="eventoDescripcion" class="tituloDeInput"><strong>Descripción del evento</strong></label>
-            <textarea
-              id="eventoDescripcion"
-              class="inputInfoEvento"
-              v-model="evento.descripcion"
-              placeholder="Ejemplo: Hola, buenos días..."
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Causa del Evento -->
-          <div class="campo">
-            <label for="eventoCausa" class="tituloDeInput"><strong>Causa por la que se crea el evento</strong></label>
-            <input
-              id="eventoCausa"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.causa"
-              required
-              placeholder="Ejemplo: Incendio de vivienda"
-            />
-            <p v-if="!evento.causa" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Ubicación del Evento -->
-          <div class="campo">
-            <label for="eventoUbicacion" class="tituloDeInput"><strong>Ubicación del evento</strong></label>
-            <SelectMunicipios v-model="evento.ubicacion.municipio_id" :municipios="municipios" />
-            <label for="asignarUbicacion" class="tituloDeInput"><strong>O también asigna una ubicación en tiempo real</strong></label>
-            <button
-              id="asignarUbicacion"
-              class="btn-asignar-ubicacion"
-              type="button"
-              @click="asignarUbicacion"
-              :disabled="loading"
-            >
-              {{ loading ? 'Asignando ubicación...' : 'Asignar Ubicación' }}
-            </button>
-
-            <!-- Mensajes de error y éxito -->
-            <p v-if="msgFalla" class="texto-emergencia">
-              <strong>Hubo un error al asignar la ubicación.</strong>
-            </p>
-            <p v-if="msgExito" class="texto-emergencia">
-              <strong>Se asignó correctamente la ubicación a este evento.</strong>
-            </p>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Categoría de donaciones -->
-          <div class="campo">
-            <label for="eventoDonacion" class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></label>
-            <select id="eventoDonacion" v-model="evento.donacion_id" required>
-              <option v-for="donacion in donaciones" :key="donacion.id" :value="donacion.id">
-                {{ donacion.nombre }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Fecha del Evento -->
-          <div class="campo">
-            <label for="eventoFecha" class="tituloDeInput"><strong>Fecha Evento</strong></label>
-            <input id="eventoFecha" class="inputInfoEvento" type="date" v-model="evento.fecha" />
-          </div>
-        </div>
-
-        <!-- Imágenes -->
-        <div class="inputsInfo">
-          <div class="addIMGS">
-            <label class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></label>
-            <CargarImagenes ref="cargarImagenes" :imagenes-existente="evento.imagenes" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Botón de acción para guardar -->
-    <footer class="boton">
-      <ButtonDefault
-        size="default"
-        color="azul"
-        :text="modoEdicion ? 'Guardar Cambios' : 'Publicar'"
-        icono="archive"
-        class="Publicar"
-        @click="guardarEvento"
-      />
-    </footer>
-
-    <!-- Botón de eliminar evento si estamos en modo edición -->
-    <ButtonDefault
-      v-if="modoEdicion"
-      size="default"
-      color="rojo"
-      text="Eliminar Evento"
-      @click="eliminarEvento"
-    />
-
-    <FooterComponent />
-  </div>
-</template>
-
-<script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  
-  import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
-  import ButtonDefault from '@/components/ButtonDefault.vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-  import SelectMunicipios from '@/components/SelectMunicipios.vue';
-  import CargarImagenes from '@/components/CargarImagenes.vue';
-
-  // Import services to consume API
-  import EventosService from '../services/eventos';
-  import { getCurrentUser } from '../services/users';
-
-  const route = useRoute();
-  const router = useRouter();
-  const eventoId = route.params.id;
-  const modoEdicion = !!eventoId;
-  
-  const evento = ref({
-    nombre: '',
-    descripcion: '',
-    causa: '',
-    ubicacion: {
-      municipio_id: null,
-      nombre: '',
-      direccion: '',
-      latitud: '',
-      longitud: '',
-    },
-    donacion_id: null,
-    fecha: '',
-    imagenes: [],
-    pais: 'Colombia',
-    ciudad: 'Cali',
-  });
-  
-  const cargarImagenes = ref(null);
-  const currentUser = ref(null);
-  const donaciones = ref([]);
-  const municipios = ref([]);
-  
-  const msgFalla = ref(false); 
-  const msgExito = ref(false); 
-  const errorMsg = ref("");
-  const loading = ref(false);
-
-  onMounted(async () => {
-    try {
-      // Obtener usuario autenticado
-      const userResponse = await getCurrentUser();
-      currentUser.value = userResponse;
-
-      // Obtener donaciones
-      donaciones.value = await getDonaciones();
-
-      // Obtener municipios
-      const response = await api.get('/ubicacion/lista_city/');
-      municipios.value = response.data;
-
-      // Cargar datos del evento si estamos en modo edición
-      if (modoEdicion) {
-        const eventoResponse = await getEventoById(eventoId);
-        evento.value = { ...eventoResponse };
-        
-        if (eventoResponse.ubicacion) {
-          evento.value.ubicacion.municipio_id = eventoResponse.ubicacion.municipio_id;
-        }
-        if (eventoResponse.donacion_id) {
-          evento.value.donacion_id = eventoResponse.donacion_id;
-        }
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos:", error);
-      alert("Hubo un error al cargar los datos.");
-    }
-  });
-
-  // Asignar ubicación con geolocalización
-  async function asignarUbicacion() {
-    if (!("geolocation" in navigator)) {
-        errorMsg.value = "Este navegador no soporta geolocalización.";
-        return;
-    }
-
-    loading.value = true;
-    errorMsg.value = "";
-    msgFalla.value = false;
-    msgExito.value = false;
-
-    try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const latitud = position.coords.latitude;
-        const longitud = position.coords.longitude;
-
-        evento.value.ubicacion.latitud = latitud;
-        evento.value.ubicacion.longitud = longitud;
-
-        msgExito.value = true;
-        console.log("Ubicación asignada correctamente:", latitud, longitud);
-      }, (err) => {
-        msgFalla.value = true;
-        errorMsg.value = "Error al obtener la ubicación: " + err.message;
-        console.log(errorMsg.value);
-      });
-    } catch (error) {
-      msgFalla.value = true;
-      errorMsg.value = "Error al obtener la ubicación";
-      console.error(errorMsg.value);
-    } finally {
-      loading.value = false;
-    }
-  }
-  
-  const guardarEvento = async () => {
-    try {
-      // Validar campos requeridos
-      if (
-        !evento.value.nombre ||
-        !evento.value.descripcion ||
-        !evento.value.causa ||
-        !evento.value.fecha ||
-        !evento.value.ubicacion.municipio_id ||
-        !evento.value.ubicacion.direccion ||
-        !evento.value.donacion_id
-      ) {
-        alert('Todos los campos requeridos deben estar completos');
-        return;
-      }
-
-      const eventoData = {
-        ...evento.value,
-        organizador: currentUser.value.id,
-        imagenes: cargarImagenes.value?.imagenes || [],
-      };
-
-      if (modoEdicion) {
-        await updateEvento(eventoId, eventoData);
-        alert('Evento actualizado correctamente');
-      } else {
-        await createEvento(eventoData);
-        alert('Evento creado correctamente');
-      }
-
-      router.push({ name: 'EventosList' });
-    } catch (error) {
-      console.error('Error al guardar el evento:', error);
-      alert('Hubo un error al guardar el evento');
-    }
-  };
-
-  // Eliminar Evento
-  const eliminarEvento = async () => {
-    if (confirm('¿Seguro que deseas eliminar este evento?')) {
-      try {
-        await deleteEvento(eventoId);
-        alert('Evento eliminado correctamente');
-        router.push({ name: 'EventosList' });
-      } catch (error) {
-        console.error('Error al eliminar el evento:', error);
-        alert('Hubo un error al eliminar el evento');
-      }
-    }
-  };
-</script>
-
-
-<style scoped lang="scss">
-  .botonYTitulo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin: 0;
-  }
-
-  .infoEvento {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .infoEventoEInputs {
-    background-color: #0f4f42;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-
-  .contenedorInputs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .inputsInfo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .campo {
-    flex: 1 1 300px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tituloDeInput {
-    font-size: 1rem;
-    color: #2c3e50;
-    margin-bottom: 8px;
-  }
-
-  .inputInfoEvento {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-
-  .inputInfoEvento:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
-
-  .spanYCampoRequer {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
-    color: #B81C2C;
-    margin-top: 5px;
-  }
-
-  .campoRequerido {
-    color: #B81C2C;
-  }
-
-  #exito {
-    color: #339636;
-  }
-
-  .boton {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .Publicar {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .Publicar:hover {
-    background-color: #45a049;
-  }
-
-  .btn-asignar-ubicacion {
-    padding: 10px;
-    background-color: #0F4F42;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .btn-asignar-ubicacion:hover {
-    background-color: #0c3b32;
-  }
-
-  .texto-emergencia {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 8px;
-  }
-</style><template>
-  <div>
-    <!-- Encabezado con título y botón -->
-    <header class="botonYTitulo">
-      <BotonPaginaAnterior />
-      <h1>{{ modoEdicion ? 'Editar Evento' : 'Crea tu Evento' }}</h1>
-    </header>
-
-    <!-- Sección de información del evento -->
-    <section class="infoEvento">
-      <div class="infoEventoEInputs">
-        <h3 id="subtitulo">INFORMACIÓN DEL EVENTO</h3>
-      </div>
-
-      <div class="contenedorInputs">
-        <div class="inputsInfo">
-          <!-- Nombre del Evento -->
-          <div class="campo">
-            <label for="eventoNombre" class="tituloDeInput"><strong>Nombre del evento</strong></label>
-            <input
-              id="eventoNombre"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.nombre"
-              required
-              placeholder="Ejemplo: Ayuda para María"
-            />
-            <p v-if="!evento.nombre" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Descripción del Evento -->
-          <div class="campo">
-            <label for="eventoDescripcion" class="tituloDeInput"><strong>Descripción del evento</strong></label>
-            <textarea
-              id="eventoDescripcion"
-              class="inputInfoEvento"
-              v-model="evento.descripcion"
-              placeholder="Ejemplo: Hola, buenos días..."
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Causa del Evento -->
-          <div class="campo">
-            <label for="eventoCausa" class="tituloDeInput"><strong>Causa por la que se crea el evento</strong></label>
-            <input
-              id="eventoCausa"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.causa"
-              required
-              placeholder="Ejemplo: Incendio de vivienda"
-            />
-            <p v-if="!evento.causa" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Ubicación del Evento -->
-          <div class="campo">
-            <label for="eventoUbicacion" class="tituloDeInput"><strong>Ubicación del evento</strong></label>
-            <SelectMunicipios v-model="evento.ubicacion.municipio_id" :municipios="municipios" />
-            <label for="asignarUbicacion" class="tituloDeInput"><strong>O también asigna una ubicación en tiempo real</strong></label>
-            <button
-              id="asignarUbicacion"
-              class="btn-asignar-ubicacion"
-              type="button"
-              @click="asignarUbicacion"
-              :disabled="loading"
-            >
-              {{ loading ? 'Asignando ubicación...' : 'Asignar Ubicación' }}
-            </button>
-
-            <!-- Mensajes de error y éxito -->
-            <p v-if="msgFalla" class="texto-emergencia">
-              <strong>Hubo un error al asignar la ubicación.</strong>
-            </p>
-            <p v-if="msgExito" class="texto-emergencia">
-              <strong>Se asignó correctamente la ubicación a este evento.</strong>
-            </p>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Categoría de donaciones -->
-          <div class="campo">
-            <label for="eventoDonacion" class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></label>
-            <select id="eventoDonacion" v-model="evento.donacion_id" required>
-              <option v-for="donacion in donaciones" :key="donacion.id" :value="donacion.id">
-                {{ donacion.nombre }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Fecha del Evento -->
-          <div class="campo">
-            <label for="eventoFecha" class="tituloDeInput"><strong>Fecha Evento</strong></label>
-            <input id="eventoFecha" class="inputInfoEvento" type="date" v-model="evento.fecha" />
-          </div>
-        </div>
-
-        <!-- Imágenes -->
-        <div class="inputsInfo">
-          <div class="addIMGS">
-            <label class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></label>
-            <CargarImagenes ref="cargarImagenes" :imagenes-existente="evento.imagenes" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Botón de acción para guardar -->
-    <footer class="boton">
-      <ButtonDefault
-        size="default"
-        color="azul"
-        :text="modoEdicion ? 'Guardar Cambios' : 'Publicar'"
-        icono="archive"
-        class="Publicar"
-        @click="guardarEvento"
-      />
-    </footer>
-
-    <!-- Botón de eliminar evento si estamos en modo edición -->
-    <ButtonDefault
-      v-if="modoEdicion"
-      size="default"
-      color="rojo"
-      text="Eliminar Evento"
-      @click="eliminarEvento"
-    />
-
-    <FooterComponent />
-  </div>
-</template>
-
-<script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  
-  import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
-  import ButtonDefault from '@/components/ButtonDefault.vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-  import SelectMunicipios from '@/components/SelectMunicipios.vue';
-  import CargarImagenes from '@/components/CargarImagenes.vue';
-
-  // Import services to consume API
-  import EventosService from '../services/eventos';
-  import { getCurrentUser } from '../services/users';
-
-  const route = useRoute();
-  const router = useRouter();
-  const eventoId = route.params.id;
-  const modoEdicion = !!eventoId;
-  
-  const evento = ref({
-    nombre: '',
-    descripcion: '',
-    causa: '',
-    ubicacion: {
-      municipio_id: null,
-      nombre: '',
-      direccion: '',
-      latitud: '',
-      longitud: '',
-    },
-    donacion_id: null,
-    fecha: '',
-    imagenes: [],
-    pais: 'Colombia',
-    ciudad: 'Cali',
-  });
-  
-  const cargarImagenes = ref(null);
-  const currentUser = ref(null);
-  const donaciones = ref([]);
-  const municipios = ref([]);
-  
-  const msgFalla = ref(false); 
-  const msgExito = ref(false); 
-  const errorMsg = ref("");
-  const loading = ref(false);
-
-  onMounted(async () => {
-    try {
-      // Obtener usuario autenticado
-      const userResponse = await getCurrentUser();
-      currentUser.value = userResponse;
-
-      // Obtener donaciones
-      donaciones.value = await getDonaciones();
-
-      // Obtener municipios
-      const response = await api.get('/ubicacion/lista_city/');
-      municipios.value = response.data;
-
-      // Cargar datos del evento si estamos en modo edición
-      if (modoEdicion) {
-        const eventoResponse = await getEventoById(eventoId);
-        evento.value = { ...eventoResponse };
-        
-        if (eventoResponse.ubicacion) {
-          evento.value.ubicacion.municipio_id = eventoResponse.ubicacion.municipio_id;
-        }
-        if (eventoResponse.donacion_id) {
-          evento.value.donacion_id = eventoResponse.donacion_id;
-        }
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos:", error);
-      alert("Hubo un error al cargar los datos.");
-    }
-  });
-
-  // Asignar ubicación con geolocalización
-  async function asignarUbicacion() {
-    if (!("geolocation" in navigator)) {
-        errorMsg.value = "Este navegador no soporta geolocalización.";
-        return;
-    }
-
-    loading.value = true;
-    errorMsg.value = "";
-    msgFalla.value = false;
-    msgExito.value = false;
-
-    try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const latitud = position.coords.latitude;
-        const longitud = position.coords.longitude;
-
-        evento.value.ubicacion.latitud = latitud;
-        evento.value.ubicacion.longitud = longitud;
-
-        msgExito.value = true;
-        console.log("Ubicación asignada correctamente:", latitud, longitud);
-      }, (err) => {
-        msgFalla.value = true;
-        errorMsg.value = "Error al obtener la ubicación: " + err.message;
-        console.log(errorMsg.value);
-      });
-    } catch (error) {
-      msgFalla.value = true;
-      errorMsg.value = "Error al obtener la ubicación";
-      console.error(errorMsg.value);
-    } finally {
-      loading.value = false;
-    }
-  }
-  
-  const guardarEvento = async () => {
-    try {
-      // Validar campos requeridos
-      if (
-        !evento.value.nombre ||
-        !evento.value.descripcion ||
-        !evento.value.causa ||
-        !evento.value.fecha ||
-        !evento.value.ubicacion.municipio_id ||
-        !evento.value.ubicacion.direccion ||
-        !evento.value.donacion_id
-      ) {
-        alert('Todos los campos requeridos deben estar completos');
-        return;
-      }
-
-      const eventoData = {
-        ...evento.value,
-        organizador: currentUser.value.id,
-        imagenes: cargarImagenes.value?.imagenes || [],
-      };
-
-      if (modoEdicion) {
-        await updateEvento(eventoId, eventoData);
-        alert('Evento actualizado correctamente');
-      } else {
-        await createEvento(eventoData);
-        alert('Evento creado correctamente');
-      }
-
-      router.push({ name: 'EventosList' });
-    } catch (error) {
-      console.error('Error al guardar el evento:', error);
-      alert('Hubo un error al guardar el evento');
-    }
-  };
-
-  // Eliminar Evento
-  const eliminarEvento = async () => {
-    if (confirm('¿Seguro que deseas eliminar este evento?')) {
-      try {
-        await deleteEvento(eventoId);
-        alert('Evento eliminado correctamente');
-        router.push({ name: 'EventosList' });
-      } catch (error) {
-        console.error('Error al eliminar el evento:', error);
-        alert('Hubo un error al eliminar el evento');
-      }
-    }
-  };
-</script>
-
-
-<style scoped lang="scss">
-  .botonYTitulo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin: 0;
-  }
-
-  .infoEvento {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .infoEventoEInputs {
-    background-color: #0f4f42;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-
-  .contenedorInputs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .inputsInfo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .campo {
-    flex: 1 1 300px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tituloDeInput {
-    font-size: 1rem;
-    color: #2c3e50;
-    margin-bottom: 8px;
-  }
-
-  .inputInfoEvento {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-
-  .inputInfoEvento:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
-
-  .spanYCampoRequer {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
-    color: #B81C2C;
-    margin-top: 5px;
-  }
-
-  .campoRequerido {
-    color: #B81C2C;
-  }
-
-  #exito {
-    color: #339636;
-  }
-
-  .boton {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .Publicar {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .Publicar:hover {
-    background-color: #45a049;
-  }
-
-  .btn-asignar-ubicacion {
-    padding: 10px;
-    background-color: #0F4F42;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .btn-asignar-ubicacion:hover {
-    background-color: #0c3b32;
-  }
-
-  .texto-emergencia {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 8px;
-  }
-</style><template>
-  <div>
-    <!-- Encabezado con título y botón -->
-    <header class="botonYTitulo">
-      <BotonPaginaAnterior />
-      <h1>{{ modoEdicion ? 'Editar Evento' : 'Crea tu Evento' }}</h1>
-    </header>
-
-    <!-- Sección de información del evento -->
-    <section class="infoEvento">
-      <div class="infoEventoEInputs">
-        <h3 id="subtitulo">INFORMACIÓN DEL EVENTO</h3>
-      </div>
-
-      <div class="contenedorInputs">
-        <div class="inputsInfo">
-          <!-- Nombre del Evento -->
-          <div class="campo">
-            <label for="eventoNombre" class="tituloDeInput"><strong>Nombre del evento</strong></label>
-            <input
-              id="eventoNombre"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.nombre"
-              required
-              placeholder="Ejemplo: Ayuda para María"
-            />
-            <p v-if="!evento.nombre" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Descripción del Evento -->
-          <div class="campo">
-            <label for="eventoDescripcion" class="tituloDeInput"><strong>Descripción del evento</strong></label>
-            <textarea
-              id="eventoDescripcion"
-              class="inputInfoEvento"
-              v-model="evento.descripcion"
-              placeholder="Ejemplo: Hola, buenos días..."
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Causa del Evento -->
-          <div class="campo">
-            <label for="eventoCausa" class="tituloDeInput"><strong>Causa por la que se crea el evento</strong></label>
-            <input
-              id="eventoCausa"
-              class="inputInfoEvento"
-              type="text"
-              v-model="evento.causa"
-              required
-              placeholder="Ejemplo: Incendio de vivienda"
-            />
-            <p v-if="!evento.causa" class="spanYCampoRequer">
-              <span class="material-symbols-outlined campoRequerido" style="font-variation-settings: 'FILL' 1;">
-                circle
-              </span>
-              <strong>Campo requerido</strong>
-            </p>
-          </div>
-
-          <!-- Ubicación del Evento -->
-          <div class="campo">
-            <label for="eventoUbicacion" class="tituloDeInput"><strong>Ubicación del evento</strong></label>
-            <SelectMunicipios v-model="evento.ubicacion.municipio_id" :municipios="municipios" />
-            <label for="asignarUbicacion" class="tituloDeInput"><strong>O también asigna una ubicación en tiempo real</strong></label>
-            <button
-              id="asignarUbicacion"
-              class="btn-asignar-ubicacion"
-              type="button"
-              @click="asignarUbicacion"
-              :disabled="loading"
-            >
-              {{ loading ? 'Asignando ubicación...' : 'Asignar Ubicación' }}
-            </button>
-
-            <!-- Mensajes de error y éxito -->
-            <p v-if="msgFalla" class="texto-emergencia">
-              <strong>Hubo un error al asignar la ubicación.</strong>
-            </p>
-            <p v-if="msgExito" class="texto-emergencia">
-              <strong>Se asignó correctamente la ubicación a este evento.</strong>
-            </p>
-          </div>
-        </div>
-
-        <div class="inputsInfo">
-          <!-- Categoría de donaciones -->
-          <div class="campo">
-            <label for="eventoDonacion" class="tituloDeInput"><strong>Categoría de donaciones aceptadas</strong></label>
-            <select id="eventoDonacion" v-model="evento.donacion_id" required>
-              <option v-for="donacion in donaciones" :key="donacion.id" :value="donacion.id">
-                {{ donacion.nombre }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Fecha del Evento -->
-          <div class="campo">
-            <label for="eventoFecha" class="tituloDeInput"><strong>Fecha Evento</strong></label>
-            <input id="eventoFecha" class="inputInfoEvento" type="date" v-model="evento.fecha" />
-          </div>
-        </div>
-
-        <!-- Imágenes -->
-        <div class="inputsInfo">
-          <div class="addIMGS">
-            <label class="tituloDeInput"><strong>Imágenes de lo ocurrido</strong></label>
-            <CargarImagenes ref="cargarImagenes" :imagenes-existente="evento.imagenes" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Botón de acción para guardar -->
-    <footer class="boton">
-      <ButtonDefault
-        size="default"
-        color="azul"
-        :text="modoEdicion ? 'Guardar Cambios' : 'Publicar'"
-        icono="archive"
-        class="Publicar"
-        @click="guardarEvento"
-      />
-    </footer>
-
-    <!-- Botón de eliminar evento si estamos en modo edición -->
-    <ButtonDefault
-      v-if="modoEdicion"
-      size="default"
-      color="rojo"
-      text="Eliminar Evento"
-      @click="eliminarEvento"
-    />
-
-    <FooterComponent />
-  </div>
-</template>
-
-<script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  
-  import BotonPaginaAnterior from '../components/BotonPaginaAnterior.vue';
-  import ButtonDefault from '@/components/ButtonDefault.vue';
-  import FooterComponent from '@/components/FooterComponent.vue';
-  import SelectMunicipios from '@/components/SelectMunicipios.vue';
-  import CargarImagenes from '@/components/CargarImagenes.vue';
-
-  // Import services to consume API
-  import EventosService from '../services/eventos';
-  import { getCurrentUser } from '../services/users';
-
-  const route = useRoute();
-  const router = useRouter();
-  const eventoId = route.params.id;
-  const modoEdicion = !!eventoId;
-  
-  const evento = ref({
-    nombre: '',
-    descripcion: '',
-    causa: '',
-    ubicacion: {
-      municipio_id: null,
-      nombre: '',
-      direccion: '',
-      latitud: '',
-      longitud: '',
-    },
-    donacion_id: null,
-    fecha: '',
-    imagenes: [],
-    pais: 'Colombia',
-    ciudad: 'Cali',
-  });
-  
-  const cargarImagenes = ref(null);
-  const currentUser = ref(null);
-  const donaciones = ref([]);
-  const municipios = ref([]);
-  
-  const msgFalla = ref(false); 
-  const msgExito = ref(false); 
-  const errorMsg = ref("");
-  const loading = ref(false);
-
-  onMounted(async () => {
-    try {
-      // Obtener usuario autenticado
-      const userResponse = await getCurrentUser();
-      currentUser.value = userResponse;
-
-      // Obtener donaciones
-      donaciones.value = await getDonaciones();
-
-      // Obtener municipios
-      const response = await api.get('/ubicacion/lista_city/');
-      municipios.value = response.data;
-
-      // Cargar datos del evento si estamos en modo edición
-      if (modoEdicion) {
-        const eventoResponse = await getEventoById(eventoId);
-        evento.value = { ...eventoResponse };
-        
-        if (eventoResponse.ubicacion) {
-          evento.value.ubicacion.municipio_id = eventoResponse.ubicacion.municipio_id;
-        }
-        if (eventoResponse.donacion_id) {
-          evento.value.donacion_id = eventoResponse.donacion_id;
-        }
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos:", error);
-      alert("Hubo un error al cargar los datos.");
-    }
-  });
-
-  // Asignar ubicación con geolocalización
-  async function asignarUbicacion() {
-    if (!("geolocation" in navigator)) {
-        errorMsg.value = "Este navegador no soporta geolocalización.";
-        return;
-    }
-
-    loading.value = true;
-    errorMsg.value = "";
-    msgFalla.value = false;
-    msgExito.value = false;
-
-    try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const latitud = position.coords.latitude;
-        const longitud = position.coords.longitude;
-
-        evento.value.ubicacion.latitud = latitud;
-        evento.value.ubicacion.longitud = longitud;
-
-        msgExito.value = true;
-        console.log("Ubicación asignada correctamente:", latitud, longitud);
-      }, (err) => {
-        msgFalla.value = true;
-        errorMsg.value = "Error al obtener la ubicación: " + err.message;
-        console.log(errorMsg.value);
-      });
-    } catch (error) {
-      msgFalla.value = true;
-      errorMsg.value = "Error al obtener la ubicación";
-      console.error(errorMsg.value);
-    } finally {
-      loading.value = false;
-    }
-  }
-  
-  const guardarEvento = async () => {
-    try {
-      // Validar campos requeridos
-      if (
-        !evento.value.nombre ||
-        !evento.value.descripcion ||
-        !evento.value.causa ||
-        !evento.value.fecha ||
-        !evento.value.ubicacion.municipio_id ||
-        !evento.value.ubicacion.direccion ||
-        !evento.value.donacion_id
-      ) {
-        alert('Todos los campos requeridos deben estar completos');
-        return;
-      }
-
-      const eventoData = {
-        ...evento.value,
-        organizador: currentUser.value.id,
-        imagenes: cargarImagenes.value?.imagenes || [],
-      };
-
-      if (modoEdicion) {
-        await updateEvento(eventoId, eventoData);
-        alert('Evento actualizado correctamente');
-      } else {
-        await createEvento(eventoData);
-        alert('Evento creado correctamente');
-      }
-
-      router.push({ name: 'EventosList' });
-    } catch (error) {
-      console.error('Error al guardar el evento:', error);
-      alert('Hubo un error al guardar el evento');
-    }
-  };
-
-  // Eliminar Evento
-  const eliminarEvento = async () => {
-    if (confirm('¿Seguro que deseas eliminar este evento?')) {
-      try {
-        await deleteEvento(eventoId);
-        alert('Evento eliminado correctamente');
-        router.push({ name: 'EventosList' });
-      } catch (error) {
-        console.error('Error al eliminar el evento:', error);
-        alert('Hubo un error al eliminar el evento');
-      }
-    }
-  };
-</script>
-
-
-<style scoped lang="scss">
-  .botonYTitulo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin: 0;
-  }
-
-  .infoEvento {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .infoEventoEInputs {
-    background-color: #0f4f42;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-
-  .contenedorInputs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .inputsInfo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .campo {
-    flex: 1 1 300px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tituloDeInput {
-    font-size: 1rem;
-    color: #2c3e50;
-    margin-bottom: 8px;
-  }
-
-  .inputInfoEvento {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-
-  .inputInfoEvento:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
-
-  .spanYCampoRequer {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
-    color: #B81C2C;
-    margin-top: 5px;
-  }
-
-  .campoRequerido {
-    color: #B81C2C;
-  }
-
-  #exito {
-    color: #339636;
-  }
-
-  .boton {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .Publicar {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .Publicar:hover {
-    background-color: #45a049;
-  }
-
-  .btn-asignar-ubicacion {
-    padding: 10px;
-    background-color: #0F4F42;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .btn-asignar-ubicacion:hover {
-    background-color: #0c3b32;
-  }
-
-  .texto-emergencia {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 8px;
-  }
 </style>
