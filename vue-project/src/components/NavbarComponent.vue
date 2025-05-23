@@ -86,7 +86,11 @@ const abrirChatPrivado = async (chat) => {
           <a class="lista_opci" href="categorias">CATEGORÍAS <span class="material-symbols-outlined">arrow_drop_down</span></a>
           <MenuDespl />
         </li>
-        <li><router-link class="lista_opci" to="/gratuitos">GRATUITOS</router-link></li>
+        <li>
+          <RouterLink :to="{ name: 'gratuitos'}" class="lista_categ">
+            GRATUITOS
+          </RouterLink>
+        </li>
         <li><router-link class="lista_opci" to="/Eventos">EVENTOS</router-link></li>
         <li><router-link class="lista_opci" to="/ofertas">OFERTAS <span class="material-symbols-outlined">sell</span></router-link></li>
       </ul>

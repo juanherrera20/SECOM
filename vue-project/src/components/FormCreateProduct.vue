@@ -2,7 +2,24 @@
   <!-- Encabezado con título y botón -->
   <header class="botonYTitulo">
     <BotonPaginaAnterior />
-    <h1>Crea tu Evento</h1>
+    <div class="typeProduct">
+        <div class="normal">
+          <h2>NORMALES</h2>
+          <p>Son todos los demás productos que puedes vender en nuestra plataforma.</p>
+        </div>
+        <div class="sostenible">
+          <h2>SOSTENIBLES</h2>
+          <p>Son aquellos que se han producido, utilizado o diseñado de una manera que 
+          minimiza el impacto negativo en el medio ambiente y promueve un uso responsable de los recursos.</p>
+        </div>
+        <div class="toggle-box">
+          <label class="toggle-label">Seleccionar</label>
+          <label class="switch">
+            <input type="checkbox" v-model="formData.is_venta" :disabled="false" />
+            <span class="slider"></span>
+          </label>
+        </div>
+    </div>
   </header>
 
   <form @submit.prevent="handleSubmit">
@@ -17,12 +34,25 @@
             class="input"
             v-model="formData.name"
             type="text"
-            required
+            :required="true"
             :disabled="false"
           />
           <span class="input-helper">Ingresar nombre que haga referencia a que esta vendiendo</span>
         </div>
 
+        <div class="input-box">
+          <label class="input-label">Precio del Producto</label>
+          <input
+            placeholder="$ 45.400"
+            class="input"
+            v-model="formData.price"
+            type="number"
+            :required="false"
+            :disabled="false"
+          />
+          <span class="input-helper">Ingresar el precio de venta del producto, si deja vacio el valor cera cero</span>
+        </div>
+        
         <SelectInputChoices
           v-model="formData.condition"
           :options="conditions"
@@ -41,16 +71,16 @@
             :disabled="false"
             :required="true"
           ></textarea>
-          <span class="input-helper">Ingrese la Información Principal del Evento</span>
+          <span class="input-helper">Ingrese una descripción detallada del Producto</span>
         </div>
       </div>
 
       <div class="form-container">
-        <h2>Ubicación y localización del Evento</h2>
+        <h2>Ubicación y localización del Producto</h2>
 
         <div class="location-info">
           <p class="location-description">
-            Es necesario ubicar el evento mediante GPS. Por favor elija usar
+            Es necesario ubicar el Producto mediante GPS. Por favor elija usar
             ubicación actual o seleccionar una ciudad en el menú desplegable.
           </p>
 
@@ -94,14 +124,14 @@
                 <span class="input-helper">Dirección exacta del Evento</span>
               </div>
 
-              <SelectInput
+              <SelectInputChoices
                 v-model="formData.ubicacion.pais"
                 :options="countries"
                 label="País"
                 extra="Seleccionar el país del evento"
                 :isRequired="false"
                 :isDesabled="false"
-              ></SelectInput>
+              ></SelectInputChoices>
             </div>
           </div>
 
@@ -142,13 +172,40 @@
         </div>
       </div>
 
+      <div class="form-container">
+        <h2>Categoria y Etiquetas</h2>
+        <p class="location-description" style="grid-column:1/-1">
+          Debe Elegir una Categoria para el producto, una vez elegida se le desplegará las opciones 
+          de etiquetas acorde a la categoria
+        </p>
+        <SelectInput
+          v-model="formData.category_id"
+          :options="categories"
+          label="Categoria Principal"
+          extra="Seleccionar una categoria para el producto"
+          :isRequired="true"
+          :isDesabled="false"
+          @change="updateListTags"
+        ></SelectInput>
+
+        <SelectInput
+          v-model="formData.tags_ids"
+          :options="tags"
+          label="Etiquetas para el Producto"
+          extra="Seleccionar una una etiqueta para facilitar la busqueda del producto"
+          :isRequired="true"
+          :isDesabled="false"
+        ></SelectInput>
+      </div>
+
       <div class="files-container">
-        <h2>Imágenes/Fotos del Evento</h2>
+        <h2>Imágenes/Fotos del Producto</h2>
         <input
           type="file"
           @change="handleImageUpdload"
           multiple
           accept="image/*"
+          :required="true"
         />
         <div v-if="selectedImages.length > 0" class="selected-images">
           <h3>Imágenes Seleccionadas</h3>
@@ -172,6 +229,52 @@
           </div>
         </div>
       </div>
+
+      <!-- Sección Opcional de Oferta -->
+      <div class="form-container">
+        <h2>Oferta del Producto (Opcional)</h2>
+        
+        <div class="input-box">
+          <label class="input-label">Precio de Oferta</label>
+          <input
+            placeholder="Ej: 20000"
+            class="input"
+            v-model="offerData.offer_price"
+            type="number"
+          />
+          <span class="input-helper">Si se especifica, el producto tendrá una oferta activa.</span>
+        </div>
+
+        <div class="input-box">
+          <label class="input-label">Fecha de Inicio</label>
+          <input
+            type="date"
+            class="input date"
+            name="fecha"
+            v-model="offerData.start_date"
+            :disabled="false"
+          />
+          <span class="input-helper">Programar fecha de inicio de la Oferta, Dejar vacio establece la fecha a hoy</span>
+        </div> 
+
+        <div class="input-box">
+          <label class="input-label">Fecha de Fecha de Finalización</label>
+          <input
+            type="date"
+            class="input date"
+            name="fecha"
+            v-model="offerData.end_date"
+            :disabled="false"
+          />
+          <span class="input-helper">Programar fecha de finalización de la Oferta, Dejar vacio deja indefinido</span>
+        </div> 
+
+        <div class="input-box">
+          <label class="input-label">¿Activar Oferta de Inmediato?</label>
+          <input type="checkbox" v-model="offerData.active" />
+        </div>
+      </div>
+
 
       <div class="form-actions">
         <button type="submit" class="submit-button">Publicar</button>
@@ -198,10 +301,10 @@ import UbicacionService from "@/services/ubicacion";
 const route = useRoute();
 const router = useRouter();
 const countries = ref([  // Useful for the select contruies
-  { id: "Colombia", name: "Colombia" },
-  { id: "Ecuador", name: "Ecuador" },
-  { id: "Peru", name: "Peru" },
-  { id: "Brasil", name: "Brasil"}
+  { label: "Colombia", value: "Colombia" },
+  { label: "Ecuador", value: "Ecuador" },
+  { label: "Peru", value: "Peru" },
+  { label: "Brasil", value: "Brasil"}
 ]);
 const msg = ref("");
 const msgExist = ref(false);
@@ -209,12 +312,20 @@ const loading = ref(false);
 const selectedImages = ref([]); //attachment Images
 const ProductID = ref(null);  //Get Id prodcut from response after to send product
 
+//Data to crete Offerta (opcional)
+const offerData = ref({
+  offer_price: null,
+  start_date: null,
+  end_date: null,
+  active: false,
+});
+
 //Principal data object to send to API
 const formData = ref({
     name: "",
     description: "", 
     category_id: null,
-    tags_ids: [],
+    tags_ids: null,
     ubicacion: {
         city_id: null, //No es obligatorio Puede ser null
         name: "", // No Obligatorio, puede ser null/vacio
@@ -258,68 +369,98 @@ onMounted(async () => {
   }
 });
 
-// async function asignUbication() {
-//   if (!("geolocation" in navigator)) {
-//     msg.value = "Este navegador no soporta geolocalización.";
-//     msgExist.value = true;
-//     return;
-//   }
+async function asignUbication() {
+  if (!("geolocation" in navigator)) {
+    msg.value = "Este navegador no soporta geolocalización.";
+    msgExist.value = true;
+    return;
+  }
 
-//   loading.value = true;
-//   msg.value = "";
-//   msgExist.value = false;
+  loading.value = true;
+  msg.value = "";
+  msgExist.value = false;
 
-//   navigator.geolocation.getCurrentPosition(
-//     (position) => {
-//       const latitud = position.coords.latitude;
-//       const longitud = position.coords.longitude;
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latitud = position.coords.latitude;
+      const longitud = position.coords.longitude;
 
-//       formData.value.ubicacion.latitude = Number(latitud.toFixed(6));
-//       formData.value.ubicacion.longitude = Number(longitud.toFixed(6));
+      formData.value.ubicacion.latitude = Number(latitud.toFixed(6));
+      formData.value.ubicacion.longitude = Number(longitud.toFixed(6));
 
-//       msg.value = "Ubicación asignada correctamente";
-//       msgExist.value = true;
+      msg.value = "Ubicación asignada correctamente";
+      msgExist.value = true;
 
-//       console.log("Ubicación asignada correctamente:", latitud, longitud);
-//       loading.value = false;
-//     },
-//     (error) => {
-//       msg.value = "Error al obtener la ubicación: " + error.message;
-//       msgExist.value = true;
-//       loading.value = false;
-//     }
-//   );
-// }
+      console.log("Ubicación asignada correctamente:", latitud, longitud);
+      loading.value = false;
+    },
+    (error) => {
+      msg.value = "Error al obtener la ubicación: " + error.message;
+      msgExist.value = true;
+      loading.value = false;
+    }
+  );
+}
 
-// const handleSubmit = async () => {
-//   msg.value = "";
-//   msgExist.value = false;
+async function updateListTags() {
+  try {
+    console.log("category id", formData.value.category_id)
+    const response = await ProductsService.getTags(formData.value.category_id);
+    tags.value = response
+    console.log("Tags Actualizadas:", tags.value);
 
-//   if (
-//     !formData.value.ubicacion.city_id &&
-//     (!formData.value.ubicacion.latitude || !formData.value.ubicacion.longitude)
-//   ) {
-//     msg.value = "Debes seleccionar una ciudad o asignar tu ubicación actual.";
-//     msgExist.value = true;
-//     return;
-//   }
+  } catch (error) {
+    console.error("Error al actualizar Tags:", error);
+    msg.value = "Error al actualizar Tags. Por favor, inténtalo de nuevo.";
+    msgExist.value = true;
+  }
+}
 
-//   const currentUser = await getCurrentUser();
-//   formData.value.organizador = currentUser.id;
 
-//   try {
-//     const response = await EventosService.createEvento(formData.value);
-//     console.log("Evento creado:", response);
-//     eventoID.value = response.id;
+const handleSubmit = async () => {
+  msg.value = "";
+  msgExist.value = false;
 
-//     await uploadImages();
-//     router.push({ name: "EventosList" });
-//   } catch (error) {
-//     console.error("Error al crear el evento:", error);
-//     msg.value = "Error al crear el evento. Por favor, inténtalo de nuevo.";
-//     msgExist.value = true;
-//   }
-// };
+  if (
+    !formData.value.ubicacion.city_id &&
+    (!formData.value.ubicacion.latitude || !formData.value.ubicacion.longitude)
+  ) {
+    msg.value = "Debes seleccionar una ciudad o asignar tu ubicación actual.";
+    msgExist.value = true;
+    return;
+  }
+
+  try {
+
+    const product = await ProductsService.createProduct({
+      ...formData.value,
+      tags_ids: [formData.value.tags_ids], // convierte a array si la API lo pide
+    });
+    ProductID.value = product.id;
+
+    await uploadImages();
+
+    // Si se ingresó un precio de oferta, creamos la oferta
+    if (offerData.value.offer_price) {
+      const offerPayload = {
+        product: ProductID.value,
+        offer_price: offerData.value.offer_price,
+        start_date: offerData.value.start_date || null,
+        end_date: offerData.value.end_date || null,
+        active: offerData.value.active,
+      };
+
+      await ProductsService.createOffer(offerPayload);
+      console.log("Oferta creada con éxito");
+    }
+
+    router.push({ name: "home" });
+  } catch (error) {
+    console.error("Error al crear producto u oferta:", error);
+    msg.value = "Ocurrió un error. Por favor, verifica los datos.";
+    msgExist.value = true;
+  }
+};
 
 // ------------------ handle Updload Images ----------------------
 const handleImageUpdload = (event) => {
@@ -336,7 +477,7 @@ const getImagePreview = (file) => {
 };
 
 const uploadImages = async () => {
-  if (!eventoID.value || selectedImages.value.length === 0) {
+  if (!ProductID.value || selectedImages.value.length === 0) {
     return;
   }
 
@@ -346,7 +487,7 @@ const uploadImages = async () => {
       formData.append("new_images", file);
     });
 
-    await EventosService.manageImages(eventoID.value, formData);
+    await ProductsService.manageImages(ProductID.value, formData);
     console.log("Imágenes subidas con éxito");
   } catch (error) {
     console.error("Error al subir las imágenes:", error);
@@ -750,6 +891,12 @@ const uploadImages = async () => {
   span {
     font-family: monospace;
   }
+}
+
+// Input type toggle, import mixin to style it (_form-mixins.scss)
+.toggle-box {
+  @include toggle-box($activate_color: $primary_color100,
+  $desactivate_color: $secondary_color100);
 }
 
 </style>

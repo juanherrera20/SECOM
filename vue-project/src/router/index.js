@@ -21,6 +21,7 @@ import AlertComponent from '@/components/AlertComponent.vue'
 import ChatModalComponent from '@/components/ChatModalComponent.vue'
 import ChatInternoComponent from '@/components/ChatInternoComponent.vue'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -43,14 +44,15 @@ const router = createRouter({
     },
     
     {
-      path: '/CategoriasTecnologia',
-      name: 'categoriasTecnologia',
+      path: '/Categorias/:id',
+      name: 'categorias',
       component: VistaCategorias,
+      props: true, // Pasamos el parámetro como prop al componente
     },
 
     {
       path: '/Gratuitos',
-      name: 'categorias',
+      name: 'gratuitos',
       component: GratuitosView,
     },
 

@@ -1,53 +1,58 @@
 <template>
-    <div class="input-box">
-        <label class="input-label">{{ label }}</label>
-        <select
-        class="input select"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
-        :required="isRequired"
-        :disabled="isDesabled"
-        >
-        <option v-for="opt in options" :key="opt.id" :value="opt.id">
-            {{ opt.name }}
-        </option>
-        </select>
-        <span class="input-helper">{{ extra }}</span>
-    </div>
+  <div class="input-box">
+    <label class="input-label">{{ label }}</label>
+    <select
+      class="input select"
+      :value="modelValue"
+      @change="onChange"
+      :required="isRequired"
+      :disabled="isDesabled"
+    >
+      <option disabled value="">Selecciona una opción</option>
+      <option v-for="opt in options" :key="opt.id" :value="opt.id">
+        {{ opt.name }}
+      </option>
+    </select>
+    <span class="input-helper">{{ extra }}</span>
+  </div>
 </template>
-  
-<script setup>
-    import { defineProps, defineEmits } from 'vue'
-    const props = defineProps({
-        options: {
-        type: Array,
-        required: true
-        },
-        modelValue: {
-        type: [String, Number],
-        required: false
-        },
-        label: {
-        type: String,
-        required: true
-        },
-        extra: {
-        type: String,
-        default: 'Seleccionar una opción válida'
-        },
-        isRequired: {
-            type: Boolean,
-            default: false,
-            required: false
-        },
-        isDesabled: {
-            type: Boolean,
-            default: false,
-            required: false
-        }
-    })
 
-    const emit = defineEmits(['update:modelValue'])
+<script setup>
+import { defineProps, defineEmits } from 'vue'
+
+const props = defineProps({
+  options: {
+    type: Array,
+    required: true
+  },
+  modelValue: {
+    type: [String, Number],
+    required: false
+  },
+  label: {
+    type: String,
+    required: true
+  },
+  extra: {
+    type: String,
+    default: 'Seleccionar una opción válida'
+  },
+  isRequired: {
+    type: Boolean,
+    default: false
+  },
+  isDesabled: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+function onChange(event) {
+  const intVal = parseInt(event.target.value)
+  emit('update:modelValue', intVal)
+}
 </script>
 
 <style scoped lang="scss">

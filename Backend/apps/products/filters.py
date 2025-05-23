@@ -5,7 +5,7 @@ from .models import Product, Tag, Category
 
 class ProductFilter(django_filters.FilterSet):
     category = django_filters.ModelChoiceFilter(queryset=Category.objects.all())
-    tags = django_filters.ModelMultipleChoiceFilter(queryset=Tag.objects.all(), field_name='tags__id')
+    tags = django_filters.NumberFilter(field_name='tags__id', lookup_expr='exact')
     
     min_price = django_filters.NumberFilter(field_name='price', lookup_expr='gte')
     max_price = django_filters.NumberFilter(field_name='price', lookup_expr='lte')

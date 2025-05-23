@@ -7,7 +7,34 @@ const offers_url = base_url + 'offers/';
 const ProductsService = {
   // ==================== PRODUCTOS ====================
 
-  async getProductos(params = {}) {
+  //   async getProducts(params = {}) {
+  //   try {
+  //     // Construir URLSearchParams manualmente para arrays
+  //     const searchParams = new URLSearchParams();
+
+  //     Object.entries(params).forEach(([key, value]) => {
+  //       if (Array.isArray(value)) {
+  //         value.forEach(v => {
+  //           if (v !== null && v !== undefined) {
+  //             searchParams.append(key, v);
+  //           }
+  //         });
+  //       } else if (value !== null && value !== undefined && value !== '') {
+  //         searchParams.append(key, value);
+  //       }
+  //     });
+
+  //     const queryString = searchParams.toString();
+  //     const url = `${base_url}products/?${queryString}`;
+
+  //     const response = await api.get(url);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error('Error al obtener productos:', error.response?.data || error.message);
+  //     throw error;
+  //   }
+  // },
+  async getProducts(params = {}) {
     try {
       const response = await api.get(`${base_url}products/`, {
         params, // 👈 aquí van los filtros dinámicos
@@ -19,7 +46,7 @@ const ProductsService = {
     }
   },
 
-  async getProductoById(id) {
+  async getProductById(id) {
     try {
       const response = await api.get(`${base_url}products/${id}/`);
       return response.data;
@@ -29,7 +56,7 @@ const ProductsService = {
     }
   },
 
-  async createProducto(productoData) {
+  async createProduct(productoData) {
     try {
       const response = await api.post(`${base_url}products/`, productoData);
       return response.data;
@@ -39,7 +66,7 @@ const ProductsService = {
     }
   },
 
-  async updateProducto(id, productoData) {
+  async updateProduct(id, productoData) {
     try {
       const response = await api.put(`${base_url}products/${id}/`, productoData);
       return response.data;
@@ -49,7 +76,7 @@ const ProductsService = {
     }
   },
 
-  async deleteProducto(id) {
+  async deleteProduct(id) {
     try {
       const response = await api.delete(`${base_url}products/${id}/`);
       return response.data;
@@ -73,7 +100,7 @@ const ProductsService = {
 
   // ==================== OFERTAS ====================
 
-  async getOfertas({ active = null } = {}) {
+  async getOffers({ active = null } = {}) {
     try {
       const params = active !== null ? { active } : {};
       const response = await api.get(`${offers_url}`, { params });
@@ -84,7 +111,7 @@ const ProductsService = {
     }
   },
 
-  async createOferta(ofertaData) {
+  async createOffer(ofertaData) {
     try {
       const response = await api.post(`${offers_url}`, ofertaData);
       return response.data;
@@ -94,7 +121,7 @@ const ProductsService = {
     }
   },
 
-  async updateOferta(id, ofertaData) {
+  async updateOffer(id, ofertaData) {
     try {
       const response = await api.put(`${offers_url}${id}/`, ofertaData);
       return response.data;
@@ -104,7 +131,7 @@ const ProductsService = {
     }
   },
 
-  async deleteOferta(id) {
+  async deleteOffer(id) {
     try {
       const response = await api.delete(`${offers_url}${id}/`);
       return response.data;
